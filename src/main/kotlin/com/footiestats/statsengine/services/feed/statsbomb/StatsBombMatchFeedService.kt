@@ -14,6 +14,6 @@ class StatsBombMatchFeedService(
         private val metadataRepository: MetadataRepository,
         private val competitionStageRepository: CompetitionStageRepository,
         private val stadiumRepository: StadiumRepository,
-        private val refereeyRepository: RefereeyRepository) {
+        private val refereeRepository: RefereeRepository) {
 
 }

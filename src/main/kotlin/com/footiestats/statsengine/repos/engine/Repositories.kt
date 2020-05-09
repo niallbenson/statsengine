@@ -38,7 +38,7 @@ interface MetadataRepository : PagingAndSortingRepository<Metadata, Long> {
     override fun findAll(): ArrayList<Metadata>
 }
 
-interface RefereeyRepository : PagingAndSortingRepository<Referee, Long> {
+interface RefereeRepository : PagingAndSortingRepository<Referee, Long> {
     override fun findAll(): ArrayList<Referee>
 }
 
