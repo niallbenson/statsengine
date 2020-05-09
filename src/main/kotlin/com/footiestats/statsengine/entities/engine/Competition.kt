@@ -12,4 +12,6 @@ class Competition(
         @ManyToOne var country: Country,
         var name: String,
         var gender: Gender,
+        @ManyToOne var source: Source,
+        var sourceExternalId: String,
         @Id @GeneratedValue var id: Long? = null)
