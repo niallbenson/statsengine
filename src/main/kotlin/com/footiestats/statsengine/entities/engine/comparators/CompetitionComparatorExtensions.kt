@@ -3,12 +3,11 @@ package com.footiestats.statsengine.entities.engine.comparators
 import com.footiestats.statsengine.entities.engine.Competition
 import com.footiestats.statsengine.entities.statsbomb.StatsBombCompetition
 
+open class Competition
+
 class CompetitionComparators {
-    companion object {
-        fun compareToStatsBombCompetition(
-                competition: Competition, statsBombCompetition: StatsBombCompetition): Boolean =
-                competition.country.name.equals(statsBombCompetition.countryName)
-                        && competition.season.name.equals(statsBombCompetition.seasonName)
-                        && competition.name.equals(statsBombCompetition.competitionName)
-    }
+    fun Competition.compareToStatsBombCompetition(statsBombCompetition: StatsBombCompetition): Boolean =
+            this.country.name.equals(statsBombCompetition.countryName)
+                    && this.season.name.equals(statsBombCompetition.seasonName)
+                    && this.name.equals(statsBombCompetition.competitionName)
 }

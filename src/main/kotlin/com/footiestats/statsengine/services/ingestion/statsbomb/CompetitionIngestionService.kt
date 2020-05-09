@@ -3,7 +3,6 @@ package com.footiestats.statsengine.services.ingestion.statsbomb
 import com.footiestats.statsengine.entities.engine.Competition
 import com.footiestats.statsengine.entities.engine.Country
 import com.footiestats.statsengine.entities.engine.Season
-import com.footiestats.statsengine.entities.engine.comparators.CompetitionComparators
 import com.footiestats.statsengine.entities.engine.enums.Gender
 import com.footiestats.statsengine.entities.statsbomb.StatsBombCompetition
 import com.footiestats.statsengine.entities.statsbomb.mappers.StatsBombCompetitionMapper
@@ -90,9 +89,8 @@ class CompetitionIngestionService(
 
     fun processCompetition(statsBombCompetition: StatsBombCompetition, competitions: Iterable<Competition>,
                            seasons: Iterable<Season>, countries: Iterable<Country>): Iterable<Competition> {
-        val competition = competitions.find {
-            c -> CompetitionComparators.compareToStatsBombCompetition(c, statsBombCompetition)
-        }
+
+        val competition = competitions.find { c -> c.compareToStatsBombCompetition(statsBombCompetition) }
 
         if (competition == null) {
             val season = seasons.first { s -> s.name == statsBombCompetition.seasonName }
@@ -110,3 +108,8 @@ class CompetitionIngestionService(
         return competitions
     }
 }
+
+private fun Competition.compareToStatsBombCompetition(statsBombCompetition: StatsBombCompetition): Boolean =
+        this.country.name.equals(statsBombCompetition.countryName)
+                && this.season.name.equals(statsBombCompetition.seasonName)
+                && this.name.equals(statsBombCompetition.competitionName)
