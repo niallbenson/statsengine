@@ -1,10 +1,8 @@
 package com.footiestats.statsengine.repos.engine
 
 import com.footiestats.statsengine.entities.engine.*
-import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.PagingAndSortingRepository
-import org.springframework.data.rest.core.annotation.RestResource
-import kotlin.Metadata
+
 
 interface SourceRepository : PagingAndSortingRepository<Source, Long> {
     fun findByName(name: String): Source?

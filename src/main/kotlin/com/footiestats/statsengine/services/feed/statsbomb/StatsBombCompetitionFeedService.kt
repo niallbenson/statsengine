@@ -3,15 +3,8 @@ package com.footiestats.statsengine.services.feed.statsbomb
 import com.footiestats.statsengine.entities.engine.*
 import com.footiestats.statsengine.entities.engine.enums.Gender
 import com.footiestats.statsengine.entities.statsbomb.StatsBombCompetition
-import com.footiestats.statsengine.entities.statsbomb.mappers.StatsBombCompetitionMapper
 import com.footiestats.statsengine.repos.engine.*
-import com.footiestats.statsengine.services.feed.statsbomb.exceptions.StatsBombEntityNotFound
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import org.springframework.web.client.RestOperations
-import org.springframework.web.client.RestTemplate
-import org.springframework.web.client.getForObject
-import java.net.URI
 
 fun Competition.compareTo(
         statsBombCompetition: StatsBombCompetition,
@@ -27,34 +20,20 @@ class StatsBombCompetitionFeedService(
         private val competitionRepository: CompetitionRepository,
         private val countryRepository: CountryRepository,
         private val seasonRepository: SeasonRepository,
-        private val sourceRepository: SourceRepository,
-        private val restTemplate: RestTemplate) {
+        private val statsBombEntityService: StatsBombEntityService,
+        private val statsBombRestService: StatsBombRestService) {
 
     fun updateFromStatsBombCompetitions(): ArrayList<Competition> {
         println("Updating competitions from StatsBomb")
 
-        val statsBombCompetitions = getStatsBombCompetitions()
+        val statsBombCompetitions = statsBombRestService.getStatsBombCompetitions()
 
-        val statsBombSource = getStatsBombSource()
+        val statsBombSource = statsBombEntityService.getStatsBombSource()
 
-        return addMissingAndReturnAll(statsBombCompetitions, statsBombSource)
+        return addNewAndReturnAll(statsBombCompetitions, statsBombSource)
     }
 
-    private fun getStatsBombCompetitions(): Iterable<StatsBombCompetition> {
-        val uri = URI("https://raw.githubusercontent.com/statsbomb/open-data/master/data/competitions.json")
-        val jsonResponse = restTemplate.getForObject<String>(uri)
-
-        return StatsBombCompetitionMapper.fromJson(jsonResponse)
-    }
-
-    private fun getStatsBombSource(): Source {
-        val statsBombSource = sourceRepository.findByName("StatsBomb")
-                ?: throw StatsBombEntityNotFound("Could not load StatsBomb entity")
-
-        return statsBombSource
-    }
-
-    private fun addMissingAndReturnAll(
+    private fun addNewAndReturnAll(
             statsBombCompetitions: Iterable<StatsBombCompetition>,
             statsBombSource: Source
     ): ArrayList<Competition> {

@@ -8,4 +8,4 @@ class StatsBombTeam(
         @JsonAlias("home_team_gender", "away_team_gender") var teamGender: String,
         @JsonAlias("home_team_group", "away_team_group") var teamGroup: String?,
         @JsonAlias("country") var country: StatsBombCountry,
-        @JsonAlias("managers") var managers: ArrayList<StatsBombManager>)
+        @JsonAlias("managers") var managers: ArrayList<StatsBombManager>?)

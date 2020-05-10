@@ -6,7 +6,7 @@ class StatsBombMatch(
         @JsonAlias("match_id") var matchId: Long,
         @JsonAlias("match_date") var matchDate: String,
         @JsonAlias("kick_off") var kickOff: String,
-        @JsonAlias("competition") var competition: StatsBombCompetition,
+        @JsonAlias("competition") var competition: StatsBombCompetitionSimple,
         @JsonAlias("season") var season: StatsBombSeason,
         @JsonAlias("home_team") var homeTeam: StatsBombTeam,
         @JsonAlias("away_team") var awayTeam: StatsBombTeam,
@@ -17,5 +17,5 @@ class StatsBombMatch(
         @JsonAlias("metadata") var metadata: StatsBombMetadata,
         @JsonAlias("match_week") var matchWeek: Int,
         @JsonAlias("competition_stage") var competitionStage: StatsBombCompetitionStage,
-        @JsonAlias("stadium") var stadium: StatsBombStadium,
-        @JsonAlias("referee") var referee: StatsBombReferee)
+        @JsonAlias("stadium") var stadium: StatsBombStadium?,
+        @JsonAlias("referee") var referee: StatsBombReferee?)

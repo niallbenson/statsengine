@@ -6,4 +6,4 @@ import com.footiestats.statsengine.entities.statsbomb.StatsBombCountry
 class StatsBombReferee(
         @JsonAlias("id") var id: Long,
         @JsonAlias("name") var name: String,
-        @JsonAlias("country") var country: StatsBombCountry)
+        @JsonAlias("country") var country: StatsBombCountry?)
