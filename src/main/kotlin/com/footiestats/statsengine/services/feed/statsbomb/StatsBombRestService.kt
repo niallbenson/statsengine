@@ -22,8 +22,11 @@ class StatsBombRestService(private val restTemplate: RestTemplate) {
         return StatsBombCompetitionMapper.fromJson(jsonResponse)
     }
 
-    fun getStasBombMatches(competitionId: String,
-                           seasonId: String): Iterable<StatsBombMatch> {
+    fun getStatsBombMatches(
+            competitionId: String,
+            seasonId: String
+    ): Iterable<StatsBombMatch> {
+
         val url = getCompetitionSeasonUrl(competitionId, seasonId)
         val uri = URI(url)
 

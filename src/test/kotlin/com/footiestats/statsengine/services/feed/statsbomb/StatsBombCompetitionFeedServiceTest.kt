@@ -1,69 +1,56 @@
 package com.footiestats.statsengine.services.feed.statsbomb
 
-import com.footiestats.statsengine.entities.engine.Competition
-import com.footiestats.statsengine.entities.engine.Country
-import com.footiestats.statsengine.entities.engine.Season
-import com.footiestats.statsengine.entities.engine.Source
+import com.footiestats.statsengine.entities.engine.*
 import com.footiestats.statsengine.entities.engine.enums.Gender
-import com.footiestats.statsengine.entities.statsbomb.StatsBombCompetition
-import com.footiestats.statsengine.repos.engine.CompetitionRepository
-import com.footiestats.statsengine.repos.engine.CountryRepository
-import com.footiestats.statsengine.repos.engine.SeasonRepository
-import com.footiestats.statsengine.repos.engine.SourceRepository
+import com.footiestats.statsengine.entities.statsbomb.mappers.StatsBombCompetitionMapper
+import com.footiestats.statsengine.services.feed.statsbomb.feeds.StatsBombCompetitionFeedService
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.RelaxedMockK
-import org.junit.jupiter.api.Assertions.assertFalse
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.test.context.junit.jupiter.SpringExtension
-import org.springframework.web.client.RestTemplate
-import org.springframework.web.client.getForObject
-import java.net.URI
 
 @ExtendWith(SpringExtension::class)
 internal class StatsBombCompetitionFeedServiceTest {
 
     @RelaxedMockK
-    private lateinit var competitionRepository: CompetitionRepository
+    private lateinit var entityService: StatsBombEntityService
+
     @RelaxedMockK
-    private lateinit var countryRepository: CountryRepository
-    @RelaxedMockK
-    private lateinit var seasonRepository: SeasonRepository
-    @RelaxedMockK
-    private lateinit var sourceRepository: SourceRepository
-    @RelaxedMockK
-    private lateinit var restTemplate: RestTemplate
+    private lateinit var restService: StatsBombRestService
 
     @InjectMockKs
     private lateinit var service: StatsBombCompetitionFeedService
 
     @Test
     fun updateFromStatsBombCompetitions() {
-
         MockKAnnotations.init(this)
 
-        val uri = URI("https://raw.githubusercontent.com/statsbomb/open-data/master/data/competitions.json")
         val json = getStatsBombCompetitionsJson()
-
-        every { restTemplate.getForObject<String>(uri) } returns json
+        every { restService.getStatsBombCompetitions() } returns
+                StatsBombCompetitionMapper.fromJson(json)
 
         val source = Source("StatsBomb")
-        every { sourceRepository.findByName("StatsBomb") } returns source
+        every { entityService.getStatsBombSource() } returns source
 
-        every { seasonRepository.findBySource(source) } returns ArrayList()
+        every { entityService.getSeasonsBySource(source) } returns ArrayList()
         val season = Season("name", source, "1")
-        every { seasonRepository.save(any<Season>()) } returns season
+        every { entityService.save(any<Season>()) } returns season
 
-        every { countryRepository.findAll() } returns ArrayList()
+        every { entityService.getAllCountries() } returns ArrayList()
         val country = Country("name")
-        every { countryRepository.save(any<Country>()) } returns country
+        every { entityService.save(any<Country>()) } returns country
 
-        every { competitionRepository.findAllBySource(source) } returns ArrayList()
-        every { competitionRepository.save(any<Competition>()) } returns
-                Competition(season, country, "name", Gender.MALE, source, "1")
+        every { entityService.getCompetitionsBySouce(source) } returns ArrayList()
+        val competition = Competition(country, "name", Gender.MALE, source, "1")
+        every { entityService.save(any<Competition>()) } returns competition
+
+        every { entityService.getCompetitionSeasonsForCompetitions(any<Iterable<Competition>>()) } returns
+                ArrayList()
+        every { entityService.save(any<CompetitionSeason>()) } returns
+                CompetitionSeason(competition, season)
 
         val result = service.updateFromStatsBombCompetitions()
 
@@ -253,39 +240,4 @@ internal class StatsBombCompetitionFeedServiceTest {
                     "  \"match_available\" : \"2020-02-27T12:19:39.458017\"\n" +
                     "} ]"
 
-    @Test
-    fun `compareTo expect true`() {
-        val statsBombCompetition = StatsBombCompetition(
-                1, 1, "England", "EPL", "male",
-                "1999-2000", "date", "date")
-
-        val source = Source("source")
-        val competition = Competition(
-                Season("1999-2000", source, "1"),
-                Country("England"),
-                "EPL",
-                Gender.MALE,
-                source,
-                "1")
-
-        assertTrue(competition.compareTo(statsBombCompetition, source))
-    }
-
-    @Test
-    fun `compareTo expect false`() {
-        val statsBombCompetition = StatsBombCompetition(
-                1, 1, "England", "EPL", "male",
-                "1998-1999", "date", "date")
-
-        val source = Source("source")
-        val competition = Competition(
-                Season("1999-2000", source, "1"),
-                Country("England"),
-                "EPL",
-                Gender.MALE,
-                source,
-                "1")
-
-        assertFalse(competition.compareTo(statsBombCompetition, source))
-    }
 }

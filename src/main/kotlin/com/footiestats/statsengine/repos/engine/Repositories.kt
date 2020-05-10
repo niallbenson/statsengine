@@ -1,6 +1,7 @@
 package com.footiestats.statsengine.repos.engine
 
 import com.footiestats.statsengine.entities.engine.*
+import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.PagingAndSortingRepository
 
 
@@ -30,6 +31,9 @@ interface ManagerRepository : PagingAndSortingRepository<Manager, Long> {
 
 interface MatchRepository : PagingAndSortingRepository<Match, Long> {
     override fun findAll(): ArrayList<Match>
+
+    @Query("from Match m join fetch m.competition c where c.sourceExternalId in ?1")
+    fun findAllByCompetitionSourceExternalId(ids: Iterable<String>): ArrayList<Match>
 }
 
 interface MetadataRepository : PagingAndSortingRepository<Metadata, Long> {
@@ -46,4 +50,10 @@ interface StadiumRepository : PagingAndSortingRepository<Stadium, Long> {
 
 interface TeamRepository : PagingAndSortingRepository<Team, Long> {
     override fun findAll(): ArrayList<Team>
+}
+
+interface CompetitionSeasonRepository : PagingAndSortingRepository<CompetitionSeason, Long> {
+    override fun findAll(): ArrayList<CompetitionSeason>
+    fun findAllByCompetitionIn(competitions: Iterable<Competition>): ArrayList<CompetitionSeason>
+    fun findAllByCompetitionSource(source: Source): ArrayList<CompetitionSeason>
 }

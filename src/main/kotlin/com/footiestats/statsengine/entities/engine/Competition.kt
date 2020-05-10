@@ -8,7 +8,6 @@ import javax.persistence.ManyToOne
 
 @Entity
 class Competition(
-        @ManyToOne var season: Season,
         @ManyToOne var country: Country,
         var name: String,
         var gender: Gender,
