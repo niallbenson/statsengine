@@ -12,4 +12,6 @@ class Manager(
         var nickname: String,
         var dateOfBirth: Date,
         @ManyToOne var country: Country,
+        @ManyToOne var source: Source,
+        var sourceExternalId: String,
         @Id @GeneratedValue var id: Long? = null)

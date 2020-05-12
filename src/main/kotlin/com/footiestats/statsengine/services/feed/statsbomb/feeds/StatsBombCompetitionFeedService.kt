@@ -2,7 +2,7 @@ package com.footiestats.statsengine.services.feed.statsbomb.feeds
 
 import com.footiestats.statsengine.entities.engine.*
 import com.footiestats.statsengine.entities.engine.enums.Gender
-import com.footiestats.statsengine.entities.statsbomb.StatsBombCompetition
+import com.footiestats.statsengine.dtos.statsbomb.StatsBombCompetition
 import com.footiestats.statsengine.services.feed.statsbomb.StatsBombEntityService
 import com.footiestats.statsengine.services.feed.statsbomb.StatsBombRestService
 import org.springframework.stereotype.Service
@@ -12,112 +12,32 @@ class StatsBombCompetitionFeedService(
         private val entityService: StatsBombEntityService,
         private val restService: StatsBombRestService) {
 
-    fun updateFromStatsBombCompetitions(): ArrayList<Competition> {
+    fun updateFromStatsBombCompetitions(): ArrayList<CompetitionSeason> {
         println("Updating competitions from StatsBomb")
 
         val statsBombCompetitions = restService.getStatsBombCompetitions()
 
-        val statsBombSource = entityService.getStatsBombSource()
-
-        return addNewAndReturnAll(statsBombCompetitions, statsBombSource)
-    }
-
-    private fun addNewAndReturnAll(
-            statsBombCompetitions: Iterable<StatsBombCompetition>,
-            statsBombSource: Source
-    ): ArrayList<Competition> {
-
-        val seasons = processSeasons(statsBombCompetitions, statsBombSource)
-        val countries = processCountries(statsBombCompetitions)
-
-        return processCompetitions(statsBombCompetitions, countries, seasons, statsBombSource)
-    }
-
-    private fun processSeasons(
-            statsBombCompetitions: Iterable<StatsBombCompetition>,
-            statsBombSource: Source
-    ): ArrayList<Season> {
-        println("Processing seasons")
-
-        var seasons = entityService.getSeasonsBySource(statsBombSource)
-        val seasonIdToNameMap = statsBombCompetitions.map { s -> s.seasonId to s.seasonName }.toMap()
-
-        for (s in seasonIdToNameMap)
-            seasons = processSeason(s.value, s.key.toString(), seasons, statsBombSource)
-
-        return seasons
-    }
-
-    private fun processSeason(
-            seasonName: String,
-            seasonId: String,
-            seasons: ArrayList<Season>,
-            statsBombSource: Source
-    ): ArrayList<Season> {
-        println("Season: $seasonName id:$seasonId")
-
-        val season = seasons.find { s -> s.name == seasonName }
-        if (season == null) {
-            println("Added")
-
-            val newSeason = Season(seasonName, statsBombSource, seasonId)
-            entityService.save(newSeason)
-
-            seasons.add(newSeason)
-        }
-        return seasons
-    }
-
-    private fun processCountries(statsBombCompetitions: Iterable<StatsBombCompetition>): ArrayList<Country> {
-        println("Processing countries")
-
-        var countries = entityService.getAllCountries()
-        val distinctCountryNames = statsBombCompetitions.map { c -> c.countryName }.distinct()
-
-        for (c in distinctCountryNames)
-            countries = processCountry(c, countries)
-
-        return countries
-    }
-
-    private fun processCountry(
-            countryName: String,
-            countries: ArrayList<Country>
-    ): ArrayList<Country> {
-        println("Country: $countryName")
-
-        val country = countries.find { c -> c.name == countryName }
-        if (country == null) {
-            val newCountry = Country(countryName)
-            entityService.save(newCountry)
-
-            countries.add(newCountry)
-        }
-        return countries
+        return processCompetitions(statsBombCompetitions)
     }
 
     private fun processCompetitions(
-            statsBombCompetitions: Iterable<StatsBombCompetition>,
-            countries: ArrayList<Country>,
-            seasons: ArrayList<Season>,
-            statsBombSource: Source
-    ): ArrayList<Competition> {
+            statsBombCompetitions: Iterable<StatsBombCompetition>
+    ): ArrayList<CompetitionSeason> {
         println("Processing competitions")
 
-        val competitions = entityService.getCompetitionsBySouce(statsBombSource)
-        val competitionSeasons = entityService.getCompetitionSeasonsForCompetitions(competitions)
+        val competitionSeasons = ArrayList<CompetitionSeason>()
 
         for (s in statsBombCompetitions) {
-            println("Competition: ${s.competitionName} id:${s.competitionId}")
+            println("Competition: ${s.competitionName} id:${s.competitionId} season: ${s.seasonName}")
 
-            val competition = getOrCreateCompetition(s, statsBombSource, competitions, countries)
-            if (!competitions.contains(competition)) competitions.add(competition)
-
+            val competition = entityService.getOrCreateCompetition(s)
+            val season = entityService.getOrCreateSeason(s.seasonName)
             val competitionSeason =
-                    getOrCreateCompetitionSeason(s, statsBombSource, competition, competitionSeasons, seasons)
-            if (!competitionSeasons.contains(competitionSeason)) competitionSeasons.add(competitionSeason)
+                    entityService.getOrCreateCompetitionSeason(competition, season)
+
+            competitionSeasons.add(competitionSeason)
         }
-        return competitions
+        return competitionSeasons
     }
 
     private fun getOrCreateCompetition(

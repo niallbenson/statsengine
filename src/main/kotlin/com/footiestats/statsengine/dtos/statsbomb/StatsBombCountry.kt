@@ -1,4 +1,4 @@
-package com.footiestats.statsengine.entities.statsbomb
+package com.footiestats.statsengine.dtos.statsbomb
 
 import com.fasterxml.jackson.annotation.JsonAlias
 

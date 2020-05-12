@@ -8,8 +8,6 @@ import javax.persistence.ManyToOne
 
 @Entity
 class Match(
-        @ManyToOne var source: Source,
-        var sourceExternalId: String,
         var matchDate: Date,
         @ManyToOne var competition: Competition,
         @ManyToOne var season: Season,
@@ -24,4 +22,6 @@ class Match(
         @ManyToOne var competitionStage: CompetitionStage,
         @ManyToOne var stadium: Stadium,
         @ManyToOne var referee: Referee,
+        @ManyToOne var source: Source,
+        var sourceExternalId: String,
         @Id @GeneratedValue var id: Long? = null)

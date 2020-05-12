@@ -5,11 +5,11 @@ import javax.persistence.*
 
 @Entity
 class Team(
-        @ManyToOne var source: Source,
-        var sourceExternalId: String,
         var name: String,
         var gender: Gender,
-        var group: String,
+        var group: String?,
         @ManyToOne var country: Country,
         @OneToMany var managers: MutableList<Manager>,
+        @ManyToOne var source: Source,
+        var sourceExternalId: String,
         @Id @GeneratedValue var id: Long? = null)

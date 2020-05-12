@@ -2,7 +2,7 @@ package com.footiestats.statsengine.services.feed.statsbomb
 
 import com.footiestats.statsengine.entities.engine.*
 import com.footiestats.statsengine.entities.engine.enums.Gender
-import com.footiestats.statsengine.entities.statsbomb.mappers.StatsBombCompetitionMapper
+import com.footiestats.statsengine.dtos.statsbomb.mappers.StatsBombCompetitionMapper
 import com.footiestats.statsengine.services.feed.statsbomb.feeds.StatsBombCompetitionFeedService
 import io.mockk.MockKAnnotations
 import io.mockk.every
@@ -40,7 +40,7 @@ internal class StatsBombCompetitionFeedServiceTest {
         every { entityService.save(any<Season>()) } returns season
 
         every { entityService.getAllCountries() } returns ArrayList()
-        val country = Country("name")
+        val country = Country("name", source, "1")
         every { entityService.save(any<Country>()) } returns country
 
         every { entityService.getCompetitionsBySouce(source) } returns ArrayList()

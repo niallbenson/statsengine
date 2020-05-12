@@ -9,4 +9,6 @@ import javax.persistence.ManyToOne
 class Stadium(
         var name: String,
         @ManyToOne var country: Country,
+        @ManyToOne var source: Source,
+        var sourceExternalId: String,
         @Id @GeneratedValue var id: Long? = null)

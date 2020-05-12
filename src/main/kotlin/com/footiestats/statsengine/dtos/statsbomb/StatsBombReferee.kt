@@ -1,7 +1,6 @@
-package com.footiestats.statsengine.entities.statsbomb
+package com.footiestats.statsengine.dtos.statsbomb
 
 import com.fasterxml.jackson.annotation.JsonAlias
-import com.footiestats.statsengine.entities.statsbomb.StatsBombCountry
 
 class StatsBombReferee(
         @JsonAlias("id") var id: Long,

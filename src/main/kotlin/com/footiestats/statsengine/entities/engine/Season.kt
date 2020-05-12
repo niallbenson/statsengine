@@ -9,5 +9,5 @@ import javax.persistence.ManyToOne
 class Season(
         var name: String,
         @ManyToOne var source: Source,
-        var sourceExternalId: String,
+        var sourceExternalId: String?,
         @Id @GeneratedValue var id: Long? = null)

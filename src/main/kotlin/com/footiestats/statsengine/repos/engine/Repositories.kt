@@ -11,14 +11,18 @@ interface SourceRepository : PagingAndSortingRepository<Source, Long> {
 
 interface CompetitionRepository : PagingAndSortingRepository<Competition, Long> {
     fun findAllBySource(source: Source): ArrayList<Competition>
+    fun findBySourceExternalId(id: String): Competition?
 }
 
 interface SeasonRepository : PagingAndSortingRepository<Season, Long> {
     fun findBySource(source: Source): ArrayList<Season>
+    fun findByName(name: String): Season?
 }
 
 interface CountryRepository : PagingAndSortingRepository<Country, Long> {
     override fun findAll(): ArrayList<Country>
+    fun findBySourceExternalId(id: String): Country?
+    fun findByName(name: String): Country?
 }
 
 interface CompetitionStageRepository : PagingAndSortingRepository<CompetitionStage, Long> {
@@ -27,6 +31,7 @@ interface CompetitionStageRepository : PagingAndSortingRepository<CompetitionSta
 
 interface ManagerRepository : PagingAndSortingRepository<Manager, Long> {
     override fun findAll(): ArrayList<Manager>
+    fun findBySourceExternalId(id: String): Manager?
 }
 
 interface MatchRepository : PagingAndSortingRepository<Match, Long> {
@@ -50,10 +55,12 @@ interface StadiumRepository : PagingAndSortingRepository<Stadium, Long> {
 
 interface TeamRepository : PagingAndSortingRepository<Team, Long> {
     override fun findAll(): ArrayList<Team>
+    fun findBySourceExternalId(id: String): Team?
 }
 
 interface CompetitionSeasonRepository : PagingAndSortingRepository<CompetitionSeason, Long> {
     override fun findAll(): ArrayList<CompetitionSeason>
     fun findAllByCompetitionIn(competitions: Iterable<Competition>): ArrayList<CompetitionSeason>
     fun findAllByCompetitionSource(source: Source): ArrayList<CompetitionSeason>
+    fun findByCompetitionAndSeason(competition: Competition, season: Season): CompetitionSeason?
 }

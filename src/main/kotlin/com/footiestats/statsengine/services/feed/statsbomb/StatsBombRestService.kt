@@ -1,9 +1,9 @@
 package com.footiestats.statsengine.services.feed.statsbomb
 
-import com.footiestats.statsengine.entities.statsbomb.StatsBombCompetition
-import com.footiestats.statsengine.entities.statsbomb.StatsBombMatch
-import com.footiestats.statsengine.entities.statsbomb.mappers.StatsBombCompetitionMapper
-import com.footiestats.statsengine.entities.statsbomb.mappers.StatsBombMatchMapper
+import com.footiestats.statsengine.dtos.statsbomb.StatsBombCompetition
+import com.footiestats.statsengine.dtos.statsbomb.StatsBombMatch
+import com.footiestats.statsengine.dtos.statsbomb.mappers.StatsBombCompetitionMapper
+import com.footiestats.statsengine.dtos.statsbomb.mappers.StatsBombMatchMapper
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.getForObject
