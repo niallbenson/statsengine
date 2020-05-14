@@ -1,5 +1,6 @@
 package com.footiestats.statsengine.entities.engine
 
+import java.time.LocalDate
 import java.util.*
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
@@ -10,7 +11,7 @@ import javax.persistence.ManyToOne
 class Manager(
         var name: String,
         var nickname: String?,
-        var dateOfBirth: Date?,
+        var dateOfBirth: LocalDate?,
         @ManyToOne var country: Country,
         @ManyToOne var source: Source,
         var sourceExternalId: String,

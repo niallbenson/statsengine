@@ -17,5 +17,5 @@ class StatsBombMatch(
         @JsonAlias("metadata") var metadata: StatsBombMetadata,
         @JsonAlias("match_week") var matchWeek: Int,
         @JsonAlias("competition_stage") var competitionStage: StatsBombCompetitionStage,
-        @JsonAlias("stadium") var stadium: StatsBombStadium?,
-        @JsonAlias("referee") var referee: StatsBombReferee?)
+        @JsonAlias("stadium") var stadium: StatsBombStadium,
+        @JsonAlias("referee") var referee: StatsBombReferee)

@@ -28,6 +28,7 @@ interface CountryRepository : PagingAndSortingRepository<Country, Long> {
 
 interface CompetitionStageRepository : PagingAndSortingRepository<CompetitionStage, Long> {
     override fun findAll(): ArrayList<CompetitionStage>
+    fun findBySourceExternalId(id: String): CompetitionStage?
 }
 
 interface ManagerRepository : PagingAndSortingRepository<Manager, Long> {
@@ -43,8 +44,8 @@ interface MatchRepository : PagingAndSortingRepository<Match, Long> {
     fun findAllByCompetitionSourceExternalId(ids: Iterable<String>): ArrayList<Match>
 }
 
-interface MetadataRepository : PagingAndSortingRepository<Metadata, Long> {
-    override fun findAll(): ArrayList<Metadata>
+interface MetadataRepository : PagingAndSortingRepository<MatchMetadata, Long> {
+    override fun findAll(): ArrayList<MatchMetadata>
 }
 
 interface RefereeRepository : PagingAndSortingRepository<Referee, Long> {
@@ -53,6 +54,7 @@ interface RefereeRepository : PagingAndSortingRepository<Referee, Long> {
 
 interface StadiumRepository : PagingAndSortingRepository<Stadium, Long> {
     override fun findAll(): ArrayList<Stadium>
+    fun findBySourceExternalId(id: String): Stadium?
 }
 
 interface TeamRepository : PagingAndSortingRepository<Team, Long> {

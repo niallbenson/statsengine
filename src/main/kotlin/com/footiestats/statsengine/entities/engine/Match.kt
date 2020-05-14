@@ -1,6 +1,6 @@
 package com.footiestats.statsengine.entities.engine
 
-import java.util.*
+import java.time.LocalDateTime
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
@@ -8,7 +8,7 @@ import javax.persistence.ManyToOne
 
 @Entity
 class Match(
-        var matchDate: Date,
+        var matchDate: LocalDateTime,
         @ManyToOne var competition: Competition,
         @ManyToOne var season: Season,
         @ManyToOne var homeTeam: Team,
@@ -16,8 +16,8 @@ class Match(
         var homeScore: Int?,
         var awayScore: Int?,
         var matchStatus: String,
-        var lastUpdated: Date,
-        @ManyToOne var metadata: Metadata,
+        var lastUpdated: LocalDateTime,
+        @ManyToOne var metadata: MatchMetadata,
         var matchWeek: Int,
         @ManyToOne var competitionStage: CompetitionStage,
         @ManyToOne var stadium: Stadium,

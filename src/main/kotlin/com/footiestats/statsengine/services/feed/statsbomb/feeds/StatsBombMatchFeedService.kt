@@ -34,7 +34,7 @@ class StatsBombMatchFeedService(
 
         for (cs in competitionSeasons) {
             matches.addAll(
-                processCompetitionSeason(cs.competition, cs.season)
+                    processCompetitionSeason(cs.competition, cs.season)
             )
         }
         return matches
@@ -66,33 +66,30 @@ class StatsBombMatchFeedService(
                                     "Competition not found for id ${statsBombMatch.competition.competitionId}")
 
             val season = entityService.getSeasonByExternalId(statsBombMatch.season.seasonId.toString())
-
-
+                    ?: entityService.getOrCreateSeason(statsBombMatch.season)
 
             match = Match(
+                    StatsBombUtils.convertToDate(statsBombMatch.matchDate, statsBombMatch.kickOff),
+                    competition,
+                    season,
+                    entityService.getOrCreateTeam(statsBombMatch.homeTeam),
+                    entityService.getOrCreateTeam(statsBombMatch.awayTeam),
+                    statsBombMatch.homeScore,
+                    statsBombMatch.awayScore,
+                    statsBombMatch.matchStatus,
+                    StatsBombUtils.convertToDateFromLong(statsBombMatch.lastUpdated)!!,
+                    MatchMetadata(statsBombMatch.metadata.dataVersion,
+                            statsBombMatch.metadata.shotFidelityVersion,
+                            statsBombMatch.metadata.xyFidelityVersion),
+                    statsBombMatch.matchWeek,
+                    entityService.getOrCreateCompetitionStage(statsBombMatch.competitionStage),
+                    entityService.getOrCreateStadium(statsBombMatch.stadium),
+
 
             )
         }
 
         return match
-    }
-
-    private fun getOrCreateTeam(statsBombTeam: StatsBombTeam) {
-        var team = entityService.getTeamByExternalId(statsBombTeam.teamId.toString())
-
-        if (team == null) {
-            team = Team(
-
-            )
-        }
-    }
-
-    private fun processManagers(statsBombManagers: Iterable<StatsBombManager>) {
-        for (m in statsBombManagers) {
-            val country = entityService.getOrCreateCountry(m.country)
-
-
-        }
     }
 
 }

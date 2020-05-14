@@ -10,11 +10,11 @@ import java.util.*
 
 class StatsBombUtils {
     companion object {
-        fun convertToDate(date: String, time: String): Date =
-                SimpleDateFormat("yyyy-MM-dd hh:mm:ss.sss").parse("$date $time")
+        fun convertToDate(date: String, time: String): LocalDateTime =
+                LocalDateTime.parse("${date}T${time}Z")
 
-        fun convertToDateFromShort(date: String?): LocalDateTime? =
-                if (date != null) LocalDateTime.parse(date, DateTimeFormatter.ISO_DATE) else null
+        fun convertToDateFromShort(date: String?): LocalDate? =
+                if (date != null) LocalDate.parse(date, DateTimeFormatter.ISO_DATE) else null
 
         fun convertToDateFromLong(date: String?): LocalDateTime? =
                 if (date != null) LocalDateTime.parse(date) else null

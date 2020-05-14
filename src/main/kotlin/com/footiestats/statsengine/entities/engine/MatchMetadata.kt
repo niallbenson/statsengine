@@ -6,9 +6,10 @@ import javax.persistence.Id
 import javax.persistence.ManyToOne
 
 @Entity
-class Metadata(
+class MatchMetadata(
         var dataVersion: String,
-        var shotFidelityVersion: String,
+        var shotFidelityVersion: String?,
+        var xyFidelityVersion: String?,
         @ManyToOne var source: Source,
         var sourceExternalId: String,
         @Id @GeneratedValue var id: Long? = null)
