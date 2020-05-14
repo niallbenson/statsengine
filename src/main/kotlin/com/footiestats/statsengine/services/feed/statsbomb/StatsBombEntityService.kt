@@ -2,11 +2,14 @@ package com.footiestats.statsengine.services.feed.statsbomb
 
 import com.footiestats.statsengine.dtos.statsbomb.StatsBombCompetition
 import com.footiestats.statsengine.dtos.statsbomb.StatsBombCountry
+import com.footiestats.statsengine.dtos.statsbomb.StatsBombManager
+import com.footiestats.statsengine.dtos.statsbomb.StatsBombTeam
 import com.footiestats.statsengine.entities.engine.*
 import com.footiestats.statsengine.entities.engine.enums.Gender
 import com.footiestats.statsengine.repos.engine.*
 import com.footiestats.statsengine.services.feed.statsbomb.exceptions.StatsBombEntityNotFound
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class StatsBombEntityService(
@@ -29,8 +32,9 @@ class StatsBombEntityService(
             ?: throw StatsBombEntityNotFound("Could not load StatsBomb entity")
 
     // Competition
-    fun getCompetitionsBySouce(source: Source) = competitionRepository.findAllBySource(source)
     fun save(competition: Competition) = competitionRepository.save(competition)
+    fun getCompetitionsBySouce(source: Source) = competitionRepository.findAllBySource(source)
+    fun getCompetitionByExternalId(id: String) = competitionRepository.findBySourceExternalId(id)
     fun getOrCreateCompetition(statsBombCompetition: StatsBombCompetition): Competition {
         var competition =
                 competitionRepository.findBySourceExternalId(statsBombCompetition.competitionId.toString())
@@ -105,6 +109,7 @@ class StatsBombEntityService(
     // Season
     fun save(season: Season) = seasonRepository.save(season)
     fun getSeasonsBySource(source: Source) = seasonRepository.findBySource(source)
+    fun getSeasonByExternalId(id: String) = seasonRepository.findBySourceExternalId(id)
     fun getOrCreateSeason(name: String): Season {
         var season = seasonRepository.findByName(name)
 
@@ -121,8 +126,7 @@ class StatsBombEntityService(
     fun getCompetitionSeasonsForCompetitions(competitions: Iterable<Competition>) =
             competitionSeasonRepository.findAllByCompetitionIn(competitions)
 
-    fun getCompetitionSeasonsByCompetitionSource(source: Source) =
-            competitionSeasonRepository.findAllByCompetitionSource(source)
+    fun getCompetitionSeasons() = competitionSeasonRepository.findAllByCompetitionSource(getStatsBombSource())
 
     fun getOrCreateCompetitionSeason(competition: Competition, season: Season): CompetitionSeason {
         var competitionSeason =
@@ -139,14 +143,36 @@ class StatsBombEntityService(
     // Match
     fun getMatchesForCompetitionExternalIds(ids: Iterable<String>) =
             matchRepository.findAllByCompetitionSourceExternalId(ids)
+    fun getMatchByExternalId(id: String) = matchRepository.findBySourceExternalId(id)
 
     // Team
     fun save(team: Team) = teamRepository.save(team)
     fun getTeamByExternalId(id: String) = teamRepository.findBySourceExternalId(id)
     fun getManagerById(id: Long) = managerRepository.findById(id)
+    fun getOrCreateTeam(statsBombTeam: StatsBombTeam): Team {
+        var team = teamRepository.findBySourceExternalId(statsBombTeam.teamId.toString())
+
+        if (team == null) {
+
+        }
+    }
 
     // Manager
     fun save(manager: Manager) = managerRepository.save(manager)
+    fun getOrCreateManager(statsBombManager: StatsBombManager): Manager {
+        var manager = managerRepository.findBySourceExternalId(statsBombManager.id.toString())
+
+        if (manager == null) {
+            manager = Manager(
+                    statsBombManager.name,
+                    statsBombManager.nickname,
+                    StatsBombUtils.convertToDateFromShort(statsBombManager.dob),
+                    getOrCreateCountry(statsBombManager.country),
+                    getStatsBombSource(),
+                    statsBombManager.id.toString()
+            )
+        }
+    }
 
 
 }

@@ -52,7 +52,7 @@ internal class StatsBombCompetitionFeedServiceTest {
         every { entityService.save(any<CompetitionSeason>()) } returns
                 CompetitionSeason(competition, season)
 
-        val result = service.updateFromStatsBombCompetitions()
+        val result = service.run()
 
         println(result.iterator().hasNext())
     }

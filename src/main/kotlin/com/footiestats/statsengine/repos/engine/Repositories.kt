@@ -16,6 +16,7 @@ interface CompetitionRepository : PagingAndSortingRepository<Competition, Long> 
 
 interface SeasonRepository : PagingAndSortingRepository<Season, Long> {
     fun findBySource(source: Source): ArrayList<Season>
+    fun findBySourceExternalId(id: String): Season?
     fun findByName(name: String): Season?
 }
 
@@ -36,6 +37,7 @@ interface ManagerRepository : PagingAndSortingRepository<Manager, Long> {
 
 interface MatchRepository : PagingAndSortingRepository<Match, Long> {
     override fun findAll(): ArrayList<Match>
+    fun findBySourceExternalId(id: String): Match?
 
     @Query("from Match m join fetch m.competition c where c.sourceExternalId in ?1")
     fun findAllByCompetitionSourceExternalId(ids: Iterable<String>): ArrayList<Match>

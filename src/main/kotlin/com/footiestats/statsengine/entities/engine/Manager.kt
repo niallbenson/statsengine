@@ -9,8 +9,8 @@ import javax.persistence.ManyToOne
 @Entity
 class Manager(
         var name: String,
-        var nickname: String,
-        var dateOfBirth: Date,
+        var nickname: String?,
+        var dateOfBirth: Date?,
         @ManyToOne var country: Country,
         @ManyToOne var source: Source,
         var sourceExternalId: String,

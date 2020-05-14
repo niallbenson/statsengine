@@ -13,7 +13,7 @@ class FeedController(
 //        private val statsBombMatchFeedService: StatsBombMatchFeedService
 ) {
     @GetMapping("/statsbomb/competitions")
-    fun updateStatsbombCompetitions() = statsBombCompetitionFeedService.updateFromStatsBombCompetitions()
+    fun updateStatsbombCompetitions() = statsBombCompetitionFeedService.run()
 
 //    @GetMapping("/statsbomb/matches")
 //    fun updateStatsbombMatches() = statsBombMatchFeedService.updateAllCompetitionSeasons()
