@@ -6,7 +6,6 @@ import com.footiestats.statsengine.entities.engine.enums.Gender
 import com.footiestats.statsengine.repos.engine.*
 import com.footiestats.statsengine.services.feed.statsbomb.exceptions.StatsBombEntityNotFound
 import org.springframework.stereotype.Service
-import java.util.*
 
 @Service
 class StatsBombEntityService(
@@ -18,7 +17,7 @@ class StatsBombEntityService(
         private val matchRepository: MatchRepository,
         private val teamRepository: TeamRepository,
         private val managerRepository: ManagerRepository,
-        private val metadataRepository: MetadataRepository,
+        private val matchMetadataRepository: MatchMetadataRepository,
         private val competitionStageRepository: CompetitionStageRepository,
         private val stadiumRepository: StadiumRepository,
         private val refereeRepository: RefereeRepository
@@ -128,13 +127,23 @@ class StatsBombEntityService(
         }
         return season
     }
-    fun getOrCreateSeason(name: String): Season {
-        var season = seasonRepository.findByName(name)
+    fun getOrCreateSeason(seasonId: String, seasonName: String): Season {
+        var season = seasonRepository.findBySourceExternalId(seasonId)
 
         if (season == null) {
-            season = seasonRepository.save(
-                    Season(name, getStatsBombSource(), null)
+            season = Season(
+                    seasonName,
+                    getStatsBombSource(),
+                    seasonId
             )
+
+            seasonRepository.save(season)
+        } else {
+            if (season.name != seasonName) {
+                season.name = seasonName
+
+                seasonRepository.save(season)
+            }
         }
         return season
     }
@@ -160,6 +169,8 @@ class StatsBombEntityService(
     }
 
     // Match
+    fun save(match: Match) = matchRepository.save(match)
+
     fun getMatchesForCompetitionExternalIds(ids: Iterable<String>) =
             matchRepository.findAllByCompetitionSourceExternalId(ids)
 
@@ -280,4 +291,47 @@ class StatsBombEntityService(
         return stadium
     }
 
+    // Match Metadata
+    fun save(matchMetadata: MatchMetadata) = matchMetadataRepository.save(matchMetadata)
+
+    fun getOrCreateMatchMetaData(statsBombMatchMetadata: StatsBombMatchMetadata): MatchMetadata {
+        var matchMetadata = matchMetadataRepository.findByValues(
+                statsBombMatchMetadata.dataVersion,
+                statsBombMatchMetadata.shotFidelityVersion,
+                statsBombMatchMetadata.xyFidelityVersion)
+
+        if (matchMetadata == null) {
+            matchMetadata = MatchMetadata(
+                    statsBombMatchMetadata.dataVersion,
+                    statsBombMatchMetadata.shotFidelityVersion,
+                    statsBombMatchMetadata.xyFidelityVersion,
+                    getStatsBombSource()
+            )
+        }
+        return matchMetadata
+    }
+
+    // Referee
+    fun save(referee: Referee) = refereeRepository.save(referee)
+
+    fun getOrCreateReferee(statsBombReferee: StatsBombReferee): Referee {
+        var referee = refereeRepository.findBySourceExternalId(statsBombReferee.id.toString())
+
+        val country = if (statsBombReferee.country != null) getOrCreateCountry(statsBombReferee.country!!) else null
+
+        if (referee == null) {
+            referee = Referee(
+                    statsBombReferee.name,
+                    country,
+                    getStatsBombSource(),
+                    statsBombReferee.id.toString()
+            )
+        } else {
+            if (referee.name != statsBombReferee.name || referee.country != country) {
+                referee.name = statsBombReferee.name
+                referee.country = country
+            }
+        }
+        return referee
+    }
 }

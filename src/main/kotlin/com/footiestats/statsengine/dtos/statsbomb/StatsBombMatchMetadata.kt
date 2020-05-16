@@ -2,7 +2,7 @@ package com.footiestats.statsengine.dtos.statsbomb
 
 import com.fasterxml.jackson.annotation.JsonAlias
 
-class StatsBombMetadata(
+class StatsBombMatchMetadata(
         @JsonAlias("data_version") var dataVersion: String,
         @JsonAlias("shot_fidelity_version") var shotFidelityVersion: String?,
         @JsonAlias("xy_fidelity_version") var xyFidelityVersion: String?)

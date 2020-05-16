@@ -20,7 +20,7 @@ class Match(
         @ManyToOne var metadata: MatchMetadata,
         var matchWeek: Int,
         @ManyToOne var competitionStage: CompetitionStage,
-        @ManyToOne var stadium: Stadium,
+        @ManyToOne var stadium: Stadium?,
         @ManyToOne var referee: Referee,
         @ManyToOne var source: Source,
         var sourceExternalId: String,

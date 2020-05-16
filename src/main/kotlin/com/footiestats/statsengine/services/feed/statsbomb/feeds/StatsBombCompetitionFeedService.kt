@@ -36,7 +36,7 @@ class StatsBombCompetitionFeedService(
         println("Competition: ${s.competitionName} id:${s.competitionId} season: ${s.seasonName}")
 
         val competition = entityService.getOrCreateCompetition(s)
-        val season = entityService.getOrCreateSeason(s.seasonName)
+        val season = entityService.getOrCreateSeason(s.seasonId.toString(), s.seasonName)
 
         return entityService.getOrCreateCompetitionSeason(competition, season)
     }

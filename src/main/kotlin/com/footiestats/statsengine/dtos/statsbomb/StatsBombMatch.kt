@@ -14,8 +14,8 @@ class StatsBombMatch(
         @JsonAlias("away_score") var awayScore: Int?,
         @JsonAlias("match_status") var matchStatus: String,
         @JsonAlias("last_updated") var lastUpdated: String,
-        @JsonAlias("metadata") var metadata: StatsBombMetadata,
+        @JsonAlias("metadata") var metadata: StatsBombMatchMetadata,
         @JsonAlias("match_week") var matchWeek: Int,
         @JsonAlias("competition_stage") var competitionStage: StatsBombCompetitionStage,
-        @JsonAlias("stadium") var stadium: StatsBombStadium,
+        @JsonAlias("stadium") var stadium: StatsBombStadium?,
         @JsonAlias("referee") var referee: StatsBombReferee)

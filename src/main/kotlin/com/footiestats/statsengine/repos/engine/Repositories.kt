@@ -44,12 +44,23 @@ interface MatchRepository : PagingAndSortingRepository<Match, Long> {
     fun findAllByCompetitionSourceExternalId(ids: Iterable<String>): ArrayList<Match>
 }
 
-interface MetadataRepository : PagingAndSortingRepository<MatchMetadata, Long> {
+interface MatchMetadataRepository : PagingAndSortingRepository<MatchMetadata, Long> {
     override fun findAll(): ArrayList<MatchMetadata>
+
+    @Query("from MatchMetadata m " +
+            "where m.dataVersion = ?1 " +
+            "and (m.shotFidelityVersion = ?2 or (m.shotFidelityVersion is null and ?2 is null)) " +
+            "and (m.xyFidelityVersion = ?3 or (m.xyFidelityVersion is null and ?3 is null))")
+    fun findByValues(
+            dataVersion: String,
+            shotFidelityVersion: String?,
+            xyFidelityVersion: String?
+    ): MatchMetadata?
 }
 
 interface RefereeRepository : PagingAndSortingRepository<Referee, Long> {
     override fun findAll(): ArrayList<Referee>
+    fun findBySourceExternalId(id: String): Referee?
 }
 
 interface StadiumRepository : PagingAndSortingRepository<Stadium, Long> {

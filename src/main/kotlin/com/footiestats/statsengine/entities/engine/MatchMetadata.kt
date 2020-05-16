@@ -11,5 +11,4 @@ class MatchMetadata(
         var shotFidelityVersion: String?,
         var xyFidelityVersion: String?,
         @ManyToOne var source: Source,
-        var sourceExternalId: String,
         @Id @GeneratedValue var id: Long? = null)
