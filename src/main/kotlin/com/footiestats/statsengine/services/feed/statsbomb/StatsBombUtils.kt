@@ -11,7 +11,7 @@ import java.util.*
 class StatsBombUtils {
     companion object {
         fun convertToDate(date: String, time: String): LocalDateTime =
-                LocalDateTime.parse("${date}T${time}Z")
+                LocalDateTime.parse("${date}T${time}")
 
         fun convertToDateFromShort(date: String?): LocalDate? =
                 if (date != null) LocalDate.parse(date, DateTimeFormatter.ISO_DATE) else null

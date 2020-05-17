@@ -93,7 +93,6 @@ class StatsBombEntityService(
             country.sourceExternalId = statsBombCountry.id.toString()
 
             countryRepository.save(country)
-
         } else {
             if (country.name != statsBombCountry.name) {
                 country.name = statsBombCountry.name
@@ -118,6 +117,7 @@ class StatsBombEntityService(
                     getStatsBombSource(),
                     statsBombSeason.seasonId.toString()
             )
+            seasonRepository.save(season)
         } else {
             if (season.name != statsBombSeason.seasonName) {
                 season.name = statsBombSeason.seasonName
@@ -127,6 +127,7 @@ class StatsBombEntityService(
         }
         return season
     }
+
     fun getOrCreateSeason(seasonId: String, seasonName: String): Season {
         var season = seasonRepository.findBySourceExternalId(seasonId)
 
@@ -184,32 +185,54 @@ class StatsBombEntityService(
     fun getOrCreateTeam(statsBombTeam: StatsBombTeam): Team {
         var team = teamRepository.findBySourceExternalId(statsBombTeam.teamId.toString())
 
+        val managers =
+                if (statsBombTeam.managers != null)
+                    statsBombTeam.managers!!.map { m -> getOrCreateManager(m) }.toCollection(arrayListOf())
+                else ArrayList<Manager>()
+
         if (team == null) {
             team = Team(
                     statsBombTeam.teamName,
-                    Gender.valueOf(statsBombTeam.teamGender),
+                    Gender.valueOf(statsBombTeam.teamGender.toUpperCase()),
                     statsBombTeam.teamGroup,
                     getOrCreateCountry(statsBombTeam.country),
-                    statsBombTeam.managers.map { m -> getOrCreateManager(m) }.toCollection(arrayListOf()),
+                    managers,
                     getStatsBombSource(),
                     statsBombTeam.teamId.toString()
             )
+            teamRepository.save(team)
         } else {
             if (team.name != statsBombTeam.teamName
-                    || team.gender != Gender.valueOf(statsBombTeam.teamGender)
-                    || team.group != statsBombTeam.teamGroup
+                    || team.gender != Gender.valueOf(statsBombTeam.teamGender.toUpperCase())
+                    || team.teamGroup != statsBombTeam.teamGroup
                     || team.country != getOrCreateCountry(statsBombTeam.country)
-                    || team.managers != statsBombTeam.managers.map { m -> getOrCreateManager(m) }.toCollection(arrayListOf())) {
+                    || !compareManagers(team.managers, managers)) {
                 team.name = statsBombTeam.teamName
-                team.gender = Gender.valueOf(statsBombTeam.teamGender)
-                team.group = statsBombTeam.teamGroup
+                team.gender = Gender.valueOf(statsBombTeam.teamGender.toUpperCase())
+                team.teamGroup = statsBombTeam.teamGroup
                 team.country = getOrCreateCountry(statsBombTeam.country)
-                team.managers = statsBombTeam.managers.map { m -> getOrCreateManager(m) }.toCollection(arrayListOf())
+                team.managers = managers
 
-                teamRepository.save(team)
+                try {
+                    teamRepository.save(team)
+                } catch (e: Exception) {
+                    println(e.localizedMessage)
+                }
             }
         }
         return team
+    }
+
+    private fun compareManagers(m1: Iterable<Manager>, m2: Iterable<Manager>): Boolean {
+        if (m1.count() != m2.count()) {
+            return false
+        }
+
+        for (m in m1) {
+            if (!m2.contains(m)) return false
+        }
+
+        return true
     }
 
     // Manager
@@ -227,6 +250,7 @@ class StatsBombEntityService(
                     getStatsBombSource(),
                     statsBombManager.id.toString()
             )
+            managerRepository.save(manager)
         } else {
             if (manager.name != statsBombManager.name
                     || manager.nickname != statsBombManager.nickname
@@ -256,6 +280,7 @@ class StatsBombEntityService(
                     getStatsBombSource(),
                     statsBombCompetitionStage.id.toString()
             )
+            competitionStageRepository.save(competitionStage)
         } else {
             if (competitionStage.name != statsBombCompetitionStage.name) {
                 competitionStage.name = statsBombCompetitionStage.name
@@ -279,6 +304,7 @@ class StatsBombEntityService(
                     getStatsBombSource(),
                     statsBombStadium.id.toString()
             )
+            stadiumRepository.save(stadium)
         } else {
             if (stadium.name != statsBombStadium.name
                     || stadium.country.id != statsBombStadium.country.id) {
@@ -307,6 +333,7 @@ class StatsBombEntityService(
                     statsBombMatchMetadata.xyFidelityVersion,
                     getStatsBombSource()
             )
+            matchMetadataRepository.save(matchMetadata)
         }
         return matchMetadata
     }
@@ -326,6 +353,7 @@ class StatsBombEntityService(
                     getStatsBombSource(),
                     statsBombReferee.id.toString()
             )
+            refereeRepository.save(referee)
         } else {
             if (referee.name != statsBombReferee.name || referee.country != country) {
                 referee.name = statsBombReferee.name

@@ -7,9 +7,9 @@ import javax.persistence.*
 class Team(
         var name: String,
         var gender: Gender,
-        var group: String?,
+        var teamGroup: String?,
         @ManyToOne var country: Country,
-        @OneToMany var managers: MutableList<Manager>,
+        @ManyToMany var managers: MutableList<Manager>,
         @ManyToOne var source: Source,
         var sourceExternalId: String,
         @Id @GeneratedValue var id: Long? = null)

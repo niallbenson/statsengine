@@ -72,12 +72,23 @@ class StatsBombMatchFeedService(
                         entityService.getOrCreateStadium(statsBombMatch.stadium!!)
                     else null
 
+            val referee =
+                    if (statsBombMatch.referee != null)
+                        entityService.getOrCreateReferee(statsBombMatch.referee!!)
+                    else null
+
+            val homeTeam = entityService.getOrCreateTeam(statsBombMatch.homeTeam)
+
+            var awayTeam = entityService.getOrCreateTeam(statsBombMatch.awayTeam)
+
             match = Match(
                     StatsBombUtils.convertToDate(statsBombMatch.matchDate, statsBombMatch.kickOff),
                     competition,
                     season,
-                    entityService.getOrCreateTeam(statsBombMatch.homeTeam),
-                    entityService.getOrCreateTeam(statsBombMatch.awayTeam),
+                    homeTeam,
+                    awayTeam,
+                    ArrayList(homeTeam.managers),
+                    ArrayList(awayTeam.managers),
                     statsBombMatch.homeScore,
                     statsBombMatch.awayScore,
                     statsBombMatch.matchStatus,
@@ -86,9 +97,9 @@ class StatsBombMatchFeedService(
                     statsBombMatch.matchWeek,
                     entityService.getOrCreateCompetitionStage(statsBombMatch.competitionStage),
                     stadium,
-                    entityService.getOrCreateReferee(statsBombMatch.referee),
+                    referee,
                     entityService.getStatsBombSource(),
-                    statsBombMatch.referee.id.toString()
+                    statsBombMatch.matchId.toString()
             )
             entityService.save(match)
         }
