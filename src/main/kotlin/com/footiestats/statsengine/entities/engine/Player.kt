@@ -8,9 +8,9 @@ import javax.persistence.ManyToOne
 @Entity
 class Player(
         var name: String,
-        var nickName: String,
-        @ManyToOne var country: Country,
+        var nickName: String?,
+        @ManyToOne var country: Country?,
         @ManyToOne var source: Source,
         var sourceExternalId: String,
-        @Id @GeneratedValue var id: String? = null
+        @Id @GeneratedValue var id: Long? = null
 )

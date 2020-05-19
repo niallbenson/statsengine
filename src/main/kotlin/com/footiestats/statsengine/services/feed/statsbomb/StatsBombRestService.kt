@@ -6,10 +6,13 @@ import com.footiestats.statsengine.dtos.statsbomb.StatsBombMatch
 import com.footiestats.statsengine.dtos.statsbomb.mappers.StatsBombCompetitionMapper
 import com.footiestats.statsengine.dtos.statsbomb.mappers.StatsBombLineupsMapper
 import com.footiestats.statsengine.dtos.statsbomb.mappers.StatsBombMatchMapper
+import mu.KotlinLogging
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.getForObject
 import java.net.URI
+
+private val log = KotlinLogging.logger {}
 
 @Service
 class StatsBombRestService(private val restTemplate: RestTemplate) {
@@ -18,7 +21,7 @@ class StatsBombRestService(private val restTemplate: RestTemplate) {
         val url = "https://raw.githubusercontent.com/statsbomb/open-data/master/data/competitions.json"
         val uri = URI(url)
 
-        println("Retrieving competitions from $url")
+        log.info { "Retrieving competitions from $url" }
         val jsonResponse = restTemplate.getForObject<String>(uri)
 
         return StatsBombCompetitionMapper.fromJson(jsonResponse)
@@ -32,7 +35,7 @@ class StatsBombRestService(private val restTemplate: RestTemplate) {
         val url = getCompetitionSeasonUrl(competitionId, seasonId)
         val uri = URI(url)
 
-        println("Retrieving matches from $url")
+        log.info { "Retrieving matches from $url" }
         val jsonResponse = restTemplate.getForObject<String>(uri)
 
         return StatsBombMatchMapper.fromJson(jsonResponse)
@@ -45,7 +48,7 @@ class StatsBombRestService(private val restTemplate: RestTemplate) {
         val url = getMatchLineupsUrl(matchId)
         val uri = URI(url)
 
-        println("Retrieving lineups from $url")
+        log.info { "Retrieving lineups from $url" }
         val jsonResponse = restTemplate.getForObject<String>(uri)
 
         return StatsBombLineupsMapper.fromJson(jsonResponse)

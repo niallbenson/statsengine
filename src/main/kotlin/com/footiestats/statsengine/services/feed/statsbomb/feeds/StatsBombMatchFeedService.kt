@@ -6,7 +6,10 @@ import com.footiestats.statsengine.services.feed.statsbomb.StatsBombEntityServic
 import com.footiestats.statsengine.services.feed.statsbomb.StatsBombRestService
 import com.footiestats.statsengine.services.feed.statsbomb.utils.StatsBombDateUtils
 import com.footiestats.statsengine.services.feed.statsbomb.exceptions.StatsBombEntityNotFound
+import mu.KotlinLogging
 import org.springframework.stereotype.Service
+
+private val log = KotlinLogging.logger {}
 
 @Service
 class StatsBombMatchFeedService(
@@ -14,7 +17,7 @@ class StatsBombMatchFeedService(
         private val restService: StatsBombRestService) {
 
     fun run(): ArrayList<Match> {
-        println("Updating matches from StatsBomb")
+        log.info { "Updating matches from StatsBomb" }
 
         val matches = ArrayList<Match>()
 

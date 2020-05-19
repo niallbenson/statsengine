@@ -81,7 +81,15 @@ interface CompetitionSeasonRepository : PagingAndSortingRepository<CompetitionSe
     fun findByCompetitionAndSeason(competition: Competition, season: Season): CompetitionSeason?
 }
 
-interface MatchLineupRepoistory : PagingAndSortingRepository<MatchLineup, Long> {
+interface MatchLineupRepository : PagingAndSortingRepository<MatchLineup, Long> {
     override fun findAll(): ArrayList<MatchLineup>
+    fun findByMatchAndTeam(match: Match, team: Team): MatchLineup?
+}
+
+interface PlayerRepository : PagingAndSortingRepository<Player, Long> {
+    fun findBySourceExternalId(id: String): Player?
+}
+
+interface LineupPlayerRepository : PagingAndSortingRepository<LineupPlayer, Long> {
 
 }

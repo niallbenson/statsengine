@@ -7,7 +7,10 @@ import com.footiestats.statsengine.entities.engine.enums.Gender
 import com.footiestats.statsengine.repos.engine.*
 import com.footiestats.statsengine.services.feed.statsbomb.exceptions.StatsBombEntityNotFound
 import com.footiestats.statsengine.services.feed.statsbomb.utils.StatsBombDateUtils
+import mu.KotlinLogging
 import org.springframework.stereotype.Service
+
+private val log = KotlinLogging.logger {}
 
 @Service
 class StatsBombEntityService(
@@ -23,7 +26,9 @@ class StatsBombEntityService(
         private val competitionStageRepository: CompetitionStageRepository,
         private val stadiumRepository: StadiumRepository,
         private val refereeRepository: RefereeRepository,
-        private val matchLineupRepoistory: MatchLineupRepoistory
+        private val matchLineupRepository: MatchLineupRepository,
+        private val playerRepository: PlayerRepository,
+        private val lineupPlayerRepository: LineupPlayerRepository
 ) {
 
     // Source
@@ -219,7 +224,7 @@ class StatsBombEntityService(
                 try {
                     teamRepository.save(team)
                 } catch (e: Exception) {
-                    println(e.localizedMessage)
+                    log.error { e.localizedMessage }
                 }
             }
         }
@@ -367,15 +372,61 @@ class StatsBombEntityService(
     }
 
     // Match Lineup
-    fun save(matchLineup: MatchLineup) = matchLineupRepoistory.save(matchLineup)
+    fun save(matchLineup: MatchLineup) = matchLineupRepository.save(matchLineup)
 
     fun getOrCreateMatchLineup(match: Match, statsBombLineup: StatsBombLineup): MatchLineup {
         val team = teamRepository.findBySourceExternalId(statsBombLineup.teamId.toString())
                 ?: throw StatsBombEntityNotFound("Unable to find lineup team: ${statsBombLineup.teamName}")
 
-        val lineupPlayers = statsBombLineup.players.map {
+        var lineup = matchLineupRepository.findByMatchAndTeam(match, team)
 
+        if (lineup == null) {
+            lineup = MatchLineup(match, team)
+            matchLineupRepository.save(lineup)
+
+            statsBombLineup.players.forEach {
+                val lineupPlayer = LineupPlayer(
+                        match,
+                        getOrCreatePlayer(
+                                it.playerId.toString(),
+                                it.playerName,
+                                it.playerNickname,
+                                it.country),
+                        lineup,
+                        it.jerseyNumber)
+
+                lineupPlayerRepository.save(lineupPlayer)
+            }
+        } else {
+            // TODO: test whether line up players are matching, if not then update
         }
+        return lineup
+    }
 
+    // Player
+    fun getOrCreatePlayer(playerId: String, playerName: String, playerNickname: String?, country: StatsBombCountry?): Player {
+        var player = playerRepository.findBySourceExternalId(playerId)
+
+        if (player == null) {
+            player = Player(
+                    playerName,
+                    playerNickname,
+                    if (country != null) getOrCreateCountry(country) else null,
+                    getStatsBombSource(),
+                    playerId)
+
+            playerRepository.save(player)
+        } else {
+            if (player.name != playerName
+                    || player.nickName != playerNickname
+                    || player.country?.sourceExternalId != country?.id.toString()) {
+                player.name = playerName
+                player.nickName = playerNickname
+                if (country != null) player.country = getOrCreateCountry(country)
+
+                playerRepository.save(player)
+            }
+        }
+        return player
     }
 }
