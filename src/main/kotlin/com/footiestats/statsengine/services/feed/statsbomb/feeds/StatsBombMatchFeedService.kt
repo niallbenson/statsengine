@@ -4,20 +4,9 @@ import com.footiestats.statsengine.dtos.statsbomb.StatsBombMatch
 import com.footiestats.statsengine.entities.engine.*
 import com.footiestats.statsengine.services.feed.statsbomb.StatsBombEntityService
 import com.footiestats.statsengine.services.feed.statsbomb.StatsBombRestService
-import com.footiestats.statsengine.services.feed.statsbomb.StatsBombUtils
+import com.footiestats.statsengine.services.feed.statsbomb.utils.StatsBombDateUtils
 import com.footiestats.statsengine.services.feed.statsbomb.exceptions.StatsBombEntityNotFound
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
-
-fun Match.compareTo(
-        statsBombMatch: StatsBombMatch,
-        statsBombSource: Source
-): Boolean =
-        this.competition.source.id == statsBombSource.id
-                && this.competition.sourceExternalId == statsBombMatch.competition.competitionId.toString()
-                && this.homeTeam.name == statsBombMatch.homeTeam.teamName
-                && this.awayTeam.name == statsBombMatch.awayTeam.teamName
-                && this.matchDate == StatsBombUtils.convertToDate(statsBombMatch.matchDate, statsBombMatch.kickOff)
 
 @Service
 class StatsBombMatchFeedService(
@@ -79,10 +68,10 @@ class StatsBombMatchFeedService(
 
             val homeTeam = entityService.getOrCreateTeam(statsBombMatch.homeTeam)
 
-            var awayTeam = entityService.getOrCreateTeam(statsBombMatch.awayTeam)
+            val awayTeam = entityService.getOrCreateTeam(statsBombMatch.awayTeam)
 
             match = Match(
-                    StatsBombUtils.convertToDate(statsBombMatch.matchDate, statsBombMatch.kickOff),
+                    StatsBombDateUtils.convertToDate(statsBombMatch.matchDate, statsBombMatch.kickOff),
                     competition,
                     season,
                     homeTeam,
@@ -92,7 +81,7 @@ class StatsBombMatchFeedService(
                     statsBombMatch.homeScore,
                     statsBombMatch.awayScore,
                     statsBombMatch.matchStatus,
-                    StatsBombUtils.convertToDateFromLong(statsBombMatch.lastUpdated)!!,
+                    StatsBombDateUtils.convertToDateFromLong(statsBombMatch.lastUpdated)!!,
                     entityService.getOrCreateMatchMetaData(statsBombMatch.metadata),
                     statsBombMatch.matchWeek,
                     entityService.getOrCreateCompetitionStage(statsBombMatch.competitionStage),

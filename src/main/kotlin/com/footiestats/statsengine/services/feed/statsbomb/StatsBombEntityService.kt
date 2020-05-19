@@ -2,9 +2,11 @@ package com.footiestats.statsengine.services.feed.statsbomb
 
 import com.footiestats.statsengine.dtos.statsbomb.*
 import com.footiestats.statsengine.entities.engine.*
+import com.footiestats.statsengine.entities.engine.MatchLineup
 import com.footiestats.statsengine.entities.engine.enums.Gender
 import com.footiestats.statsengine.repos.engine.*
 import com.footiestats.statsengine.services.feed.statsbomb.exceptions.StatsBombEntityNotFound
+import com.footiestats.statsengine.services.feed.statsbomb.utils.StatsBombDateUtils
 import org.springframework.stereotype.Service
 
 @Service
@@ -20,7 +22,8 @@ class StatsBombEntityService(
         private val matchMetadataRepository: MatchMetadataRepository,
         private val competitionStageRepository: CompetitionStageRepository,
         private val stadiumRepository: StadiumRepository,
-        private val refereeRepository: RefereeRepository
+        private val refereeRepository: RefereeRepository,
+        private val matchLineupRepoistory: MatchLineupRepoistory
 ) {
 
     // Source
@@ -172,8 +175,8 @@ class StatsBombEntityService(
     // Match
     fun save(match: Match) = matchRepository.save(match)
 
-    fun getMatchesForCompetitionExternalIds(ids: Iterable<String>) =
-            matchRepository.findAllByCompetitionSourceExternalId(ids)
+    fun getMatchesForCompetitionAndSeason(competition: Competition, season: Season) =
+            matchRepository.findAllByCompetitionAndSeason(competition, season)
 
     fun getMatchByExternalId(id: String) = matchRepository.findBySourceExternalId(id)
 
@@ -245,7 +248,7 @@ class StatsBombEntityService(
             manager = Manager(
                     statsBombManager.name,
                     statsBombManager.nickname,
-                    StatsBombUtils.convertToDateFromShort(statsBombManager.dob),
+                    StatsBombDateUtils.convertToDateFromShort(statsBombManager.dob),
                     getOrCreateCountry(statsBombManager.country),
                     getStatsBombSource(),
                     statsBombManager.id.toString()
@@ -254,11 +257,11 @@ class StatsBombEntityService(
         } else {
             if (manager.name != statsBombManager.name
                     || manager.nickname != statsBombManager.nickname
-                    || manager.dateOfBirth != StatsBombUtils.convertToDateFromShort(statsBombManager.dob)
+                    || manager.dateOfBirth != StatsBombDateUtils.convertToDateFromShort(statsBombManager.dob)
                     || manager.country.id != statsBombManager.country.id) {
                 manager.name = statsBombManager.name
                 manager.nickname = statsBombManager.nickname
-                manager.dateOfBirth = StatsBombUtils.convertToDateFromShort(statsBombManager.dob)
+                manager.dateOfBirth = StatsBombDateUtils.convertToDateFromShort(statsBombManager.dob)
                 manager.country = getOrCreateCountry(statsBombManager.country)
 
                 managerRepository.save(manager)
@@ -361,5 +364,18 @@ class StatsBombEntityService(
             }
         }
         return referee
+    }
+
+    // Match Lineup
+    fun save(matchLineup: MatchLineup) = matchLineupRepoistory.save(matchLineup)
+
+    fun getOrCreateMatchLineup(match: Match, statsBombLineup: StatsBombLineup): MatchLineup {
+        val team = teamRepository.findBySourceExternalId(statsBombLineup.teamId.toString())
+                ?: throw StatsBombEntityNotFound("Unable to find lineup team: ${statsBombLineup.teamName}")
+
+        val lineupPlayers = statsBombLineup.players.map {
+
+        }
+
     }
 }

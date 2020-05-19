@@ -1,8 +1,10 @@
 package com.footiestats.statsengine.services.feed.statsbomb
 
 import com.footiestats.statsengine.dtos.statsbomb.StatsBombCompetition
+import com.footiestats.statsengine.dtos.statsbomb.StatsBombLineup
 import com.footiestats.statsengine.dtos.statsbomb.StatsBombMatch
 import com.footiestats.statsengine.dtos.statsbomb.mappers.StatsBombCompetitionMapper
+import com.footiestats.statsengine.dtos.statsbomb.mappers.StatsBombLineupsMapper
 import com.footiestats.statsengine.dtos.statsbomb.mappers.StatsBombMatchMapper
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
@@ -38,5 +40,18 @@ class StatsBombRestService(private val restTemplate: RestTemplate) {
 
     private fun getCompetitionSeasonUrl(competitionId: String, seasonId: String) =
             "https://raw.githubusercontent.com/statsbomb/open-data/master/data/matches/$competitionId/$seasonId.json"
+
+    fun getStatsBombLineups(matchId: String): Iterable<StatsBombLineup> {
+        val url = getMatchLineupsUrl(matchId)
+        val uri = URI(url)
+
+        println("Retrieving lineups from $url")
+        val jsonResponse = restTemplate.getForObject<String>(uri)
+
+        return StatsBombLineupsMapper.fromJson(jsonResponse)
+    }
+
+    private fun getMatchLineupsUrl(matchId: String) =
+            "https://raw.githubusercontent.com/statsbomb/open-data/master/data/lineups/$matchId.json"
 
 }

@@ -83,6 +83,11 @@
 			<artifactId>mockk</artifactId>
             <version>1.8.8.kotlin13</version>
 		</dependency>
+		<dependency>
+			<groupId>io.github.microutils</groupId>
+			<artifactId>kotlin-logging</artifactId>
+			<version>1.7.9</version>
+		</dependency>
 	</dependencies>
 
 	<build>

@@ -1,9 +1,10 @@
-package com.footiestats.statsengine.services.feed.statsbomb
+package com.footiestats.statsengine.services.feed.statsbomb.feeds
 
 import com.footiestats.statsengine.entities.engine.*
 import com.footiestats.statsengine.entities.engine.enums.Gender
 import com.footiestats.statsengine.dtos.statsbomb.mappers.StatsBombCompetitionMapper
-import com.footiestats.statsengine.services.feed.statsbomb.feeds.StatsBombCompetitionFeedService
+import com.footiestats.statsengine.services.feed.statsbomb.StatsBombEntityService
+import com.footiestats.statsengine.services.feed.statsbomb.StatsBombRestService
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -25,7 +26,7 @@ internal class StatsBombCompetitionFeedServiceTest {
     private lateinit var service: StatsBombCompetitionFeedService
 
     @Test
-    fun updateFromStatsBombCompetitions() {
+    fun run() {
         MockKAnnotations.init(this)
 
         val json = getStatsBombCompetitionsJson()

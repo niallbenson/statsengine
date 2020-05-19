@@ -1,14 +1,10 @@
-package com.footiestats.statsengine.services.feed.statsbomb
+package com.footiestats.statsengine.services.feed.statsbomb.utils
 
-import org.springframework.format.annotation.DateTimeFormat
-import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.*
 
-class StatsBombUtils {
+class StatsBombDateUtils {
     companion object {
         fun convertToDate(date: String, time: String): LocalDateTime =
                 LocalDateTime.parse("${date}T${time}")
