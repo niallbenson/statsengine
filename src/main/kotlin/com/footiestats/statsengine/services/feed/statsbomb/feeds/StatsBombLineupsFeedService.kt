@@ -1,4 +1,4 @@
-package com.footiestats.statsengine.services.feed.statsbomb.feeds;
+package com.footiestats.statsengine.services.feed.statsbomb.feeds
 
 import com.footiestats.statsengine.dtos.statsbomb.StatsBombLineup
 import com.footiestats.statsengine.entities.engine.Competition
@@ -9,7 +9,7 @@ import com.footiestats.statsengine.services.feed.statsbomb.StatsBombEntityServic
 import com.footiestats.statsengine.services.feed.statsbomb.StatsBombRestService
 import com.footiestats.statsengine.services.feed.statsbomb.exceptions.StatsBombLineupTeamNotInMatch
 import mu.KotlinLogging
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Service
 
 private val log = KotlinLogging.logger {}
 
@@ -23,7 +23,7 @@ class StatsBombLineupsFeedService(
 
         val competitionSeasons = entityService.getCompetitionSeasons()
 
-        var lineups = ArrayList<MatchLineup>()
+        val lineups = ArrayList<MatchLineup>()
 
         for (cs in competitionSeasons) {
             log.info { "About to run feed for competition=${cs.competition.name} season=${cs.season.name}" }
