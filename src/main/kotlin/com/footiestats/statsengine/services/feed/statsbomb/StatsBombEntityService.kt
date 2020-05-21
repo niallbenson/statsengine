@@ -180,8 +180,8 @@ class StatsBombEntityService(
     // Match
     fun save(match: Match) = matchRepository.save(match)
 
-    fun getMatchesForCompetitionAndSeason(competition: Competition, season: Season) =
-            matchRepository.findAllByCompetitionAndSeason(competition, season)
+    fun getMatchesForCompetitionSeason(competitionSeason: CompetitionSeason) =
+            matchRepository.findAllByCompetitionSeason(competitionSeason)
 
     fun getMatchByExternalId(id: String) = matchRepository.findBySourceExternalId(id)
 
@@ -329,7 +329,7 @@ class StatsBombEntityService(
     fun save(matchMetadata: MatchMetadata) = matchMetadataRepository.save(matchMetadata)
 
     fun getOrCreateMatchMetaData(statsBombMatchMetadata: StatsBombMatchMetadata): MatchMetadata {
-        var matchMetadata = matchMetadataRepository.findByValues(
+        var matchMetadata = matchMetadataRepository.findByDataVersionAndShotFidelityVersionAndXyFidelityVersion(
                 statsBombMatchMetadata.dataVersion,
                 statsBombMatchMetadata.shotFidelityVersion,
                 statsBombMatchMetadata.xyFidelityVersion)
@@ -386,7 +386,6 @@ class StatsBombEntityService(
 
             statsBombLineup.players.forEach {
                 val lineupPlayer = LineupPlayer(
-                        match,
                         getOrCreatePlayer(
                                 it.playerId.toString(),
                                 it.playerName,

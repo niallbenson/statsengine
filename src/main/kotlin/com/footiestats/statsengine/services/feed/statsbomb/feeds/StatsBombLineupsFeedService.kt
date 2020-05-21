@@ -1,10 +1,7 @@
 package com.footiestats.statsengine.services.feed.statsbomb.feeds
 
 import com.footiestats.statsengine.dtos.statsbomb.StatsBombLineup
-import com.footiestats.statsengine.entities.engine.Competition
-import com.footiestats.statsengine.entities.engine.Match
-import com.footiestats.statsengine.entities.engine.MatchLineup
-import com.footiestats.statsengine.entities.engine.Season
+import com.footiestats.statsengine.entities.engine.*
 import com.footiestats.statsengine.services.feed.statsbomb.StatsBombEntityService
 import com.footiestats.statsengine.services.feed.statsbomb.StatsBombRestService
 import com.footiestats.statsengine.services.feed.statsbomb.exceptions.StatsBombLineupTeamNotInMatch
@@ -29,7 +26,7 @@ class StatsBombLineupsFeedService(
             log.info { "About to run feed for competition=${cs.competition.name} season=${cs.season.name}" }
 
             lineups.addAll(
-                    processCompetitionSeason(cs.competition, cs.season)
+                    processCompetitionSeason(cs)
             )
         }
         log.info { "Finished StatsBomb Lineups Feed" }
@@ -38,10 +35,9 @@ class StatsBombLineupsFeedService(
     }
 
     private fun processCompetitionSeason(
-            competition: Competition,
-            season: Season
+            competitionSeason: CompetitionSeason
     ): ArrayList<MatchLineup> {
-        val matches = entityService.getMatchesForCompetitionAndSeason(competition, season)
+        val matches = entityService.getMatchesForCompetitionSeason(competitionSeason)
 
         val lineups = ArrayList<MatchLineup>()
 

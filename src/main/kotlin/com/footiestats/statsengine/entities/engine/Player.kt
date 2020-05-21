@@ -1,16 +1,15 @@
 package com.footiestats.statsengine.entities.engine
 
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
-import javax.persistence.ManyToOne
+import org.neo4j.ogm.annotation.Id
+import org.neo4j.ogm.annotation.NodeEntity
+import org.neo4j.ogm.annotation.Relationship
 
-@Entity
+@NodeEntity
 class Player(
         var name: String,
         var nickName: String?,
-        @ManyToOne var country: Country?,
-        @ManyToOne var source: Source,
+        @Relationship("BORN_IN") var country: Country?,
+        @Relationship("IMPORTED_FROM") var source: Source,
         var sourceExternalId: String,
-        @Id @GeneratedValue var id: Long? = null
+        @Id var id: Long? = null
 )

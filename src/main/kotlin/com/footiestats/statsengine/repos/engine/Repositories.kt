@@ -2,94 +2,88 @@ package com.footiestats.statsengine.repos.engine
 
 import com.footiestats.statsengine.entities.engine.*
 import org.springframework.data.jpa.repository.Query
+import org.springframework.data.neo4j.repository.Neo4jRepository
 import org.springframework.data.repository.PagingAndSortingRepository
 
 
-interface SourceRepository : PagingAndSortingRepository<Source, Long> {
+interface SourceRepository : Neo4jRepository<Source, Long> {
     fun findByName(name: String): Source?
 }
 
-interface CompetitionRepository : PagingAndSortingRepository<Competition, Long> {
+interface CompetitionRepository : Neo4jRepository<Competition, Long> {
     fun findAllBySource(source: Source): ArrayList<Competition>
     fun findBySourceExternalId(id: String): Competition?
 }
 
-interface SeasonRepository : PagingAndSortingRepository<Season, Long> {
+interface SeasonRepository : Neo4jRepository<Season, Long> {
     fun findBySource(source: Source): ArrayList<Season>
     fun findBySourceExternalId(id: String): Season?
     fun findByName(name: String): Season?
 }
 
-interface CountryRepository : PagingAndSortingRepository<Country, Long> {
+interface CountryRepository : Neo4jRepository<Country, Long> {
     override fun findAll(): ArrayList<Country>
     fun findBySourceExternalId(id: String): Country?
     fun findByName(name: String): Country?
 }
 
-interface CompetitionStageRepository : PagingAndSortingRepository<CompetitionStage, Long> {
+interface CompetitionStageRepository : Neo4jRepository<CompetitionStage, Long> {
     override fun findAll(): ArrayList<CompetitionStage>
     fun findBySourceExternalId(id: String): CompetitionStage?
 }
 
-interface ManagerRepository : PagingAndSortingRepository<Manager, Long> {
+interface ManagerRepository : Neo4jRepository<Manager, Long> {
     override fun findAll(): ArrayList<Manager>
     fun findBySourceExternalId(id: String): Manager?
 }
 
-interface MatchRepository : PagingAndSortingRepository<Match, Long> {
+interface MatchRepository : Neo4jRepository<Match, Long> {
     override fun findAll(): ArrayList<Match>
     fun findBySourceExternalId(id: String): Match?
-    fun findAllByCompetitionAndSeason(competition: Competition, season: Season): ArrayList<Match>
-
-    @Query("from Match m join fetch m.competition c where c.sourceExternalId in ?1")
-    fun findAllByCompetitionSourceExternalId(ids: Iterable<String>): ArrayList<Match>
+    fun findAllByCompetitionSeason(competitionSeason: CompetitionSeason): ArrayList<Match>
 }
 
-interface MatchMetadataRepository : PagingAndSortingRepository<MatchMetadata, Long> {
+interface MatchMetadataRepository : Neo4jRepository<MatchMetadata, Long> {
     override fun findAll(): ArrayList<MatchMetadata>
 
-    @Query("from MatchMetadata m " +
-            "where m.dataVersion = ?1 " +
-            "and (m.shotFidelityVersion = ?2 or (m.shotFidelityVersion is null and ?2 is null)) " +
-            "and (m.xyFidelityVersion = ?3 or (m.xyFidelityVersion is null and ?3 is null))")
-    fun findByValues(
+    fun findByDataVersionAndShotFidelityVersionAndXyFidelityVersion(
             dataVersion: String,
             shotFidelityVersion: String?,
             xyFidelityVersion: String?
     ): MatchMetadata?
 }
 
-interface RefereeRepository : PagingAndSortingRepository<Referee, Long> {
+interface RefereeRepository : Neo4jRepository<Referee, Long> {
     override fun findAll(): ArrayList<Referee>
     fun findBySourceExternalId(id: String): Referee?
 }
 
-interface StadiumRepository : PagingAndSortingRepository<Stadium, Long> {
+interface StadiumRepository : Neo4jRepository<Stadium, Long> {
     override fun findAll(): ArrayList<Stadium>
     fun findBySourceExternalId(id: String): Stadium?
 }
 
-interface TeamRepository : PagingAndSortingRepository<Team, Long> {
+interface TeamRepository : Neo4jRepository<Team, Long> {
     override fun findAll(): ArrayList<Team>
     fun findBySourceExternalId(id: String): Team?
 }
 
-interface CompetitionSeasonRepository : PagingAndSortingRepository<CompetitionSeason, Long> {
+interface CompetitionSeasonRepository : Neo4jRepository<CompetitionSeason, Long> {
     override fun findAll(): ArrayList<CompetitionSeason>
     fun findAllByCompetitionIn(competitions: Iterable<Competition>): ArrayList<CompetitionSeason>
     fun findAllByCompetitionSource(source: Source): ArrayList<CompetitionSeason>
     fun findByCompetitionAndSeason(competition: Competition, season: Season): CompetitionSeason?
 }
 
-interface MatchLineupRepository : PagingAndSortingRepository<MatchLineup, Long> {
+interface MatchLineupRepository : Neo4jRepository<MatchLineup, Long> {
     override fun findAll(): ArrayList<MatchLineup>
     fun findByMatchAndTeam(match: Match, team: Team): MatchLineup?
 }
 
-interface PlayerRepository : PagingAndSortingRepository<Player, Long> {
+interface PlayerRepository : Neo4jRepository<Player, Long> {
     fun findBySourceExternalId(id: String): Player?
 }
 
-interface LineupPlayerRepository : PagingAndSortingRepository<LineupPlayer, Long> {
+interface LineupPlayerRepository : Neo4jRepository<LineupPlayer, Long> {
 
 }

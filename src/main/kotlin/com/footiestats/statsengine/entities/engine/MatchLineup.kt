@@ -1,10 +1,12 @@
 package com.footiestats.statsengine.entities.engine;
 
-import javax.persistence.*
+import org.neo4j.ogm.annotation.Id
+import org.neo4j.ogm.annotation.NodeEntity
+import org.neo4j.ogm.annotation.Relationship
 
-@Entity
+@NodeEntity
 class MatchLineup(
-        @OneToOne val match: Match,
-        @ManyToOne val team: Team,
-        @Id @GeneratedValue val id: Long? = null
+        @Relationship("MATCH") val match: Match,
+        @Relationship("TEAM") val team: Team,
+        @Id val id: Long? = null
 )

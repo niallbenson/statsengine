@@ -1,26 +1,27 @@
 package com.footiestats.statsengine.entities.engine
 
+import org.neo4j.ogm.annotation.Id
+import org.neo4j.ogm.annotation.NodeEntity
+import org.neo4j.ogm.annotation.Relationship
 import java.time.LocalDateTime
-import javax.persistence.*
 
-@Entity
+@NodeEntity
 class Match(
         var matchDate: LocalDateTime,
-        @ManyToOne var competition: Competition,
-        @ManyToOne var season: Season,
-        @ManyToOne var homeTeam: Team,
-        @ManyToOne var awayTeam: Team,
-        @ManyToMany var homeTeamManagers: MutableList<Manager>,
-        @ManyToMany var awayTeamManagers: MutableList<Manager>,
+        @Relationship("MATCH_OF") var competitionSeason: CompetitionSeason,
+        @Relationship("PARTICIPANT") var homeTeam: Team,
+        @Relationship("PARTICIPANT") var awayTeam: Team,
+        @Relationship("MANAGER") var homeTeamManagers: MutableList<Manager>,
+        @Relationship("MANAGER") var awayTeamManagers: MutableList<Manager>,
         var homeScore: Int?,
         var awayScore: Int?,
         var matchStatus: String,
         var lastUpdated: LocalDateTime,
-        @ManyToOne var metadata: MatchMetadata,
+        @Relationship("METADATA") var metadata: MatchMetadata,
         var matchWeek: Int,
-        @ManyToOne var competitionStage: CompetitionStage,
-        @ManyToOne var stadium: Stadium?,
-        @ManyToOne var referee: Referee?,
-        @ManyToOne var source: Source,
+        @Relationship("STAGE") var competitionStage: CompetitionStage,
+        @Relationship("VENUE")  var stadium: Stadium?,
+        @Relationship("REFEREE")  var referee: Referee?,
+        @Relationship("IMPORTED_FROM")  var source: Source,
         var sourceExternalId: String,
-        @Id @GeneratedValue var id: Long? = null)
+        @Id var id: Long? = null)

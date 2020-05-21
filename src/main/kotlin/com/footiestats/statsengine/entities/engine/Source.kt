@@ -1,10 +1,9 @@
 package com.footiestats.statsengine.entities.engine
 
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
+import org.neo4j.ogm.annotation.Id
+import org.neo4j.ogm.annotation.NodeEntity
 
-@Entity
+@NodeEntity
 class Source(
     var name: String,
-    @Id @GeneratedValue var id: Long? = null)
+    @Id var id: Long? = null)

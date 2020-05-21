@@ -1,15 +1,17 @@
 package com.footiestats.statsengine.entities.engine
 
 import com.footiestats.statsengine.entities.engine.enums.Gender
-import javax.persistence.*
+import org.neo4j.ogm.annotation.Id
+import org.neo4j.ogm.annotation.NodeEntity
+import org.neo4j.ogm.annotation.Relationship
 
-@Entity
+@NodeEntity
 class Team(
         var name: String,
         var gender: Gender,
         var teamGroup: String?,
-        @ManyToOne var country: Country,
-        @ManyToMany var managers: MutableList<Manager>,
-        @ManyToOne var source: Source,
+        @Relationship("LOCATED_IN") var country: Country,
+        @Relationship("MANAGED_BY") var managers: MutableList<Manager>,
+        @Relationship("IMPORTED_FROM") var source: Source,
         var sourceExternalId: String,
-        @Id @GeneratedValue var id: Long? = null)
+        @Id var id: Long? = null)

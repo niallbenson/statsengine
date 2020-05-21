@@ -1,16 +1,15 @@
 package com.footiestats.statsengine.entities.engine
 
 import com.footiestats.statsengine.entities.engine.enums.Gender
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
-import javax.persistence.ManyToOne
+import org.neo4j.ogm.annotation.Id
+import org.neo4j.ogm.annotation.NodeEntity
+import org.neo4j.ogm.annotation.Relationship
 
-@Entity
+@NodeEntity
 class Competition(
-        @ManyToOne var country: Country,
+        @Relationship(type = "OCCURS_IN") var country: Country,
         var name: String,
         var gender: Gender,
-        @ManyToOne var source: Source,
+        @Relationship(type = "IMPORTED_FROM") var source: Source,
         var sourceExternalId: String,
-        @Id @GeneratedValue var id: Long? = null)
+        @Id var id: Long? = null)

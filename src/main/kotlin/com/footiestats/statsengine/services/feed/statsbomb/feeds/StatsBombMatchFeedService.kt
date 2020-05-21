@@ -25,40 +25,34 @@ class StatsBombMatchFeedService(
 
         for (cs in competitionSeasons) {
             matches.addAll(
-                    processCompetitionSeason(cs.competition, cs.season)
+                    processCompetitionSeason(cs)
             )
         }
         return matches
     }
 
     private fun processCompetitionSeason(
-            competition: Competition,
-            season: Season
+            competitionSeason: CompetitionSeason
     ): ArrayList<Match> {
         val statsBombMatches =
-                restService.getStatsBombMatches(competition.sourceExternalId, season.sourceExternalId)
+                restService.getStatsBombMatches(
+                        competitionSeason.competition.sourceExternalId,
+                        competitionSeason.season.sourceExternalId
+                )
 
         val matches = ArrayList<Match>()
         for (m in statsBombMatches) {
             matches.add(
-                    processMatch(m)
+                    processMatch(m, competitionSeason)
             )
         }
         return matches
     }
 
-    private fun processMatch(statsBombMatch: StatsBombMatch): Match {
+    private fun processMatch(statsBombMatch: StatsBombMatch, competitionSeason: CompetitionSeason): Match {
         var match = entityService.getMatchByExternalId(statsBombMatch.matchId.toString())
 
         if (match == null) {
-            val competition =
-                    entityService.getCompetitionByExternalId(statsBombMatch.competition.competitionId.toString())
-                            ?: throw StatsBombEntityNotFound(
-                                    "Competition not found for id ${statsBombMatch.competition.competitionId}")
-
-            val season = entityService.getSeasonByExternalId(statsBombMatch.season.seasonId.toString())
-                    ?: entityService.getOrCreateSeason(statsBombMatch.season)
-
             val stadium =
                     if (statsBombMatch.stadium != null)
                         entityService.getOrCreateStadium(statsBombMatch.stadium!!)
@@ -75,8 +69,7 @@ class StatsBombMatchFeedService(
 
             match = Match(
                     StatsBombDateUtils.convertToDate(statsBombMatch.matchDate, statsBombMatch.kickOff),
-                    competition,
-                    season,
+                    competitionSeason,
                     homeTeam,
                     awayTeam,
                     ArrayList(homeTeam.managers),
