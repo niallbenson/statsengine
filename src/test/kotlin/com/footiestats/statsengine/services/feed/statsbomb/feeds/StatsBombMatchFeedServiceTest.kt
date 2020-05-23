@@ -85,40 +85,41 @@ internal class StatsBombMatchFeedServiceTest {
 
     private fun mockSource() = Source("source")
 
-    private fun mockCompetition() =
-            Competition(
-                    mockCountry(),
-                    "Competition name",
-                    Gender.MALE,
-                    mockSource(),
-                    "1",
-                    1L)
+    private fun mockCompetition(): Competition {
+        val competition = Competition(
+                "Competition name",
+                Gender.MALE,
+                "1",
+                mockCountry(),
+                mockSource())
 
-    private fun mockSeason() = Season("1999-00", mockSource(), "1", 1L)
+        return competition
+    }
 
-    private fun mockStadium() = Stadium("Stadium", mockCountry(), mockSource(), "1")
+    private fun mockSeason() = Season("1999-00", "1", mockSource())
 
-    private fun mockCountry() = Country("England", mockSource(), "1")
+    private fun mockStadium() = Stadium("Stadium", "1", mockCountry(), mockSource())
 
-    private fun mockReferee() = Referee("Referee", mockCountry(), mockSource(), "1")
+    private fun mockCountry() = Country("England", "1", mockSource())
+
+    private fun mockReferee() = Referee("Referee", "1", mockCountry(), mockSource())
 
     private fun mockManager() =
-            Manager("Manage", null, null, mockCountry(), mockSource(), "1")
+            Manager("Manager", null, null, "1", mockCountry(), mockSource())
 
-    private fun mockTeam() =
-            Team(
-                    "Team",
-                    Gender.MALE,
-                    null,
-                    mockCountry(),
-                    arrayListOf(mockManager()),
-                    mockSource(),
-                    "1"
-            )
+    private fun mockTeam() = Team(
+            "Team",
+            Gender.MALE,
+            null,
+            "1",
+            mockCountry(),
+            arrayListOf(mockManager()),
+            mockSource()
+    )
 
     private fun mockMatchMetaData() =
             MatchMetadata("1.0", "1.0", "1.0", mockSource())
 
-    private fun mockCompetitionStage() = CompetitionStage("Stage", mockSource(), "1")
+    private fun mockCompetitionStage() = CompetitionStage("Stage", "1", mockSource())
 
 }

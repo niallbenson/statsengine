@@ -1,12 +1,20 @@
 package com.footiestats.statsengine.entities.engine
 
+import org.neo4j.ogm.annotation.GeneratedValue
 import org.neo4j.ogm.annotation.Id
 import org.neo4j.ogm.annotation.NodeEntity
 import org.neo4j.ogm.annotation.Relationship
 
 @NodeEntity
-class Country(
+class Country protected constructor(
         var name: String,
-        @Relationship(type = "IMPORTED_FROM") var source: Source,
         var sourceExternalId: String?,
-        @Id var id: Long? = null)
+        @Id @GeneratedValue var id: Long? = null
+) {
+    @Relationship(type = "IMPORTED_FROM")
+    lateinit var source: Source
+
+    constructor(name: String, sourceExternalId: String?, source: Source) : this(name, sourceExternalId) {
+        this.source = source
+    }
+}

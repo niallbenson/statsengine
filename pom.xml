@@ -91,6 +91,7 @@
 			<artifactId>kotlin-logging</artifactId>
 			<version>1.7.9</version>
 		</dependency>
+
 	</dependencies>
 
 	<build>

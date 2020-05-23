@@ -71,7 +71,7 @@ interface TeamRepository : Neo4jRepository<Team, Long> {
 interface CompetitionSeasonRepository : Neo4jRepository<CompetitionSeason, Long> {
     override fun findAll(): ArrayList<CompetitionSeason>
     fun findAllByCompetitionIn(competitions: Iterable<Competition>): ArrayList<CompetitionSeason>
-    fun findAllByCompetitionSource(source: Source): ArrayList<CompetitionSeason>
+    fun findAllByCompetition_Source_Id(sourceId: Long): ArrayList<CompetitionSeason>
     fun findByCompetitionAndSeason(competition: Competition, season: Season): CompetitionSeason?
 }
 

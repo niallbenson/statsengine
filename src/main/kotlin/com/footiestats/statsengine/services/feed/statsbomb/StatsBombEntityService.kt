@@ -28,8 +28,7 @@ class StatsBombEntityService(
         private val refereeRepository: RefereeRepository,
         private val matchLineupRepository: MatchLineupRepository,
         private val playerRepository: PlayerRepository,
-        private val lineupPlayerRepository: LineupPlayerRepository
-) {
+        private val lineupPlayerRepository: LineupPlayerRepository) {
 
     // Source
     fun getStatsBombSource() = sourceRepository.findByName("StatsBomb")
@@ -53,14 +52,18 @@ class StatsBombEntityService(
     }
 
     private fun createCompetition(statsBombCompetition: StatsBombCompetition): Competition {
-        return competitionRepository.save(
-                Competition(
-                        getOrCreateCountry(statsBombCompetition.countryName),
-                        statsBombCompetition.competitionName,
-                        Gender.valueOf(statsBombCompetition.competitionGender.toUpperCase()),
-                        getStatsBombSource(),
-                        statsBombCompetition.competitionId.toString())
-        )
+        val competition = mapCompetitionToEntity(statsBombCompetition)
+
+        return competitionRepository.save(competition)
+    }
+
+    private fun mapCompetitionToEntity(statsBombCompetition: StatsBombCompetition): Competition {
+        return Competition(
+                statsBombCompetition.competitionName,
+                Gender.valueOf(statsBombCompetition.competitionGender.toUpperCase()),
+                statsBombCompetition.competitionId.toString(),
+                getOrCreateCountry(statsBombCompetition.countryName),
+                getStatsBombSource())
     }
 
     private fun checkAndUpdateCompetition(
@@ -88,7 +91,9 @@ class StatsBombEntityService(
         var country = countryRepository.findByName(name)
 
         if (country == null) {
-            country = countryRepository.save(Country(name, getStatsBombSource(), null))
+            country = Country(name, null, getStatsBombSource())
+
+            countryRepository.save(country)
         }
         return country
     }
@@ -122,8 +127,8 @@ class StatsBombEntityService(
         if (season == null) {
             season = Season(
                     statsBombSeason.seasonName,
-                    getStatsBombSource(),
-                    statsBombSeason.seasonId.toString()
+                    statsBombSeason.seasonId.toString(),
+                    getStatsBombSource()
             )
             seasonRepository.save(season)
         } else {
@@ -142,8 +147,8 @@ class StatsBombEntityService(
         if (season == null) {
             season = Season(
                     seasonName,
-                    getStatsBombSource(),
-                    seasonId
+                    seasonId,
+                    getStatsBombSource()
             )
 
             seasonRepository.save(season)
@@ -163,16 +168,16 @@ class StatsBombEntityService(
     fun getCompetitionSeasonsForCompetitions(competitions: Iterable<Competition>) =
             competitionSeasonRepository.findAllByCompetitionIn(competitions)
 
-    fun getCompetitionSeasons() = competitionSeasonRepository.findAllByCompetitionSource(getStatsBombSource())
+    fun getCompetitionSeasons() = competitionSeasonRepository.findAllByCompetition_Source_Id(getStatsBombSource().id!!)
 
     fun getOrCreateCompetitionSeason(competition: Competition, season: Season): CompetitionSeason {
         var competitionSeason =
                 competitionSeasonRepository.findByCompetitionAndSeason(competition, season)
 
         if (competitionSeason == null) {
-            competitionSeason = competitionSeasonRepository.save(
-                    CompetitionSeason(competition, season)
-            )
+            competitionSeason = CompetitionSeason(competition, season)
+
+            competitionSeasonRepository.save(competitionSeason)
         }
         return competitionSeason
     }
@@ -203,18 +208,19 @@ class StatsBombEntityService(
                     statsBombTeam.teamName,
                     Gender.valueOf(statsBombTeam.teamGender.toUpperCase()),
                     statsBombTeam.teamGroup,
+                    statsBombTeam.teamId.toString(),
                     getOrCreateCountry(statsBombTeam.country),
                     managers,
-                    getStatsBombSource(),
-                    statsBombTeam.teamId.toString()
+                    getStatsBombSource()
             )
+
             teamRepository.save(team)
         } else {
             if (team.name != statsBombTeam.teamName
                     || team.gender != Gender.valueOf(statsBombTeam.teamGender.toUpperCase())
                     || team.teamGroup != statsBombTeam.teamGroup
                     || team.country != getOrCreateCountry(statsBombTeam.country)
-                    || !compareManagers(team.managers, managers)) {
+                    || !compareManagers(team.managers ?: null, managers)) {
                 team.name = statsBombTeam.teamName
                 team.gender = Gender.valueOf(statsBombTeam.teamGender.toUpperCase())
                 team.teamGroup = statsBombTeam.teamGroup
@@ -231,8 +237,12 @@ class StatsBombEntityService(
         return team
     }
 
-    private fun compareManagers(m1: Iterable<Manager>, m2: Iterable<Manager>): Boolean {
-        if (m1.count() != m2.count()) {
+    private fun compareManagers(m1: Iterable<Manager>?, m2: Iterable<Manager>?): Boolean {
+        if ((m1 == null && m2 != null) || (m1 != null && m2 == null)) return false
+
+        if (m1 == null && m2 == null) return true
+
+        if (m1!!.count() != m2!!.count()) {
             return false
         }
 
@@ -254,10 +264,11 @@ class StatsBombEntityService(
                     statsBombManager.name,
                     statsBombManager.nickname,
                     StatsBombDateUtils.convertToDateFromShort(statsBombManager.dob),
+                    statsBombManager.id.toString(),
                     getOrCreateCountry(statsBombManager.country),
-                    getStatsBombSource(),
-                    statsBombManager.id.toString()
+                    getStatsBombSource()
             )
+
             managerRepository.save(manager)
         } else {
             if (manager.name != statsBombManager.name
@@ -285,9 +296,10 @@ class StatsBombEntityService(
         if (competitionStage == null) {
             competitionStage = CompetitionStage(
                     statsBombCompetitionStage.name,
-                    getStatsBombSource(),
-                    statsBombCompetitionStage.id.toString()
+                    statsBombCompetitionStage.id.toString(),
+                    getStatsBombSource()
             )
+
             competitionStageRepository.save(competitionStage)
         } else {
             if (competitionStage.name != statsBombCompetitionStage.name) {
@@ -308,10 +320,11 @@ class StatsBombEntityService(
         if (stadium == null) {
             stadium = Stadium(
                     statsBombStadium.name,
+                    statsBombStadium.id.toString(),
                     getOrCreateCountry(statsBombStadium.country),
-                    getStatsBombSource(),
-                    statsBombStadium.id.toString()
+                    getStatsBombSource()
             )
+
             stadiumRepository.save(stadium)
         } else {
             if (stadium.name != statsBombStadium.name
@@ -341,6 +354,7 @@ class StatsBombEntityService(
                     statsBombMatchMetadata.xyFidelityVersion,
                     getStatsBombSource()
             )
+
             matchMetadataRepository.save(matchMetadata)
         }
         return matchMetadata
@@ -357,10 +371,11 @@ class StatsBombEntityService(
         if (referee == null) {
             referee = Referee(
                     statsBombReferee.name,
+                    statsBombReferee.id.toString(),
                     country,
-                    getStatsBombSource(),
-                    statsBombReferee.id.toString()
+                    getStatsBombSource()
             )
+
             refereeRepository.save(referee)
         } else {
             if (referee.name != statsBombReferee.name || referee.country != country) {
@@ -382,17 +397,19 @@ class StatsBombEntityService(
 
         if (lineup == null) {
             lineup = MatchLineup(match, team)
+
             matchLineupRepository.save(lineup)
 
             statsBombLineup.players.forEach {
                 val lineupPlayer = LineupPlayer(
+                        it.jerseyNumber,
                         getOrCreatePlayer(
                                 it.playerId.toString(),
                                 it.playerName,
                                 it.playerNickname,
                                 it.country),
-                        lineup,
-                        it.jerseyNumber)
+                        lineup
+                )
 
                 lineupPlayerRepository.save(lineupPlayer)
             }
@@ -410,9 +427,10 @@ class StatsBombEntityService(
             player = Player(
                     playerName,
                     playerNickname,
+                    playerId,
                     if (country != null) getOrCreateCountry(country) else null,
-                    getStatsBombSource(),
-                    playerId)
+                    getStatsBombSource()
+            )
 
             playerRepository.save(player)
         } else {

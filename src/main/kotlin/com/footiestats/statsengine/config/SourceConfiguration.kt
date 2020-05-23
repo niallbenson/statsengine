@@ -1,4 +1,4 @@
-package com.footiestats.statsengine
+package com.footiestats.statsengine.config
 
 import com.footiestats.statsengine.services.engine.SourceService
 import org.springframework.boot.ApplicationRunner
@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-class BlogConfiguration(private val sourceService: SourceService) {
+class SourceConfiguration(private val sourceService: SourceService) {
 
     @Bean
     fun databaseInitializer() = ApplicationRunner {

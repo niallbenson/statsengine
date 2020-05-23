@@ -37,19 +37,21 @@ internal class StatsBombCompetitionFeedServiceTest {
         every { entityService.getStatsBombSource() } returns source
 
         every { entityService.getSeasonsBySource(source) } returns ArrayList()
-        val season = Season("name", source, "1")
+        val season = Season("name", "1", source)
         every { entityService.save(any<Season>()) } returns season
 
         every { entityService.getAllCountries() } returns ArrayList()
-        val country = Country("name", source, "1")
+        val country = Country("name", "1", source)
         every { entityService.save(any<Country>()) } returns country
 
         every { entityService.getCompetitionsBySouce(source) } returns ArrayList()
-        val competition = Competition(country, "name", Gender.MALE, source, "1")
+        val competition = Competition("name", Gender.MALE, "1", country, source)
+
         every { entityService.save(any<Competition>()) } returns competition
 
         every { entityService.getCompetitionSeasonsForCompetitions(any<Iterable<Competition>>()) } returns
                 ArrayList()
+
         every { entityService.save(any<CompetitionSeason>()) } returns
                 CompetitionSeason(competition, season)
 

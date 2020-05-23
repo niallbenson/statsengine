@@ -69,23 +69,24 @@ class StatsBombMatchFeedService(
 
             match = Match(
                     StatsBombDateUtils.convertToDate(statsBombMatch.matchDate, statsBombMatch.kickOff),
+                    statsBombMatch.homeScore,
+                    statsBombMatch.awayScore,
+                    statsBombMatch.matchStatus,
+                    StatsBombDateUtils.convertToDateFromLong(statsBombMatch.lastUpdated)!!,
+                    statsBombMatch.matchWeek,
+                    statsBombMatch.matchId.toString(),
                     competitionSeason,
                     homeTeam,
                     awayTeam,
                     ArrayList(homeTeam.managers),
                     ArrayList(awayTeam.managers),
-                    statsBombMatch.homeScore,
-                    statsBombMatch.awayScore,
-                    statsBombMatch.matchStatus,
-                    StatsBombDateUtils.convertToDateFromLong(statsBombMatch.lastUpdated)!!,
                     entityService.getOrCreateMatchMetaData(statsBombMatch.metadata),
-                    statsBombMatch.matchWeek,
                     entityService.getOrCreateCompetitionStage(statsBombMatch.competitionStage),
                     stadium,
                     referee,
-                    entityService.getStatsBombSource(),
-                    statsBombMatch.matchId.toString()
+                    entityService.getStatsBombSource()
             )
+
             entityService.save(match)
         }
         return match
