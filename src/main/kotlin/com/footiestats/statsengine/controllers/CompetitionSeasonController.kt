@@ -16,6 +16,4 @@ class CompetitionSeasonController(private val competitionSeasonService: Competit
     @GetMapping("/{id}")
     fun getById(@PathVariable id: Long) = competitionSeasonService.getOne(id)
 
-    @GetMapping("/source/{name}")
-    fun getBySourceId(@PathVariable name: String) = competitionSeasonService.getBySourceName(name)
 }

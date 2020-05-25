@@ -7,7 +7,7 @@ class StatsBombEvent(
         @JsonAlias("id") val id: String,
         @JsonAlias("index") val index: Int,
         @JsonAlias("period") val period: Int,
-        @JsonAlias("timestamp") val timestamp: LocalTime,
+        @JsonAlias("timestamp") val timestamp: String,
         @JsonAlias("minute") val minute: Byte,
         @JsonAlias("second") val second: Byte,
         @JsonAlias("type") val type: StatsBombEventType,

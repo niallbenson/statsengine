@@ -1,9 +1,11 @@
 package com.footiestats.statsengine.services.feed.statsbomb
 
 import com.footiestats.statsengine.dtos.statsbomb.StatsBombCompetition
+import com.footiestats.statsengine.dtos.statsbomb.StatsBombEvent
 import com.footiestats.statsengine.dtos.statsbomb.StatsBombLineup
 import com.footiestats.statsengine.dtos.statsbomb.StatsBombMatch
 import com.footiestats.statsengine.dtos.statsbomb.mappers.StatsBombCompetitionMapper
+import com.footiestats.statsengine.dtos.statsbomb.mappers.StatsBombEventMapper
 import com.footiestats.statsengine.dtos.statsbomb.mappers.StatsBombLineupsMapper
 import com.footiestats.statsengine.dtos.statsbomb.mappers.StatsBombMatchMapper
 import mu.KotlinLogging
@@ -56,5 +58,18 @@ class StatsBombRestService(private val restTemplate: RestTemplate) {
 
     private fun getMatchLineupsUrl(matchId: String) =
             "https://raw.githubusercontent.com/statsbomb/open-data/master/data/lineups/$matchId.json"
+
+    fun getStatsBombEvents(matchId: String): Iterable<StatsBombEvent> {
+        val url = getMatchEventsUrl(matchId)
+        val uri = URI(url)
+
+        log.info { "Retrieving events from $url" }
+        var jsonResponse = restTemplate.getForObject<String>(url)
+
+        return StatsBombEventMapper.fromJson(jsonResponse)
+    }
+
+    private fun getMatchEventsUrl(matchId: String) =
+            "https://raw.githubusercontent.com/statsbomb/open-data/master/data/events/$matchId.json"
 
 }

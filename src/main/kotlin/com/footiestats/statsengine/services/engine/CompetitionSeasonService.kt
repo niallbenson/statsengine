@@ -11,5 +11,4 @@ class CompetitionSeasonService(private val competitionSeasonRepository: Competit
 
     fun getOne(id: Long) = competitionSeasonRepository.findByIdOrNull(id)
 
-    fun getBySourceName(name: String) = competitionSeasonRepository.findAllByCompetition_Source_Name(name)
 }

@@ -68,10 +68,8 @@ interface TeamRepository : PagingAndSortingRepository<Team, Long> {
 interface CompetitionSeasonRepository : PagingAndSortingRepository<CompetitionSeason, Long> {
     override fun findAll(): ArrayList<CompetitionSeason>
     fun findAllByCompetitionIn(competitions: Iterable<Competition>): ArrayList<CompetitionSeason>
-
-    fun findAllByCompetition_Source_Name(name: String): Iterable<CompetitionSeason>
-
-    fun findByCompetition_IdAndSeason_Id(competitionId: Long?, seasonId: Long?): CompetitionSeason?
+    fun findAllByCompetition_Source(source: Source): Iterable<CompetitionSeason>
+    fun findByCompetitionAndSeason(competition: Competition, season: Season): CompetitionSeason?
 }
 
 interface MatchLineupRepository : PagingAndSortingRepository<MatchLineup, Long> {

@@ -102,7 +102,7 @@ class StatsBombEntityService(
         var country = countryRepository.findBySourceExternalId(statsBombCountry.id.toString())
 
         if (country == null) {
-            country = getOrCreateCountry(statsBombCountry.name)!!
+            country = getOrCreateCountry(statsBombCountry.name)
             country.sourceExternalId = statsBombCountry.id.toString()
 
             countryRepository.save(country)
@@ -168,11 +168,11 @@ class StatsBombEntityService(
     fun getCompetitionSeasonsForCompetitions(competitions: Iterable<Competition>) =
             competitionSeasonRepository.findAllByCompetitionIn(competitions)
 
-    fun getCompetitionSeasons() = competitionSeasonRepository.findAllByCompetition_Source_Name(getStatsBombSource().name)
+    fun getCompetitionSeasons() = competitionSeasonRepository.findAllByCompetition_Source(getStatsBombSource())
 
     fun getOrCreateCompetitionSeason(competition: Competition, season: Season): CompetitionSeason {
         var competitionSeason =
-                competitionSeasonRepository.findByCompetition_IdAndSeason_Id(competition.id, season.id)
+                competitionSeasonRepository.findByCompetitionAndSeason(competition, season)
 
         if (competitionSeason == null) {
             competitionSeason = CompetitionSeason(competition, season)
@@ -220,7 +220,7 @@ class StatsBombEntityService(
                     || team.gender != Gender.valueOf(statsBombTeam.teamGender.toUpperCase())
                     || team.teamGroup != statsBombTeam.teamGroup
                     || team.country != getOrCreateCountry(statsBombTeam.country)
-                    || !compareManagers(team.managers ?: null, managers)) {
+                    || !compareManagers(team.managers, managers)) {
                 team.name = statsBombTeam.teamName
                 team.gender = Gender.valueOf(statsBombTeam.teamGender.toUpperCase())
                 team.teamGroup = statsBombTeam.teamGroup
@@ -402,7 +402,7 @@ class StatsBombEntityService(
 
             statsBombLineup.players.forEach {
                 val lineupPlayer = LineupPlayer(
-                        it.jerseyNumber.toLong(),
+                        it.jerseyNumber,
                         getOrCreatePlayer(
                                 it.playerId.toString(),
                                 it.playerName,

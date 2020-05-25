@@ -69,11 +69,11 @@ class StatsBombMatchFeedService(
 
             match = Match(
                     StatsBombDateUtils.convertToDate(statsBombMatch.matchDate, statsBombMatch.kickOff),
-                    statsBombMatch.homeScore?.toLong(),
-                    statsBombMatch.awayScore?.toLong(),
+                    statsBombMatch.homeScore,
+                    statsBombMatch.awayScore,
                     statsBombMatch.matchStatus,
                     StatsBombDateUtils.convertToDateFromLong(statsBombMatch.lastUpdated)!!,
-                    statsBombMatch.matchWeek.toLong(),
+                    statsBombMatch.matchWeek,
                     statsBombMatch.matchId.toString(),
                     competitionSeason,
                     homeTeam,

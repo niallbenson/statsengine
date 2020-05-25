@@ -1,6 +1,7 @@
 package com.footiestats.statsengine.controllers
 
 import com.footiestats.statsengine.services.feed.statsbomb.feeds.StatsBombCompetitionFeedService
+import com.footiestats.statsengine.services.feed.statsbomb.feeds.StatsBombEventFeedService
 import com.footiestats.statsengine.services.feed.statsbomb.feeds.StatsBombLineupsFeedService
 import com.footiestats.statsengine.services.feed.statsbomb.feeds.StatsBombMatchFeedService
 //import com.footiestats.statsengine.services.feed.statsbomb.feeds.StatsBombMatchFeedService
@@ -13,7 +14,8 @@ import org.springframework.web.bind.annotation.RestController
 class FeedController(
         private val statsBombCompetitionFeedService: StatsBombCompetitionFeedService,
         private val statsBombMatchFeedService: StatsBombMatchFeedService,
-        private val statsBombLineupsFeedService: StatsBombLineupsFeedService
+        private val statsBombLineupsFeedService: StatsBombLineupsFeedService,
+        private val statsBombEventFeedService: StatsBombEventFeedService
 ) {
     @GetMapping("/statsbomb/competitions")
     fun updateStatsbombCompetitions() = statsBombCompetitionFeedService.run()
@@ -23,4 +25,8 @@ class FeedController(
 
     @GetMapping("/statsbomb/lineups")
     fun updateStatsbombLinesups() = statsBombLineupsFeedService.run()
+
+    @GetMapping("/statsbomb/events")
+    fun updateStatsbombEvents() = statsBombEventFeedService.run()
+
 }

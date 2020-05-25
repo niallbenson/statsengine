@@ -23,8 +23,6 @@ class StatsBombLineupsFeedService(
         val lineups = ArrayList<MatchLineup>()
 
         for (cs in competitionSeasons) {
-            log.info { "About to run feed for competition=${cs.competition.name} season=${cs.season.name}" }
-
             lineups.addAll(
                     processCompetitionSeason(cs)
             )
@@ -37,6 +35,9 @@ class StatsBombLineupsFeedService(
     private fun processCompetitionSeason(
             competitionSeason: CompetitionSeason
     ): ArrayList<MatchLineup> {
+        log.info { "Importing line ups for competition=${competitionSeason.competition.name} " +
+                "season=${competitionSeason.season.name}" }
+
         val matches = entityService.getMatchesForCompetitionSeason(competitionSeason)
 
         val lineups = ArrayList<MatchLineup>()
