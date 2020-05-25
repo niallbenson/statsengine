@@ -1,23 +1,13 @@
 package com.footiestats.statsengine.entities.engine
 
-import org.neo4j.ogm.annotation.GeneratedValue
-import org.neo4j.ogm.annotation.Id
-import org.neo4j.ogm.annotation.NodeEntity
-import org.neo4j.ogm.annotation.Relationship
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.Id
+import javax.persistence.ManyToOne
 
-@NodeEntity
-class LineupPlayer protected constructor(
-        var jerseyNumber: Byte,
-        @Id @GeneratedValue var id: Long? = null
-) {
-    @Relationship("LINEUP_PLAYER")
-    lateinit var player: Player
-
-    @Relationship("PART_OF_LINEUP")
-    lateinit var matchLineup: MatchLineup
-
-    constructor(jerseyNumber: Byte, player: Player, matchLineup: MatchLineup) : this(jerseyNumber) {
-        this.player = player
-        this.matchLineup = matchLineup
-    }
-}
+@Entity
+class LineupPlayer(
+        var jerseyNumber: Int,
+        @ManyToOne var player: Player,
+        @ManyToOne var matchLineup: MatchLineup,
+        @Id @GeneratedValue var id: Long? = null)

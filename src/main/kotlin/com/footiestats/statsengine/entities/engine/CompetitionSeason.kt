@@ -1,22 +1,12 @@
 package com.footiestats.statsengine.entities.engine
 
-import org.neo4j.ogm.annotation.GeneratedValue
-import org.neo4j.ogm.annotation.Id
-import org.neo4j.ogm.annotation.NodeEntity
-import org.neo4j.ogm.annotation.Relationship
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.Id
+import javax.persistence.ManyToOne
 
-@NodeEntity
-class CompetitionSeason protected constructor(
-        @Id @GeneratedValue var id: Long? = null
-) {
-    @Relationship(type = "INSTANCE_OF")
-    lateinit var competition: Competition
-
-    @Relationship(type = "INSTANCE_OF")
-    lateinit var season: Season
-
-    constructor(competition: Competition, season: Season) : this() {
-        this.competition = competition
-        this.season = season
-    }
-}
+@Entity
+class CompetitionSeason(
+        @ManyToOne var competition: Competition,
+        @ManyToOne var season: Season,
+        @Id @GeneratedValue var id: Long? = null)

@@ -168,11 +168,11 @@ class StatsBombEntityService(
     fun getCompetitionSeasonsForCompetitions(competitions: Iterable<Competition>) =
             competitionSeasonRepository.findAllByCompetitionIn(competitions)
 
-    fun getCompetitionSeasons() = competitionSeasonRepository.findAllByCompetition_Source_Id(getStatsBombSource().id!!)
+    fun getCompetitionSeasons() = competitionSeasonRepository.findAllByCompetition_Source_Name(getStatsBombSource().name)
 
     fun getOrCreateCompetitionSeason(competition: Competition, season: Season): CompetitionSeason {
         var competitionSeason =
-                competitionSeasonRepository.findByCompetitionAndSeason(competition, season)
+                competitionSeasonRepository.findByCompetition_IdAndSeason_Id(competition.id, season.id)
 
         if (competitionSeason == null) {
             competitionSeason = CompetitionSeason(competition, season)
@@ -402,7 +402,7 @@ class StatsBombEntityService(
 
             statsBombLineup.players.forEach {
                 val lineupPlayer = LineupPlayer(
-                        it.jerseyNumber,
+                        it.jerseyNumber.toLong(),
                         getOrCreatePlayer(
                                 it.playerId.toString(),
                                 it.playerName,

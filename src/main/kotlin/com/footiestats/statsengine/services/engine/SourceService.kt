@@ -2,6 +2,7 @@ package com.footiestats.statsengine.services.engine
 
 import com.footiestats.statsengine.entities.engine.Source
 import com.footiestats.statsengine.repos.engine.SourceRepository
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
@@ -13,4 +14,6 @@ class SourceService(private val sourceRepository: SourceRepository) {
         val statsBombSource = Source("StatsBomb")
         sourceRepository.save(statsBombSource)
     }
+
+    fun getSource(id: Long) = sourceRepository.findByIdOrNull(id)
 }
