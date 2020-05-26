@@ -14,7 +14,8 @@ class StatsBombEvent(
         @JsonAlias("possession") val possession: Int,
         @JsonAlias("possession_team") val possessionTeam: StatsBombTeamSimple,
         @JsonAlias("play_pattern") val playPattern: StatsBombPlayPattern,
-        @JsonAlias("team") val team: StatsBombTeam,
+        @JsonAlias("team") val team: StatsBombTeamSimple,
         @JsonAlias("duration") val duration: Double,
-        @JsonAlias("tactics") val tactics: Iterable<StatsBombTactics>
+        @JsonAlias("tactics") val tactics: StatsBombTactics?,
+        @JsonAlias("related_events") val relatedEvents: Iterable<String>?
 )

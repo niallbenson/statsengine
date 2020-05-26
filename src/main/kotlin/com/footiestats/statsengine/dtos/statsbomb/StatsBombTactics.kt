@@ -4,5 +4,5 @@ import com.fasterxml.jackson.annotation.JsonAlias
 
 class StatsBombTactics(
     @JsonAlias("formation") val formation: Int,
-    @JsonAlias("lineup") val lineup: StatsBombTacticsLineupPlayer
+    @JsonAlias("lineup") val lineup: Iterable<StatsBombTacticsLineupPlayer>
 )
