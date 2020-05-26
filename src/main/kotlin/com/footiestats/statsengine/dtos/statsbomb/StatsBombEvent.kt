@@ -1,6 +1,7 @@
 package com.footiestats.statsengine.dtos.statsbomb
 
 import com.fasterxml.jackson.annotation.JsonAlias
+import com.sun.org.apache.xpath.internal.operations.Bool
 import java.time.LocalTime
 
 class StatsBombEvent(
@@ -17,5 +18,18 @@ class StatsBombEvent(
         @JsonAlias("team") val team: StatsBombTeamSimple,
         @JsonAlias("duration") val duration: Double,
         @JsonAlias("tactics") val tactics: StatsBombTactics?,
-        @JsonAlias("related_events") val relatedEvents: Iterable<String>?
+        @JsonAlias("related_events") val relatedEvents: Iterable<String>?,
+        @JsonAlias("half_start") val halfStart: StatsBombHalfStart?,
+        @JsonAlias("player") val player: StatsBombPlayerSimple?,
+        @JsonAlias("position") val position: StatsBombPosition?,
+        @JsonAlias("location") val location: Array<Double>?,
+        @JsonAlias("pass") val pass: StatsBombPass?,
+        @JsonAlias("carry") val carry: StatsBombCarry?,
+        @JsonAlias("under_pressure") val underPressure: Boolean?,
+        @JsonAlias("counterpress") val counterPress: Boolean?,
+        @JsonAlias("dribble") val dribble: StatsBombDribble?,
+        @JsonAlias("ball_receipt") val ballReceipt: StatsBombBallReceipt?,
+        @JsonAlias("interception") val interception: StatsBombInterception?,
+        @JsonAlias("clearance") val clearance: StatsBombClearance?,
+        @JsonAlias("duel") val duel: StatsBombDuel?
 )
