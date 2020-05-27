@@ -31,5 +31,12 @@ class StatsBombEvent(
         @JsonAlias("ball_receipt") val ballReceipt: StatsBombBallReceipt?,
         @JsonAlias("interception") val interception: StatsBombInterception?,
         @JsonAlias("clearance") val clearance: StatsBombClearance?,
-        @JsonAlias("duel") val duel: StatsBombDuel?
+        @JsonAlias("duel") val duel: StatsBombDuel?,
+        @JsonAlias("out") val out: Boolean?,
+        @JsonAlias("shot") val shot: StatsBombShot?,
+        @JsonAlias("goalkeeper") val goalkeeper: StatsBombGoalkeeper?,
+        @JsonAlias("foul_committed") val foulCommitted: StatsBombFoulCommitted?,
+        @JsonAlias("foul_won") val foulWon: StatsBombFoulWon?,
+        @JsonAlias("bad_behaviour") val badBehaviour: StatsBombBadBehaviour?,
+        @JsonAlias("ball_recovery") val ballRecovery: StatsBombBallRecovery?
 )

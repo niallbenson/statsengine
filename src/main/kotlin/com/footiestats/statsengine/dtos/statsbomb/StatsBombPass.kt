@@ -12,5 +12,14 @@ class StatsBombPass(
         @JsonAlias("type") val type: StatsBombEventType?,
         @JsonAlias("outcome") val outcome: StatsBombOutcome?,
         @JsonAlias("no_touch") val noTouch: Boolean?,
-        @JsonAlias("cross") val cross: Boolean?
+        @JsonAlias("cross") val cross: Boolean?,
+        @JsonAlias("switch") val switch: Boolean?,
+        @JsonAlias("inswinging") val inswinging: Boolean?,
+        @JsonAlias("technique") val technique: StatsBombTechnique?,
+        @JsonAlias("assisted_shot_id") val assistedShotId: String?,
+        @JsonAlias("shot_assist") val shotAssist: Boolean?,
+        @JsonAlias("aerial_won") val aerialWon: Boolean?,
+        @JsonAlias("goal_assist") val goalAssist: Boolean?,
+        @JsonAlias("outswsinging") val outswinging: Boolean?,
+        @JsonAlias("cut_back") var cutBack: Boolean?
 )
