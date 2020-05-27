@@ -7,6 +7,6 @@ class StatsBombClearance(
         @JsonAlias("right_foot") val rightFoot: Boolean?,
         @JsonAlias("head") val head: Boolean?,
         @JsonAlias("other") val other: Boolean?,
-        @JsonAlias("body_part") val bodyPart: StatsBombBodyPart,
+        @JsonAlias("body_part") val bodyPart: StatsBombBodyPart?,
         @JsonAlias("aerial_won") val aerialWon: Boolean?
 )

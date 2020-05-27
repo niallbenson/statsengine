@@ -38,5 +38,12 @@ class StatsBombEvent(
         @JsonAlias("foul_committed") val foulCommitted: StatsBombFoulCommitted?,
         @JsonAlias("foul_won") val foulWon: StatsBombFoulWon?,
         @JsonAlias("bad_behaviour") val badBehaviour: StatsBombBadBehaviour?,
-        @JsonAlias("ball_recovery") val ballRecovery: StatsBombBallRecovery?
+        @JsonAlias("ball_recovery") val ballRecovery: StatsBombBallRecovery?,
+        @JsonAlias("substitution") val substitution: StatsBombSubstitution?,
+        @JsonAlias("injury_stoppage") val injuryStoppage: StatsBombInjuryStoppage?,
+        @JsonAlias("50_50") val fiftyFifty: StatsBombFiftyFifty?,
+        @JsonAlias("block") val deflection: StatsBombBlock?,
+        @JsonAlias("miscontrol") val miscontrol: StatsBombMiscontrol?,
+        @JsonAlias("off_camera") val offCamera: Boolean?,
+        @JsonAlias("half_end") val halfEnd: StatsBombHalfEnd?
 )

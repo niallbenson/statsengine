@@ -21,5 +21,9 @@ class StatsBombPass(
         @JsonAlias("aerial_won") val aerialWon: Boolean?,
         @JsonAlias("goal_assist") val goalAssist: Boolean?,
         @JsonAlias("outswsinging") val outswinging: Boolean?,
-        @JsonAlias("cut_back") var cutBack: Boolean?
+        @JsonAlias("cut_back") val cutBack: Boolean?,
+        @JsonAlias("through_ball") val throughBall: Boolean?,
+        @JsonAlias("miscommunication") val miscommunication: Boolean?,
+        @JsonAlias("deflected") val deflected: Boolean?,
+        @JsonAlias("straight") val straight: Boolean?
 )

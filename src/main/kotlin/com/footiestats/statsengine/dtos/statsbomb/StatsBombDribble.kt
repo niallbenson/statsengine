@@ -5,5 +5,6 @@ import com.fasterxml.jackson.annotation.JsonAlias
 class StatsBombDribble(
         @JsonAlias("outcome") val outcome: StatsBombOutcome,
         @JsonAlias("overrun") val overrun: Boolean,
-        @JsonAlias("nutmeg") val nutmeg: Boolean?
+        @JsonAlias("nutmeg") val nutmeg: Boolean?,
+        @JsonAlias("no_touch") val noTouch: Boolean?
 )

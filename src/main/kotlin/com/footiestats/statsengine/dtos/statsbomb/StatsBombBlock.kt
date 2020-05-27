@@ -2,7 +2,8 @@ package com.footiestats.statsengine.dtos.statsbomb
 
 import com.fasterxml.jackson.annotation.JsonAlias
 
-class StatsBombBallRecovery(
-        @JsonAlias("recovery_failure") val recoveryFailure: Boolean?,
+class StatsBombBlock(
+        @JsonAlias("deflection") val deflection: Boolean?,
+        @JsonAlias("save_block") val saveBock: Boolean?,
         @JsonAlias("offensive") val offensive: Boolean?
 )

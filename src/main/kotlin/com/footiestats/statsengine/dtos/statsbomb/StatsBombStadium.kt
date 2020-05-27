@@ -3,6 +3,6 @@ package com.footiestats.statsengine.dtos.statsbomb
 import com.fasterxml.jackson.annotation.JsonAlias
 
 class StatsBombStadium(
-        @JsonAlias("id") var id: Long,
-        @JsonAlias("name") var name: String,
-        @JsonAlias("country") var country: StatsBombCountry)
+        @JsonAlias("id") val id: Long,
+        @JsonAlias("name") val name: String,
+        @JsonAlias("country") val country: StatsBombCountry)

@@ -2,7 +2,6 @@ package com.footiestats.statsengine.dtos.statsbomb
 
 import com.fasterxml.jackson.annotation.JsonAlias
 
-class StatsBombCard(
-        @JsonAlias("id") val id: Long,
-        @JsonAlias("name") val name: String
+class StatsBombFiftyFifty(
+        @JsonAlias("outcome") val outcome: StatsBombOutcome
 )
