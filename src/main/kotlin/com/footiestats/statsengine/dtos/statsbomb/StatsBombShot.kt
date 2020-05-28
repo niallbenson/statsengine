@@ -19,5 +19,6 @@ class StatsBombShot(
         @JsonAlias("follows_dribble") val followsDribble: Boolean?,
         @JsonAlias("saved_off_target") val savedOffTarget: Boolean?,
         @JsonAlias("saved_to_post") val savedToPost: Boolean?,
-        @JsonAlias("redirect") val redirect: Boolean?
+        @JsonAlias("redirect") val redirect: Boolean?,
+        @JsonAlias("kick_off") val kickOff: Boolean?
 )

@@ -14,5 +14,8 @@ class StatsBombGoalkeeper(
         @JsonAlias("shot_saved_to_post") val shotSavedToPost: Boolean?,
         @JsonAlias("lost_in_play") val lostInPlay: Boolean?,
         @JsonAlias("success_in_play") val successInPlay: Boolean?,
-        @JsonAlias("saved_to_post") val savedToPost: Boolean?
+        @JsonAlias("saved_to_post") val savedToPost: Boolean?,
+        @JsonAlias("lost_out") val lostOut: Boolean?,
+        @JsonAlias("success_out") val successOut: Boolean?,
+        @JsonAlias("penalty_saved_to_post") val penaltySavedToPost: Boolean?
 )

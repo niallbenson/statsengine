@@ -25,5 +25,6 @@ class StatsBombPass(
         @JsonAlias("through_ball") val throughBall: Boolean?,
         @JsonAlias("miscommunication") val miscommunication: Boolean?,
         @JsonAlias("deflected") val deflected: Boolean?,
-        @JsonAlias("straight") val straight: Boolean?
+        @JsonAlias("straight") val straight: Boolean?,
+        @JsonAlias("backheel") val backheel: Boolean?
 )

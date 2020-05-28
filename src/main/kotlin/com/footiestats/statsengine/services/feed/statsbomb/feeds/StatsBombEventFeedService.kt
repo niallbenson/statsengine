@@ -18,6 +18,15 @@ class StatsBombEventFeedService(
 
         val competitionSeasons = entityService.getCompetitionSeasons()
 
+//        val iterator = competitionSeasons.iterator()
+//        iterator.next()
+//        iterator.next()
+//        iterator.next()
+//        iterator.next()
+//
+//        val cs = iterator.next()
+//        processCompetitionSeason(cs)
+
         for (cs in competitionSeasons) processCompetitionSeason(cs)
 
         return true
@@ -32,7 +41,9 @@ class StatsBombEventFeedService(
         for (m in matches) {
             log.info { "Processing match ID ${m.id} ${m.homeTeam.name} vs ${m.awayTeam.name} ${m.matchDate}" }
 
-            val statsBombEvents = restService.getStatsBombEvents(m.sourceExternalId)
+            val statsBombEvents = restService.getStatsBombEvents(m.sourceExternalId) as ArrayList
+
+            log.info { "${statsBombEvents.size} events found" }
         }
 
     }

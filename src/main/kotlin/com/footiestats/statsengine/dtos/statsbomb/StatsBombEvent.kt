@@ -45,5 +45,6 @@ class StatsBombEvent(
         @JsonAlias("block") val deflection: StatsBombBlock?,
         @JsonAlias("miscontrol") val miscontrol: StatsBombMiscontrol?,
         @JsonAlias("off_camera") val offCamera: Boolean?,
-        @JsonAlias("half_end") val halfEnd: StatsBombHalfEnd?
+        @JsonAlias("half_end") val halfEnd: StatsBombHalfEnd?,
+        @JsonAlias("player_off") val playerOff: StatsBombPlayerOff?
 )
