@@ -1,5 +1,7 @@
 package com.footiestats.statsengine.services.feed.statsbomb.feeds
 
+import com.footiestats.statsengine.dtos.statsbomb.StatsBombEvent
+import com.footiestats.statsengine.dtos.statsbomb.StatsBombEventType
 import com.footiestats.statsengine.entities.engine.CompetitionSeason
 import com.footiestats.statsengine.services.feed.statsbomb.StatsBombEntityService
 import com.footiestats.statsengine.services.feed.statsbomb.StatsBombRestService
@@ -13,39 +15,60 @@ class StatsBombEventFeedService(
         private val entityService: StatsBombEntityService,
         private val restService: StatsBombRestService) {
 
-    fun run(): Boolean {
+    fun run(): Iterable<StatsBombEvent> {
         log.info { "Starting StatsBomb Events Feed" }
+
+        val events = ArrayList<StatsBombEvent>()
 
         val competitionSeasons = entityService.getCompetitionSeasons()
 
-//        val iterator = competitionSeasons.iterator()
-//        iterator.next()
-//        iterator.next()
-//        iterator.next()
-//        iterator.next()
-//
-//        val cs = iterator.next()
-//        processCompetitionSeason(cs)
+//        for (cs in competitionSeasons) {
+            events.addAll(processCompetitionSeason(competitionSeasons.iterator().next()))
+//        }
 
-        for (cs in competitionSeasons) processCompetitionSeason(cs)
+        class EventType(val id: Int, val name: String)
 
-        return true
+        val types = HashSet<EventType>()
+
+        for (s in events.map { it.type }) {
+            if (types.count { it.id == s.id } == 0) {
+                types.add(EventType(s.id, s.name))
+            }
+        }
+
+        val typeNameEventsMap = HashMap<String, Array<StatsBombEvent>>()
+
+        for (t in types) {
+            log.info { "${t.id}: ${t.name}" }
+
+            typeNameEventsMap.set(
+                    t.name,
+                    events.filter { it.type.id == t.id }.toTypedArray()
+            )
+        }
+
+        return events
     }
 
-    private fun processCompetitionSeason(competitionSeason: CompetitionSeason) {
-        log.info { "Importing events for competition=${competitionSeason.competition.name} " +
-                "season=${competitionSeason.season.name}" }
+    private fun processCompetitionSeason(competitionSeason: CompetitionSeason): Iterable<StatsBombEvent> {
+        log.info {
+            "Importing events for competition=${competitionSeason.competition.name} " +
+                    "season=${competitionSeason.season.name}"
+        }
+
+        val events = ArrayList<StatsBombEvent>()
 
         val matches = entityService.getMatchesForCompetitionSeason(competitionSeason)
 
-        for (m in matches) {
+        for (m in matches.subList(0, 5)) {
             log.info { "Processing match ID ${m.id} ${m.homeTeam.name} vs ${m.awayTeam.name} ${m.matchDate}" }
 
-            val statsBombEvents = restService.getStatsBombEvents(m.sourceExternalId) as ArrayList
+            events.addAll(restService.getStatsBombEvents(m.sourceExternalId))
 
-            log.info { "${statsBombEvents.size} events found" }
+            log.info { "${events.size} events found" }
         }
 
+        return events
     }
 
 

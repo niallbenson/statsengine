@@ -1,10 +1,11 @@
-package com.footiestats.statsengine.entities.engine.events
+package com.footiestats.statsengine.entities.engine.events.metadata
 
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
 
 @Entity
-class EventType(
+class Outcome(
         var name: String,
-        @Id @GeneratedValue var id: Long? = null)
+        @Id @GeneratedValue var id: Long? = null
+)

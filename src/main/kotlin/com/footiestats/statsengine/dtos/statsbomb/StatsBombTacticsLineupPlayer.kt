@@ -5,5 +5,4 @@ import com.fasterxml.jackson.annotation.JsonAlias
 class StatsBombTacticsLineupPlayer(
         @JsonAlias("player") val playerSimple: StatsBombPlayerSimple,
         @JsonAlias("position") val position: StatsBombPosition,
-        @JsonAlias("jersey_number") val jerseyNumber: Byte
-)
+        @JsonAlias("jersey_number") val jerseyNumber: Byte)
