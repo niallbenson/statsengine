@@ -14,20 +14,12 @@ class Pass(
         @ManyToOne var endLocation: Location2D,
         @Id @GeneratedValue var id: Long? = null) {
 
-    @ManyToOne
-    var bodyPart: BodyPart? = null
+    @ManyToOne var bodyPart: BodyPart? = null
+    @ManyToOne var eventType: EventType? = null
+    @ManyToOne var outcome: Outcome? = null
+    @ManyToOne var technique: Technique? = null
 
-    @ManyToOne
-    var eventType: EventType? = null
-
-    @ManyToOne
-    var outcome: Outcome? = null
-
-    @ManyToOne
-    var technique: Technique? = null
-
-    @OneToOne
-    var assistedShot: Event? = null
+    @OneToOne var assistedShot: Event? = null
 
     var noTouch: Boolean? = null
     var cross: Boolean? = null

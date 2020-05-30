@@ -15,5 +15,16 @@ class Shot(
         @ManyToOne var bodyPart: BodyPart,
         @Id @GeneratedValue var id: Long? = null
 ) {
+    @OneToMany var freezeFrame = mutableSetOf<FreezeFrame>()
 
+    var firstTime: Boolean? = null
+    var openGoal: Boolean? = null
+    var oneOnOne: Boolean? = null
+    var aerialWon: Boolean? = null
+    var deflected: Boolean? = null
+    var followsDribble: Boolean? = null
+    var savedOffTarget: Boolean? = null
+    var savedToPost: Boolean? = null
+    var redirect: Boolean? = null
+    var kickOff: Boolean? = null
 }

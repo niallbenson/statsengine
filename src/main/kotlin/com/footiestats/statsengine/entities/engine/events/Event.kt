@@ -27,7 +27,7 @@ class Event(
         var externalSourceId: String,
         @Id @GeneratedValue var id: Long? = null) {
 
-    @OneToMany var relatedEvents = mutableListOf<Event>()
+    @OneToMany var relatedEvents = mutableSetOf<Event>()
 
     @ManyToOne var player: Player? = null
 
@@ -42,4 +42,22 @@ class Event(
     @OneToOne var interception: Interception? = null
     @OneToOne var clearance: Clearance? = null
     @OneToOne var duel: Duel? = null
+    @OneToOne var shot: Shot? = null
+    @OneToOne var goalKeeper: GoalKeeper? = null
+    @OneToOne var foulCommitted: FoulCommitted? = null
+    @OneToOne var foulWon: FoulWon? = null
+    @OneToOne var badBehaviour: BadBehaviour? = null
+    @OneToOne var recovery: BallRecovery? = null
+    @OneToOne var substitution: Substitution? = null
+    @OneToOne var injuryStoppage: InjuryStoppage? = null
+    @OneToOne var fiftyFifty: FiftyFifty? = null
+    @OneToOne var block: Block? = null
+    @OneToOne var miscontrol: Miscontrol? = null
+    @OneToOne var halfEnd: HalfEnd? = null
+    @OneToOne var playerOff: PlayerOff? = null
+
+    var underPressure: Boolean? = null
+    var counterPress: Boolean? = null
+    var out: Boolean? = null
+    var offCamera: Boolean? = null
 }
