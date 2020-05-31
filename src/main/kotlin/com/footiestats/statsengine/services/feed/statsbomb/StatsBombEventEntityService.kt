@@ -1,10 +1,8 @@
 package com.footiestats.statsengine.services.feed.statsbomb
 
-import com.footiestats.statsengine.dtos.statsbomb.StatsBombCard
-import com.footiestats.statsengine.dtos.statsbomb.StatsBombEventType
-import com.footiestats.statsengine.dtos.statsbomb.StatsBombOutcome
-import com.footiestats.statsengine.dtos.statsbomb.StatsBombPlayPattern
+import com.footiestats.statsengine.dtos.statsbomb.*
 import com.footiestats.statsengine.entities.engine.events.EventType
+import com.footiestats.statsengine.entities.engine.events.refdata.BodyPart
 import com.footiestats.statsengine.entities.engine.events.refdata.Outcome
 import com.footiestats.statsengine.entities.engine.events.refdata.Card
 import com.footiestats.statsengine.entities.engine.events.refdata.PlayPattern
@@ -104,5 +102,17 @@ class StatsBombEventEntityService(
             )
         }
         return outcome
+    }
+
+    // Body Part
+    fun getOrCreateBodyPart(statsBombBodyPart: StatsBombBodyPart): BodyPart {
+        var bodyPart = bodyPartRepository.findBySourceExternalId(statsBombBodyPart.id.toString())
+
+        if (bodyPart == null) {
+            bodyPart = bodyPartRepository.save(
+                    BodyPart(statsBombBodyPart.name, getStatsBombSource(), statsBombBodyPart.id.toString())
+            )
+        }
+        return bodyPart
     }
 }

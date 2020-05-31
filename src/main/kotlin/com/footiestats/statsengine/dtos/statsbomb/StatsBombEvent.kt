@@ -42,7 +42,7 @@ class StatsBombEvent(
         @JsonAlias("substitution") val substitution: StatsBombSubstitution?,
         @JsonAlias("injury_stoppage") val injuryStoppage: StatsBombInjuryStoppage?,
         @JsonAlias("50_50") val fiftyFifty: StatsBombFiftyFifty?,
-        @JsonAlias("block") val deflection: StatsBombBlock?,
+        @JsonAlias("block") val block: StatsBombBlock?,
         @JsonAlias("miscontrol") val miscontrol: StatsBombMiscontrol?,
         @JsonAlias("off_camera") val offCamera: Boolean?,
         @JsonAlias("half_end") val halfEnd: StatsBombHalfEnd?,

@@ -85,6 +85,8 @@ class StatsBombEventFeedService(
                 baseEntityService.getStatsBombSource(),
                 statsBombEvent.id)
 
+        addOptionalEventData(event, statsBombEvent)
+
         return event
     }
 
@@ -105,15 +107,26 @@ class StatsBombEventFeedService(
             event.carry = getCarry(statsBombEvent.carry)
         }
 
+        if (statsBombEvent.clearance != null) {
+            event.clearance = getClearance(statsBombEvent.clearance)
+        }
 
+        if (statsBombEvent.block != null) {
+            event.block = getBlock(statsBombEvent.block)
+        }
 
+        if (statsBombEvent.carry != null) {
+            event.carry = getCarry(statsBombEvent.carry)
+        }
 
-//        statsBombEvent.clearance
-//        statsBombEvent.deflection
-//        statsBombEvent.carry
-//        statsBombEvent.counterPress
-//        statsBombEvent.dribble
-//        statsBombEvent.duel
+        if (statsBombEvent.dribble != null) {
+            event.dribble = getDribble(statsBombEvent.dribble)
+        }
+
+        if (statsBombEvent.duel != null) {
+            event.duel = getDuel(statsBombEvent.duel)
+        }
+
 //        statsBombEvent.fiftyFifty
 //        statsBombEvent.foulCommitted
 //        statsBombEvent.foulWon
@@ -159,4 +172,50 @@ class StatsBombEventFeedService(
         )
     }
 
+    private fun getClearance(statsBombClearance: StatsBombClearance): Clearance {
+        val clearance = Clearance()
+
+        clearance.aerialWon = statsBombClearance.aerialWon
+        clearance.head = statsBombClearance.head
+        clearance.leftFoot = statsBombClearance.leftFoot
+        clearance.rightFoot = statsBombClearance.rightFoot
+        clearance.other = statsBombClearance.other
+
+        if (statsBombClearance.bodyPart != null) {
+            clearance.bodyPart = eventEntityService.getOrCreateBodyPart(statsBombClearance.bodyPart)
+        }
+        return clearance
+    }
+
+    private fun getBlock(statsBombBlock: StatsBombBlock): Block {
+        val block = Block()
+
+        block.deflection = statsBombBlock.deflection
+        block.offensive = statsBombBlock.offensive
+        block.saveBlock = statsBombBlock.saveBock
+
+        return block
+    }
+
+    private fun getDribble(statsBombDribble: StatsBombDribble): Dribble {
+        val dribble = Dribble(
+                eventEntityService.getOrCreateOutcome(statsBombDribble.outcome),
+                statsBombDribble.overrun
+        )
+        dribble.noTouch = statsBombDribble.noTouch
+        dribble.nutmeg = statsBombDribble.nutmeg
+
+        return dribble
+    }
+
+    private fun getDuel(statsBombDuel: StatsBombDuel): Duel {
+        val duel = Duel(
+                eventEntityService.getOrCreateEventType(statsBombDuel.type)
+        )
+
+        if (statsBombDuel.outcome != null) {
+            duel.outcome = eventEntityService.getOrCreateOutcome(statsBombDuel.outcome)
+        }
+        return duel
+    }
 }

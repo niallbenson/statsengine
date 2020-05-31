@@ -3,6 +3,7 @@ package com.footiestats.statsengine.repos.engine
 import com.footiestats.statsengine.entities.engine.events.Event
 import com.footiestats.statsengine.entities.engine.events.EventType
 import com.footiestats.statsengine.entities.engine.events.metadata.*
+import com.footiestats.statsengine.entities.engine.events.refdata.BodyPart
 import com.footiestats.statsengine.entities.engine.events.refdata.Card
 import com.footiestats.statsengine.entities.engine.events.refdata.Outcome
 import com.footiestats.statsengine.entities.engine.events.refdata.PlayPattern
@@ -33,7 +34,7 @@ interface BlockRepository : PagingAndSortingRepository<Block, Long> {
 }
 
 interface BodyPartRepository : PagingAndSortingRepository<BodyPart, Long> {
-
+    fun findBySourceExternalId(id: String): BodyPart?
 }
 
 interface CardRepository : PagingAndSortingRepository<Card, Long> {
