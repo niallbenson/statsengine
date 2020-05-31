@@ -2,7 +2,7 @@ package com.footiestats.statsengine.services.feed.statsbomb.feeds
 
 import com.footiestats.statsengine.dtos.statsbomb.StatsBombCompetition
 import com.footiestats.statsengine.entities.engine.CompetitionSeason
-import com.footiestats.statsengine.services.feed.statsbomb.StatsBombEntityService
+import com.footiestats.statsengine.services.feed.statsbomb.StatsBombBaseEntityService
 import com.footiestats.statsengine.services.feed.statsbomb.StatsBombRestService
 import mu.KotlinLogging
 import org.springframework.stereotype.Service
@@ -11,7 +11,7 @@ private val log = KotlinLogging.logger {}
 
 @Service
 class StatsBombCompetitionFeedService(
-        private val entityService: StatsBombEntityService,
+        private val baseEntityService: StatsBombBaseEntityService,
         private val restService: StatsBombRestService) {
 
     fun run(): ArrayList<CompetitionSeason> {
@@ -38,9 +38,9 @@ class StatsBombCompetitionFeedService(
     private fun getOrCreateCompetitionSeason(s: StatsBombCompetition): CompetitionSeason {
         log.info { "Competition: ${s.competitionName} id:${s.competitionId} season: ${s.seasonName}" }
 
-        val competition = entityService.getOrCreateCompetition(s)
-        val season = entityService.getOrCreateSeason(s.seasonId.toString(), s.seasonName)
+        val competition = baseEntityService.getOrCreateCompetition(s)
+        val season = baseEntityService.getOrCreateSeason(s.seasonId.toString(), s.seasonName)
 
-        return entityService.getOrCreateCompetitionSeason(competition, season)
+        return baseEntityService.getOrCreateCompetitionSeason(competition, season)
     }
 }

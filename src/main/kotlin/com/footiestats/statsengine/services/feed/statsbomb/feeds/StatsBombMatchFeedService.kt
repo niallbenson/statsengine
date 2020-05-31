@@ -2,10 +2,9 @@ package com.footiestats.statsengine.services.feed.statsbomb.feeds
 
 import com.footiestats.statsengine.dtos.statsbomb.StatsBombMatch
 import com.footiestats.statsengine.entities.engine.*
-import com.footiestats.statsengine.services.feed.statsbomb.StatsBombEntityService
+import com.footiestats.statsengine.services.feed.statsbomb.StatsBombBaseEntityService
 import com.footiestats.statsengine.services.feed.statsbomb.StatsBombRestService
 import com.footiestats.statsengine.services.feed.statsbomb.utils.StatsBombDateUtils
-import com.footiestats.statsengine.services.feed.statsbomb.exceptions.StatsBombEntityNotFound
 import mu.KotlinLogging
 import org.springframework.stereotype.Service
 
@@ -13,7 +12,7 @@ private val log = KotlinLogging.logger {}
 
 @Service
 class StatsBombMatchFeedService(
-        private val entityService: StatsBombEntityService,
+        private val baseEntityService: StatsBombBaseEntityService,
         private val restService: StatsBombRestService) {
 
     fun run(): ArrayList<Match> {
@@ -21,7 +20,7 @@ class StatsBombMatchFeedService(
 
         val matches = ArrayList<Match>()
 
-        val competitionSeasons = entityService.getCompetitionSeasons()
+        val competitionSeasons = baseEntityService.getCompetitionSeasons()
 
         for (cs in competitionSeasons) {
             matches.addAll(
@@ -50,22 +49,22 @@ class StatsBombMatchFeedService(
     }
 
     private fun processMatch(statsBombMatch: StatsBombMatch, competitionSeason: CompetitionSeason): Match {
-        var match = entityService.getMatchByExternalId(statsBombMatch.matchId.toString())
+        var match = baseEntityService.getMatchByExternalId(statsBombMatch.matchId.toString())
 
         if (match == null) {
             val stadium =
                     if (statsBombMatch.stadium != null)
-                        entityService.getOrCreateStadium(statsBombMatch.stadium!!)
+                        baseEntityService.getOrCreateStadium(statsBombMatch.stadium!!)
                     else null
 
             val referee =
                     if (statsBombMatch.referee != null)
-                        entityService.getOrCreateReferee(statsBombMatch.referee!!)
+                        baseEntityService.getOrCreateReferee(statsBombMatch.referee!!)
                     else null
 
-            val homeTeam = entityService.getOrCreateTeam(statsBombMatch.homeTeam)
+            val homeTeam = baseEntityService.getOrCreateTeam(statsBombMatch.homeTeam)
 
-            val awayTeam = entityService.getOrCreateTeam(statsBombMatch.awayTeam)
+            val awayTeam = baseEntityService.getOrCreateTeam(statsBombMatch.awayTeam)
 
             match = Match(
                     StatsBombDateUtils.convertToDate(statsBombMatch.matchDate, statsBombMatch.kickOff),
@@ -80,14 +79,14 @@ class StatsBombMatchFeedService(
                     awayTeam,
                     ArrayList(homeTeam.managers),
                     ArrayList(awayTeam.managers),
-                    entityService.getOrCreateMatchMetaData(statsBombMatch.metadata),
-                    entityService.getOrCreateCompetitionStage(statsBombMatch.competitionStage),
+                    baseEntityService.getOrCreateMatchMetaData(statsBombMatch.metadata),
+                    baseEntityService.getOrCreateCompetitionStage(statsBombMatch.competitionStage),
                     stadium,
                     referee,
-                    entityService.getStatsBombSource()
+                    baseEntityService.getStatsBombSource()
             )
 
-            entityService.save(match)
+            baseEntityService.save(match)
         }
         return match
     }

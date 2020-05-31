@@ -4,4 +4,4 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.ResponseStatus
 
 @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-class StatsBombLineupTeamNotInMatch(message: String?) : Throwable(message)
+class StatsBombTeamNotFound(message: String?) : Throwable(message)

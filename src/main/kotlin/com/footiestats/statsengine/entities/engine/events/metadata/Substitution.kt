@@ -1,6 +1,7 @@
 package com.footiestats.statsengine.entities.engine.events.metadata
 
 import com.footiestats.statsengine.entities.engine.Player
+import com.footiestats.statsengine.entities.engine.events.refdata.Outcome
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id

@@ -5,7 +5,7 @@ import com.footiestats.statsengine.entities.engine.Player
 import com.footiestats.statsengine.entities.engine.Source
 import com.footiestats.statsengine.entities.engine.Team
 import com.footiestats.statsengine.entities.engine.events.metadata.*
-import java.awt.geom.Point2D
+import com.footiestats.statsengine.entities.engine.events.refdata.PlayPattern
 import java.time.LocalTime
 import javax.persistence.*
 
@@ -24,7 +24,7 @@ class Event(
         @ManyToOne var eventTeam: Team,
         var duration: Double,
         @ManyToOne var source: Source,
-        var externalSourceId: String,
+        var sourceExternalId: String,
         @Id @GeneratedValue var id: Long? = null) {
 
     @OneToMany var relatedEvents = mutableSetOf<Event>()
@@ -39,6 +39,7 @@ class Event(
     @OneToOne var carry: Carry? = null
     @OneToOne var dribble: Dribble? = null
     @OneToOne var ballReceipt: BallReceipt? = null
+    @OneToOne var ballRecovery: BallRecovery? = null
     @OneToOne var interception: Interception? = null
     @OneToOne var clearance: Clearance? = null
     @OneToOne var duel: Duel? = null

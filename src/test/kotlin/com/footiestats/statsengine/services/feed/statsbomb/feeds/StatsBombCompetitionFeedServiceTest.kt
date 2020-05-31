@@ -3,7 +3,7 @@ package com.footiestats.statsengine.services.feed.statsbomb.feeds
 import com.footiestats.statsengine.entities.engine.*
 import com.footiestats.statsengine.entities.engine.enums.Gender
 import com.footiestats.statsengine.dtos.statsbomb.mappers.StatsBombCompetitionMapper
-import com.footiestats.statsengine.services.feed.statsbomb.StatsBombEntityService
+import com.footiestats.statsengine.services.feed.statsbomb.StatsBombBaseEntityService
 import com.footiestats.statsengine.services.feed.statsbomb.StatsBombRestService
 import io.mockk.MockKAnnotations
 import io.mockk.every
@@ -17,7 +17,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 internal class StatsBombCompetitionFeedServiceTest {
 
     @RelaxedMockK
-    private lateinit var entityService: StatsBombEntityService
+    private lateinit var baseEntityService: StatsBombBaseEntityService
 
     @RelaxedMockK
     private lateinit var restService: StatsBombRestService
@@ -34,25 +34,25 @@ internal class StatsBombCompetitionFeedServiceTest {
                 StatsBombCompetitionMapper.fromJson(json)
 
         val source = Source("StatsBomb")
-        every { entityService.getStatsBombSource() } returns source
+        every { baseEntityService.getStatsBombSource() } returns source
 
-        every { entityService.getSeasonsBySource(source) } returns ArrayList()
+        every { baseEntityService.getSeasonsBySource(source) } returns ArrayList()
         val season = Season("name", "1", source)
-        every { entityService.save(any<Season>()) } returns season
+        every { baseEntityService.save(any<Season>()) } returns season
 
-        every { entityService.getAllCountries() } returns ArrayList()
+        every { baseEntityService.getAllCountries() } returns ArrayList()
         val country = Country("name", "1", source)
-        every { entityService.save(any<Country>()) } returns country
+        every { baseEntityService.save(any<Country>()) } returns country
 
-        every { entityService.getCompetitionsBySouce(source) } returns ArrayList()
+        every { baseEntityService.getCompetitionsBySouce(source) } returns ArrayList()
         val competition = Competition("name", Gender.MALE, "1", country, source)
 
-        every { entityService.save(any<Competition>()) } returns competition
+        every { baseEntityService.save(any<Competition>()) } returns competition
 
-        every { entityService.getCompetitionSeasonsForCompetitions(any<Iterable<Competition>>()) } returns
+        every { baseEntityService.getCompetitionSeasonsForCompetitions(any<Iterable<Competition>>()) } returns
                 ArrayList()
 
-        every { entityService.save(any<CompetitionSeason>()) } returns
+        every { baseEntityService.save(any<CompetitionSeason>()) } returns
                 CompetitionSeason(competition, season)
 
         val result = service.run()

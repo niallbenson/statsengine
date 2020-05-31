@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service
 private val log = KotlinLogging.logger {}
 
 @Service
-class StatsBombEntityService(
+class StatsBombBaseEntityService(
         private val sourceRepository: SourceRepository,
         private val competitionRepository: CompetitionRepository,
         private val countryRepository: CountryRepository,
@@ -28,8 +28,8 @@ class StatsBombEntityService(
         private val refereeRepository: RefereeRepository,
         private val matchLineupRepository: MatchLineupRepository,
         private val playerRepository: PlayerRepository,
-        private val lineupPlayerRepository: LineupPlayerRepository) {
-
+        private val lineupPlayerRepository: LineupPlayerRepository
+) {
     // Source
     fun getStatsBombSource() = sourceRepository.findByName("StatsBomb")
             ?: throw StatsBombEntityNotFound("Could not load StatsBomb entity")

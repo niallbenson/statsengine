@@ -2,7 +2,7 @@ package com.footiestats.statsengine.services.feed.statsbomb.feeds
 
 import com.footiestats.statsengine.dtos.statsbomb.StatsBombLineup
 import com.footiestats.statsengine.entities.engine.*
-import com.footiestats.statsengine.services.feed.statsbomb.StatsBombEntityService
+import com.footiestats.statsengine.services.feed.statsbomb.StatsBombBaseEntityService
 import com.footiestats.statsengine.services.feed.statsbomb.StatsBombRestService
 import com.footiestats.statsengine.services.feed.statsbomb.exceptions.StatsBombLineupTeamNotInMatch
 import mu.KotlinLogging
@@ -12,13 +12,13 @@ private val log = KotlinLogging.logger {}
 
 @Service
 class StatsBombLineupsFeedService(
-        private val entityService: StatsBombEntityService,
+        private val baseEntityService: StatsBombBaseEntityService,
         private val restService: StatsBombRestService) {
 
     fun run(): ArrayList<MatchLineup> {
         log.info { "Starting StatsBomb Lineups Feed" }
 
-        val competitionSeasons = entityService.getCompetitionSeasons()
+        val competitionSeasons = baseEntityService.getCompetitionSeasons()
 
         val lineups = ArrayList<MatchLineup>()
 
@@ -38,7 +38,7 @@ class StatsBombLineupsFeedService(
         log.info { "Importing line ups for competition=${competitionSeason.competition.name} " +
                 "season=${competitionSeason.season.name}" }
 
-        val matches = entityService.getMatchesForCompetitionSeason(competitionSeason)
+        val matches = baseEntityService.getMatchesForCompetitionSeason(competitionSeason)
 
         val lineups = ArrayList<MatchLineup>()
 
@@ -75,7 +75,7 @@ class StatsBombLineupsFeedService(
                 && lineup.teamId.toString() != match.awayTeam.sourceExternalId)
             throw StatsBombLineupTeamNotInMatch("Team ${lineup.teamName} not found in Match id ${match.id}")
 
-        return entityService.getOrCreateMatchLineup(match, lineup)
+        return baseEntityService.getOrCreateMatchLineup(match, lineup)
     }
 
 }
