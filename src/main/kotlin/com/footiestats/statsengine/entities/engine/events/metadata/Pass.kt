@@ -9,13 +9,13 @@ import javax.persistence.*
 
 @Entity
 class Pass(
-        @ManyToOne var recipient: Player,
         var length: Double,
         var angle: Double,
-        @ManyToOne var height: Height,
-        @ManyToOne var endLocation: Location2D,
+        @ManyToOne var passHeight: PassHeight,
+        @ManyToOne(cascade = [CascadeType.ALL])  var endLocation: Location2D,
         @Id @GeneratedValue var id: Long? = null) {
 
+    @ManyToOne var recipient: Player? = null
     @ManyToOne var bodyPart: BodyPart? = null
     @ManyToOne var eventType: EventType? = null
     @ManyToOne var outcome: Outcome? = null
@@ -24,10 +24,10 @@ class Pass(
     @OneToOne var assistedShot: Event? = null
 
     var noTouch: Boolean? = null
-    var cross: Boolean? = null
+    var isCross: Boolean? = null
     var switch: Boolean? = null
     var inswinging: Boolean? = null
-    var outswingin: Boolean? = null
+    var outswinging: Boolean? = null
     var shotAssist: Boolean? = null
     var aerialWon: Boolean? = null
     var goalAssist: Boolean? = null

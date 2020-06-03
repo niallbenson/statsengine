@@ -200,8 +200,8 @@ class StatsBombBaseEntityService(
 
         val managers =
                 if (statsBombTeam.managers != null)
-                    statsBombTeam.managers!!.map { m -> getOrCreateManager(m) }.toCollection(arrayListOf())
-                else ArrayList<Manager>()
+                    statsBombTeam.managers.map { m -> getOrCreateManager(m) }.toCollection(arrayListOf())
+                else ArrayList()
 
         if (team == null) {
             team = Team(
@@ -420,6 +420,7 @@ class StatsBombBaseEntityService(
     }
 
     // Player
+    fun getPlayerByExternalId(id: String) = playerRepository.findBySourceExternalId(id)
     fun getOrCreatePlayer(playerId: String, playerName: String, playerNickname: String?, country: StatsBombCountry?): Player {
         var player = playerRepository.findBySourceExternalId(playerId)
 

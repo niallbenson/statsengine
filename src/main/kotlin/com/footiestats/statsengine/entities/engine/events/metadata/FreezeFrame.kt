@@ -1,14 +1,12 @@
 package com.footiestats.statsengine.entities.engine.events.metadata
 
 import com.footiestats.statsengine.entities.engine.Player
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
-import javax.persistence.ManyToOne
+import com.footiestats.statsengine.entities.engine.events.refdata.Position
+import javax.persistence.*
 
 @Entity
 class FreezeFrame(
-        @ManyToOne val location: Location2D,
+        @ManyToOne(cascade = [CascadeType.ALL]) val location: Location2D,
         @ManyToOne val player: Player,
         @ManyToOne val position: Position,
         val teammate: Boolean,

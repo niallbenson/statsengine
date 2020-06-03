@@ -3,14 +3,11 @@ package com.footiestats.statsengine.repos.engine
 import com.footiestats.statsengine.entities.engine.events.Event
 import com.footiestats.statsengine.entities.engine.events.EventType
 import com.footiestats.statsengine.entities.engine.events.metadata.*
-import com.footiestats.statsengine.entities.engine.events.refdata.BodyPart
-import com.footiestats.statsengine.entities.engine.events.refdata.Card
-import com.footiestats.statsengine.entities.engine.events.refdata.Outcome
-import com.footiestats.statsengine.entities.engine.events.refdata.PlayPattern
+import com.footiestats.statsengine.entities.engine.events.refdata.*
 import org.springframework.data.repository.PagingAndSortingRepository
 
 interface EventRepository : PagingAndSortingRepository<Event, Long> {
-
+    fun findBySourceExternalId(id: String): Event?
 }
 
 interface EventTypeRepository : PagingAndSortingRepository<EventType, Long> {
@@ -85,10 +82,6 @@ interface HalfStartRepository : PagingAndSortingRepository<HalfStart, Long> {
 
 }
 
-interface HeightRepository : PagingAndSortingRepository<Height, Long> {
-
-}
-
 interface InjuryStoppageRepository : PagingAndSortingRepository<InjuryStoppage, Long> {
 
 }
@@ -113,6 +106,10 @@ interface PassRepository : PagingAndSortingRepository<Pass, Long> {
 
 }
 
+interface PassHeightRepository : PagingAndSortingRepository<PassHeight, Long> {
+    fun findBySourceExternalId(id: String): PassHeight?
+}
+
 interface PlayerOffRepository : PagingAndSortingRepository<PlayerOff, Long> {
 
 }
@@ -122,7 +119,7 @@ interface PlayPatternRepository : PagingAndSortingRepository<PlayPattern, Long> 
 }
 
 interface PositionRepository : PagingAndSortingRepository<Position, Long> {
-
+    fun findBySourceExternalId(id: String): Position?
 }
 
 interface ShotRepository : PagingAndSortingRepository<Shot, Long> {
@@ -142,5 +139,5 @@ interface TacticsRepository : PagingAndSortingRepository<Tactics, Long> {
 }
 
 interface TechniqueRepository : PagingAndSortingRepository<Technique, Long> {
-
+    fun findBySourceExternalId(id: String): Technique?
 }

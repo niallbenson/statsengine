@@ -6,7 +6,7 @@ class StatsBombPass(
         @JsonAlias("recipient") val recipient: StatsBombPlayerSimple?,
         @JsonAlias("length") val length: Double,
         @JsonAlias("angle") val angle: Double,
-        @JsonAlias("height") val height: StatsBombHeight,
+        @JsonAlias("height") val passHeight: StatsBombPassHeight,
         @JsonAlias("end_location") val endLocation: Array<Double>,
         @JsonAlias("body_part") val bodyPart: StatsBombBodyPart?,
         @JsonAlias("type") val type: StatsBombEventType?,

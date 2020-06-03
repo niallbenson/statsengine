@@ -5,7 +5,9 @@ import javax.persistence.GeneratedValue
 import javax.persistence.Id
 
 @Entity
-class Height(
-        var name: String,
+class Location3D(
+        var x: Double,
+        var y: Double,
+        var z: Double,
         @Id @GeneratedValue var id: Long? = null
 )

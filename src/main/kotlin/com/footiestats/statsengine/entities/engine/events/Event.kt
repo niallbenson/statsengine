@@ -6,13 +6,14 @@ import com.footiestats.statsengine.entities.engine.Source
 import com.footiestats.statsengine.entities.engine.Team
 import com.footiestats.statsengine.entities.engine.events.metadata.*
 import com.footiestats.statsengine.entities.engine.events.refdata.PlayPattern
+import com.footiestats.statsengine.entities.engine.events.refdata.Position
 import java.time.LocalTime
 import javax.persistence.*
 
 @Entity
 class Event(
         @ManyToOne var match: Match,
-        var index: Int,
+        var eventIndex: Int,
         var period: Int,
         var timestamp: LocalTime,
         var minute: Int,
@@ -27,35 +28,34 @@ class Event(
         var sourceExternalId: String,
         @Id @GeneratedValue var id: Long? = null) {
 
-    @OneToMany var relatedEvents = mutableSetOf<Event>()
+    @ManyToMany var relatedEvents = mutableSetOf<Event>()
 
     @ManyToOne var player: Player? = null
 
-    @OneToOne var tactics: Tactics? = null
-    @OneToOne var halfStart: HalfStart? = null
-    @OneToOne var position: Position? = null
-    @OneToOne var location: Location2D? = null
-    @OneToOne var pass: Pass? = null
-    @OneToOne var carry: Carry? = null
-    @OneToOne var dribble: Dribble? = null
-    @OneToOne var ballReceipt: BallReceipt? = null
-    @OneToOne var ballRecovery: BallRecovery? = null
-    @OneToOne var interception: Interception? = null
-    @OneToOne var clearance: Clearance? = null
-    @OneToOne var duel: Duel? = null
-    @OneToOne var shot: Shot? = null
-    @OneToOne var goalKeeper: GoalKeeper? = null
-    @OneToOne var foulCommitted: FoulCommitted? = null
-    @OneToOne var foulWon: FoulWon? = null
-    @OneToOne var badBehaviour: BadBehaviour? = null
-    @OneToOne var recovery: BallRecovery? = null
-    @OneToOne var substitution: Substitution? = null
-    @OneToOne var injuryStoppage: InjuryStoppage? = null
-    @OneToOne var fiftyFifty: FiftyFifty? = null
-    @OneToOne var block: Block? = null
-    @OneToOne var miscontrol: Miscontrol? = null
-    @OneToOne var halfEnd: HalfEnd? = null
-    @OneToOne var playerOff: PlayerOff? = null
+    @OneToOne(cascade = [CascadeType.ALL]) var tactics: Tactics? = null
+    @OneToOne(cascade = [CascadeType.ALL])  var halfStart: HalfStart? = null
+    @OneToOne(cascade = [CascadeType.ALL])  var position: Position? = null
+    @OneToOne(cascade = [CascadeType.ALL])  var location: Location2D? = null
+    @OneToOne(cascade = [CascadeType.ALL])  var pass: Pass? = null
+    @OneToOne(cascade = [CascadeType.ALL])  var carry: Carry? = null
+    @OneToOne(cascade = [CascadeType.ALL])  var dribble: Dribble? = null
+    @OneToOne(cascade = [CascadeType.ALL])  var ballReceipt: BallReceipt? = null
+    @OneToOne(cascade = [CascadeType.ALL])  var ballRecovery: BallRecovery? = null
+    @OneToOne(cascade = [CascadeType.ALL])  var interception: Interception? = null
+    @OneToOne(cascade = [CascadeType.ALL])  var clearance: Clearance? = null
+    @OneToOne(cascade = [CascadeType.ALL])  var duel: Duel? = null
+    @OneToOne(cascade = [CascadeType.ALL])  var shot: Shot? = null
+    @OneToOne(cascade = [CascadeType.ALL])  var goalKeeper: GoalKeeper? = null
+    @OneToOne(cascade = [CascadeType.ALL])  var foulCommitted: FoulCommitted? = null
+    @OneToOne(cascade = [CascadeType.ALL])  var foulWon: FoulWon? = null
+    @OneToOne(cascade = [CascadeType.ALL])  var badBehaviour: BadBehaviour? = null
+    @OneToOne(cascade = [CascadeType.ALL])  var substitution: Substitution? = null
+    @OneToOne(cascade = [CascadeType.ALL])  var injuryStoppage: InjuryStoppage? = null
+    @OneToOne(cascade = [CascadeType.ALL])  var fiftyFifty: FiftyFifty? = null
+    @OneToOne(cascade = [CascadeType.ALL])  var block: Block? = null
+    @OneToOne(cascade = [CascadeType.ALL])  var miscontrol: Miscontrol? = null
+    @OneToOne(cascade = [CascadeType.ALL])  var halfEnd: HalfEnd? = null
+    @OneToOne(cascade = [CascadeType.ALL])  var playerOff: PlayerOff? = null
 
     var underPressure: Boolean? = null
     var counterPress: Boolean? = null

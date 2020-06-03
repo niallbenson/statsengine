@@ -3,24 +3,22 @@ package com.footiestats.statsengine.entities.engine.events.metadata
 import com.footiestats.statsengine.entities.engine.events.EventType
 import com.footiestats.statsengine.entities.engine.events.refdata.BodyPart
 import com.footiestats.statsengine.entities.engine.events.refdata.Outcome
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
-import javax.persistence.ManyToOne
+import com.footiestats.statsengine.entities.engine.events.refdata.Position
+import javax.persistence.*
 
 @Entity
 class GoalKeeper(
     @ManyToOne var eventType: EventType,
     @Id @GeneratedValue var id: Long? = null
 ) {
-    @ManyToOne var endLocation: Location2D? = null
+    @ManyToOne(cascade = [CascadeType.ALL]) var endLocation: Location2D? = null
     @ManyToOne var position: Position? = null
     @ManyToOne var outcome: Outcome? = null
     @ManyToOne var bodyPart: BodyPart? = null
     @ManyToOne var technique: Technique? = null
 
     var shotSavedOffTarget: Boolean? = null
-    var puchedOut: Boolean? = null
+    var punchedOut: Boolean? = null
     var shotSavedToPost: Boolean? = null
     var lostInPlay: Boolean? = null
     var successInPlay: Boolean? = null
