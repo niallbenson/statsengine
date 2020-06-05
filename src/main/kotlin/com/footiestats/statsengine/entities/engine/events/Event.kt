@@ -28,7 +28,7 @@ class Event(
         var sourceExternalId: String,
         @Id @GeneratedValue var id: Long? = null) {
 
-    @ManyToMany var relatedEvents = mutableSetOf<Event>()
+    @ManyToMany(cascade = [CascadeType.ALL])  var relatedEvents = mutableSetOf<Event>()
 
     @ManyToOne var player: Player? = null
 

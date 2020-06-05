@@ -201,7 +201,7 @@ class StatsBombBaseEntityService(
         val managers =
                 if (statsBombTeam.managers != null)
                     statsBombTeam.managers.map { m -> getOrCreateManager(m) }.toCollection(arrayListOf())
-                else ArrayList()
+                else ArrayList<Manager>()
 
         if (team == null) {
             team = Team(

@@ -4,6 +4,7 @@ import com.footiestats.statsengine.entities.engine.events.EventType
 import com.footiestats.statsengine.entities.engine.events.refdata.BodyPart
 import com.footiestats.statsengine.entities.engine.events.refdata.Outcome
 import com.footiestats.statsengine.entities.engine.events.refdata.Position
+import com.footiestats.statsengine.entities.engine.events.refdata.Technique
 import javax.persistence.*
 
 @Entity

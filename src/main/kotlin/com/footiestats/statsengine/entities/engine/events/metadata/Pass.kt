@@ -5,6 +5,7 @@ import com.footiestats.statsengine.entities.engine.events.Event
 import com.footiestats.statsengine.entities.engine.events.EventType
 import com.footiestats.statsengine.entities.engine.events.refdata.BodyPart
 import com.footiestats.statsengine.entities.engine.events.refdata.Outcome
+import com.footiestats.statsengine.entities.engine.events.refdata.Technique
 import javax.persistence.*
 
 @Entity
@@ -21,7 +22,7 @@ class Pass(
     @ManyToOne var outcome: Outcome? = null
     @ManyToOne var technique: Technique? = null
 
-    @OneToOne var assistedShot: Event? = null
+    @OneToOne(cascade = [CascadeType.ALL]) var assistedShot: Event? = null
 
     var noTouch: Boolean? = null
     var isCross: Boolean? = null

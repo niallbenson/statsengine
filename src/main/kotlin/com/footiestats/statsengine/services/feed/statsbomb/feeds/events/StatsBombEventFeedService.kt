@@ -1,4 +1,4 @@
-package com.footiestats.statsengine.services.feed.statsbomb.feeds
+package com.footiestats.statsengine.services.feed.statsbomb.feeds.events
 
 import com.footiestats.statsengine.dtos.statsbomb.*
 import com.footiestats.statsengine.entities.engine.CompetitionSeason
@@ -10,11 +10,11 @@ import com.footiestats.statsengine.entities.engine.events.refdata.Position
 import com.footiestats.statsengine.services.feed.statsbomb.StatsBombBaseEntityService
 import com.footiestats.statsengine.services.feed.statsbomb.StatsBombEventEntityService
 import com.footiestats.statsengine.services.feed.statsbomb.StatsBombRestService
-import com.footiestats.statsengine.services.feed.statsbomb.exceptions.StatsBombEventNotFound
 import com.footiestats.statsengine.services.feed.statsbomb.exceptions.StatsBombPlayerNotFound
 import com.footiestats.statsengine.services.feed.statsbomb.exceptions.StatsBombTeamNotFound
 import mu.KotlinLogging
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.time.LocalTime
 
 private val log = KotlinLogging.logger {}
@@ -44,21 +44,56 @@ class StatsBombEventFeedService(
         val matches = baseEntityService.getMatchesForCompetitionSeason(competitionSeason)
 
         for (m in matches) {
-            log.info { "Processing match ID ${m.id} ${m.homeTeam.name} vs ${m.awayTeam.name} ${m.matchDate}" }
-
-            val statsBombEvents = restService.getStatsBombEvents(m.sourceExternalId)
-
-            val eventEntities = HashMap<String, Event>()
-
-            statsBombEvents.forEach {
-                eventEntities[it.id] = mapToEntity(m, it)
+            if (eventEntityService.getEventsCount(m) == 0L) {
+                processMatch(m)
             }
-
-            setMatchRelatedEvents(eventEntities, statsBombEvents)
         }
     }
 
-    private fun mapToEntity(match: Match, statsBombEvent: StatsBombEvent): Event {
+    @Transactional
+    fun processMatch(m: Match) {
+        log.info { "Processing match ID ${m.id} ${m.homeTeam.name} vs ${m.awayTeam.name} ${m.matchDate}" }
+
+        val statsBombEvents = restService.getStatsBombEvents(m.sourceExternalId)
+
+        val eventsToBePersistedMap = hashMapOf<String, StatsBombTransientEventData>()
+
+        statsBombEvents.forEach {
+            val holder = getTransientEventResultData(m, it)
+
+            eventsToBePersistedMap[holder.event.sourceExternalId] = holder
+        }
+
+        eventsToBePersistedMap.forEach {
+            val event = it.value.event
+            val relatedEvents = it.value.relatedEventIds
+            val passAssistedShotId = it.value.passAssistedShotEventId
+            val shotKeyPassId = it.value.shotKeyPassId
+
+            if (relatedEvents != null) {
+                event.relatedEvents = relatedEvents.map { id -> eventsToBePersistedMap[id]!!.event }.toMutableSet()
+            }
+
+            if (passAssistedShotId != null) {
+                event.pass?.assistedShot = eventsToBePersistedMap[passAssistedShotId]!!.event
+            }
+
+            if (shotKeyPassId != null) {
+                event.shot?.keyPass = eventsToBePersistedMap[shotKeyPassId]!!.event
+            }
+        }
+
+        val events = eventsToBePersistedMap.map { it.value.event }.toMutableSet()
+
+        eventEntityService.saveAll(events)
+
+        log.info { "Saved ${events.size} events" }
+    }
+
+    private fun getTransientEventResultData(
+            match: Match,
+            statsBombEvent: StatsBombEvent
+    ): StatsBombTransientEventData {
         val eventType = eventEntityService.getOrCreateEventType(statsBombEvent.type)
 
         val possessionTeam = baseEntityService.getTeamByExternalId(statsBombEvent.possessionTeam.id.toString())
@@ -90,9 +125,11 @@ class StatsBombEventFeedService(
         setOptionalEventData(event, statsBombEvent)
         setOptionalFlags(event, statsBombEvent)
 
-        eventEntityService.save(event)
+        val relatedEvents = statsBombEvent.relatedEvents
+        val passAssistedShotId = statsBombEvent.pass?.assistedShotId
+        val shotKeyPassId = statsBombEvent.shot?.keyPassId
 
-        return event
+        return StatsBombTransientEventData(event, relatedEvents, passAssistedShotId, shotKeyPassId)
     }
 
     private fun setOptionalEventData(event: Event, statsBombEvent: StatsBombEvent) {
@@ -412,11 +449,6 @@ class StatsBombEventFeedService(
             pass.technique = eventEntityService.getOrCreateTechnique(statsBombPass.technique)
         }
 
-        if (statsBombPass.assistedShotId != null) {
-            pass.assistedShot = eventEntityService.getEventById(statsBombPass.assistedShotId)
-//                    ?: throw StatsBombEventNotFound("Event not found - ${statsBombPass.assistedShotId}")
-        }
-
         pass.noTouch = statsBombPass.noTouch
         pass.isCross = statsBombPass.cross
         pass.switch = statsBombPass.switch
@@ -463,11 +495,6 @@ class StatsBombEventFeedService(
         )
 
         shot.freezeFrame = getFreezeFrames(statsBombShot.freezeFrame)
-
-        if (statsBombShot.keyPassId != null) {
-            shot.keyPass = eventEntityService.getEventById(statsBombShot.keyPassId)
-                    ?: throw StatsBombEventNotFound("Event not found ${statsBombShot.keyPassId}")
-        }
 
         shot.firstTime = statsBombShot.firstTime
         shot.openGoal = statsBombShot.openGoal
@@ -549,29 +576,4 @@ class StatsBombEventFeedService(
         event.offCamera = statsBombEvent.offCamera
     }
 
-    private fun setMatchRelatedEvents(
-            eventEntities: HashMap<String, Event>,
-            statsBombEvents: Iterable<StatsBombEvent>
-    ) {
-        statsBombEvents
-                .filter { it.relatedEvents != null }
-                .forEach {
-                    val eventEntity = eventEntities[it.id] ?: throw StatsBombEventNotFound("Event not found $it")
-
-                    eventEntity.relatedEvents = getRelatedEvents(it.relatedEvents, eventEntities)
-
-                    eventEntityService.save(eventEntity)
-                }
-    }
-
-    private fun getRelatedEvents(
-            statsBombEventIds: Iterable<String>?,
-            eventEntities: HashMap<String, Event>
-    ): MutableSet<Event> {
-        if (statsBombEventIds == null) return mutableSetOf()
-
-        return statsBombEventIds
-                .map {eventEntities[it] ?: throw StatsBombEventNotFound("Event not found $it") }
-                .toMutableSet()
-    }
 }

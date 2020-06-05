@@ -8,6 +8,7 @@ import com.footiestats.statsengine.dtos.statsbomb.mappers.StatsBombCompetitionMa
 import com.footiestats.statsengine.dtos.statsbomb.mappers.StatsBombEventMapper
 import com.footiestats.statsengine.dtos.statsbomb.mappers.StatsBombLineupsMapper
 import com.footiestats.statsengine.dtos.statsbomb.mappers.StatsBombMatchMapper
+import com.footiestats.statsengine.services.feed.statsbomb.exceptions.StatsBombUrlResourceNotAvailable
 import mu.KotlinLogging
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
@@ -24,7 +25,7 @@ class StatsBombRestService(private val restTemplate: RestTemplate) {
         val uri = URI(url)
 
         log.info { "Retrieving competitions from $url" }
-        val jsonResponse = restTemplate.getForObject<String>(uri)
+        val jsonResponse = getJsonResponseWithTries(uri, 3)
 
         return StatsBombCompetitionMapper.fromJson(jsonResponse)
     }
@@ -38,7 +39,7 @@ class StatsBombRestService(private val restTemplate: RestTemplate) {
         val uri = URI(url)
 
         log.info { "Retrieving matches from $url" }
-        val jsonResponse = restTemplate.getForObject<String>(uri)
+        val jsonResponse = getJsonResponseWithTries(uri, 3)
 
         return StatsBombMatchMapper.fromJson(jsonResponse)
     }
@@ -51,7 +52,7 @@ class StatsBombRestService(private val restTemplate: RestTemplate) {
         val uri = URI(url)
 
         log.info { "Retrieving lineups from $url" }
-        val jsonResponse = restTemplate.getForObject<String>(uri)
+        val jsonResponse = getJsonResponseWithTries(uri, 3)
 
         return StatsBombLineupsMapper.fromJson(jsonResponse)
     }
@@ -64,12 +65,31 @@ class StatsBombRestService(private val restTemplate: RestTemplate) {
         val uri = URI(url)
 
         log.info { "Retrieving events from $url" }
-        var jsonResponse = restTemplate.getForObject<String>(url)
+        val jsonResponse = getJsonResponseWithTries(uri, 3)
 
         return StatsBombEventMapper.fromJson(jsonResponse)
     }
 
     private fun getMatchEventsUrl(matchId: String) =
             "https://raw.githubusercontent.com/statsbomb/open-data/master/data/events/$matchId.json"
+
+    private fun getJsonResponseWithTries(uri: URI, tries: Int): String {
+        var attempt = 1
+        var successResponse: String? = null
+
+        while (attempt <= tries && successResponse == null) {
+            try {
+                val jsonResponse = restTemplate.getForObject<String>(uri)
+
+                successResponse = jsonResponse
+            } catch (e: Exception) {
+                log.error { "Attempt $attempt or $tries failed with: ${e.message}" }
+                attempt++
+            }
+        }
+
+        return successResponse
+                ?: throw StatsBombUrlResourceNotAvailable("Failed $attempt time(s) for ${uri.toURL()}")
+    }
 
 }

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonAlias
 class StatsBombMatch(
         @JsonAlias("match_id") val matchId: Long,
         @JsonAlias("match_date") val matchDate: String,
-        @JsonAlias("kick_off") val kickOff: String,
+        @JsonAlias("kick_off") val kickOff: String?,
         @JsonAlias("competition") val competition: StatsBombCompetitionSimple,
         @JsonAlias("season") val season: StatsBombSeason,
         @JsonAlias("home_team") val homeTeam: StatsBombTeam,

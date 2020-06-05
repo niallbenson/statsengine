@@ -1,4 +1,4 @@
-package com.footiestats.statsengine.entities.engine.events.metadata
+package com.footiestats.statsengine.entities.engine.events.refdata
 
 import com.footiestats.statsengine.entities.engine.Source
 import javax.persistence.Entity

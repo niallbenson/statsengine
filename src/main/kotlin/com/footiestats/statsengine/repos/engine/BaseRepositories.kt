@@ -44,7 +44,7 @@ interface MatchMetadataRepository : PagingAndSortingRepository<MatchMetadata, Lo
     override fun findAll(): ArrayList<MatchMetadata>
 
     fun findByDataVersionAndShotFidelityVersionAndXyFidelityVersion(
-            dataVersion: String,
+            dataVersion: String?,
             shotFidelityVersion: String?,
             xyFidelityVersion: String?
     ): MatchMetadata?

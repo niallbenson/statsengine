@@ -1,7 +1,7 @@
 package com.footiestats.statsengine.controllers
 
 import com.footiestats.statsengine.services.feed.statsbomb.feeds.StatsBombCompetitionFeedService
-import com.footiestats.statsengine.services.feed.statsbomb.feeds.StatsBombEventFeedService
+import com.footiestats.statsengine.services.feed.statsbomb.feeds.events.StatsBombEventFeedService
 import com.footiestats.statsengine.services.feed.statsbomb.feeds.StatsBombLineupsFeedService
 import com.footiestats.statsengine.services.feed.statsbomb.feeds.StatsBombMatchFeedService
 //import com.footiestats.statsengine.services.feed.statsbomb.feeds.StatsBombMatchFeedService

@@ -1,5 +1,6 @@
 package com.footiestats.statsengine.repos.engine
 
+import com.footiestats.statsengine.entities.engine.Match
 import com.footiestats.statsengine.entities.engine.events.Event
 import com.footiestats.statsengine.entities.engine.events.EventType
 import com.footiestats.statsengine.entities.engine.events.metadata.*
@@ -8,6 +9,8 @@ import org.springframework.data.repository.PagingAndSortingRepository
 
 interface EventRepository : PagingAndSortingRepository<Event, Long> {
     fun findBySourceExternalId(id: String): Event?
+    fun findAllByMatch(match: Match): ArrayList<Event>
+    fun countAllByMatch(match: Match): Long
 }
 
 interface EventTypeRepository : PagingAndSortingRepository<EventType, Long> {
