@@ -1,10 +1,7 @@
 package com.footiestats.statsengine.entities.engine
 
 import com.footiestats.statsengine.entities.engine.enums.Gender
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
-import javax.persistence.ManyToOne
+import javax.persistence.*
 
 @Entity
 class Competition(
@@ -13,4 +10,7 @@ class Competition(
         var sourceExternalId: String,
         @ManyToOne var country: Country,
         @ManyToOne var source: Source,
-        @Id @GeneratedValue var id: Long? = null)
+        @Id @GeneratedValue var id: Long? = null) {
+
+    @OneToMany(mappedBy = "competition") var competitionSeasons = mutableSetOf<CompetitionSeason>()
+}
