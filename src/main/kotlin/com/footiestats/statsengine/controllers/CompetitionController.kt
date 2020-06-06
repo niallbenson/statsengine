@@ -12,5 +12,5 @@ class CompetitionController(private val competitionService: CompetitionService) 
     fun getCompetitions() = competitionService.getCompetitionDtos()
 
     @GetMapping("/{id}")
-    fun getCompetition(@PathVariable id: Long) = competitionService.getCompetition(id)
+    fun getCompetition(@PathVariable id: Long) = competitionService.getCompetitionDto(id)
 }
