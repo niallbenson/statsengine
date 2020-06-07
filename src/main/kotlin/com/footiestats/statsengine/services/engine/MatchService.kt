@@ -2,6 +2,7 @@ package com.footiestats.statsengine.services.engine
 
 import com.footiestats.statsengine.dtos.engine.MatchDTO
 import com.footiestats.statsengine.dtos.engine.MatchLineupDTO
+import com.footiestats.statsengine.dtos.engine.mappers.MatchLineupMapper
 import com.footiestats.statsengine.dtos.engine.mappers.MatchMapper
 import com.footiestats.statsengine.entities.engine.Season
 import com.footiestats.statsengine.repos.engine.MatchRepository
@@ -32,6 +33,6 @@ class MatchService(private val matchRepository: MatchRepository) {
         val matchLineup = match.lineups.find { it.team.id == teamId }
                 ?: throw EntityNotFound("Match lineup not found for $matchId and $teamId")
 
-
+        return MatchLineupMapper.toDto(matchLineup)
     }
 }

@@ -17,6 +17,6 @@ class MatchController(private val matchService: MatchService) {
 
     @GetMapping("/{matchId}/team/{teamId}")
     fun getTeamLineup(@PathVariable matchId: Long, @PathVariable teamId: Long)
-            = mat
+            = matchService.getTeamLineupDto(matchId, teamId)
 
 }

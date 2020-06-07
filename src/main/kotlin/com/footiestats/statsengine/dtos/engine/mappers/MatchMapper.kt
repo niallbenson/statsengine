@@ -10,6 +10,8 @@ class MatchMapper {
                     match.id ?: -1,
                     match.homeTeam.name,
                     match.awayTeam.name,
+                    match.homeTeam.id ?: -1,
+                    match.awayTeam.id ?: -1,
                     match.matchDate,
                     match.matchStatus,
                     match.homeScore,
