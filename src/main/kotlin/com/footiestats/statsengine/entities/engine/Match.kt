@@ -22,4 +22,7 @@ class Match(
         @ManyToOne var stadium: Stadium? = null,
         @ManyToOne var referee: Referee? = null,
         @ManyToOne var source: Source,
-        @Id @GeneratedValue var id: Long? = null)
+        @Id @GeneratedValue var id: Long? = null
+) {
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "match") var lineups = mutableSetOf<MatchLineup>()
+}

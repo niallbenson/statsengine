@@ -13,7 +13,7 @@ class CompetitionService(private val competitionRepository: CompetitionRepositor
 
     fun getCompetitionDtos(): Array<CompetitionDTO> {
         return competitionRepository.findAll()
-                .map {CompetitionMapper.toDto(it) }
+                .map { CompetitionMapper.toDto(it) }
                 .toTypedArray()
     }
 

@@ -1,12 +1,12 @@
 package com.footiestats.statsengine.entities.engine;
 
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
-import javax.persistence.ManyToOne
+import javax.persistence.*
 
 @Entity
 class MatchLineup(
         @ManyToOne var match: Match,
         @ManyToOne var team: Team,
-        @Id @GeneratedValue var id: Long? = null)
+        @Id @GeneratedValue var id: Long? = null
+) {
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "matchLineup") var players = mutableSetOf<LineupPlayer>()
+}

@@ -9,9 +9,14 @@ import org.springframework.web.bind.annotation.*
 class MatchController(private val matchService: MatchService) {
 
     @GetMapping("/{id}")
-    fun getMatch(@PathVariable id: Long) = matchService.getMatch(id)
+    fun getMatch(@PathVariable id: Long) = matchService.getMatchDto(id)
 
     @GetMapping("/competition/{competitionId}/season/{seasonId}")
     fun getByCompetitionAndSeasonId(@PathVariable competitionId: Long, @PathVariable seasonId: Long)
-            = matchService.getMatches(competitionId, seasonId)
+            = matchService.getMatchDtos(competitionId, seasonId)
+
+    @GetMapping("/{matchId}/team/{teamId}")
+    fun getTeamLineup(@PathVariable matchId: Long, @PathVariable teamId: Long)
+            = mat
+
 }

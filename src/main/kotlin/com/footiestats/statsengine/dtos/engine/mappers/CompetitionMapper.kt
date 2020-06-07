@@ -12,7 +12,10 @@ class CompetitionMapper{
                     competition.gender.name,
                     competition.country.name,
                     competition.country.wikiFlag ?: "",
-                    competition.competitionSeasons.map { SeasonMapper.toDto(it.season) }.toTypedArray()
+                    competition.competitionSeasons
+                            .map { SeasonMapper.toDto(it.season) }
+                            .sortedByDescending { it.name }
+                            .toTypedArray()
             )
         }
     }
