@@ -8,7 +8,10 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
-class SeasonService(private val seasonRepository: SeasonRepository) {
+class SeasonService(
+        private val seasonRepository: SeasonRepository,
+        private val seasonMapper: SeasonMapper
+) {
 
     fun getSeason(id: Long) = seasonRepository.findByIdOrNull(id)
 
@@ -16,6 +19,7 @@ class SeasonService(private val seasonRepository: SeasonRepository) {
         val season = seasonRepository.findByIdOrNull(id)
                 ?: throw EntityNotFound("Season not found for $id")
 
-        return SeasonMapper.toDto(season)
+        return seasonMapper.toDto(season)
     }
+
 }

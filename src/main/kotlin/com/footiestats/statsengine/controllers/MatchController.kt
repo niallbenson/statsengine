@@ -15,7 +15,7 @@ class MatchController(private val matchService: MatchService) {
     fun getByCompetitionAndSeasonId(@PathVariable competitionId: Long, @PathVariable seasonId: Long)
             = matchService.getMatchDtos(competitionId, seasonId)
 
-    @GetMapping("/{matchId}/team/{teamId}")
+    @GetMapping("/{matchId}/team/{teamId}/lineup")
     fun getTeamLineup(@PathVariable matchId: Long, @PathVariable teamId: Long)
             = matchService.getTeamLineupDto(matchId, teamId)
 

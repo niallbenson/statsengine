@@ -11,6 +11,7 @@ interface EventRepository : PagingAndSortingRepository<Event, Long> {
     fun findBySourceExternalId(id: String): Event?
     fun findAllByMatch(match: Match): ArrayList<Event>
     fun countAllByMatch(match: Match): Long
+    fun findAllByPlayer_IdAndMatch_Id(playerId: Long, matchId: Long): ArrayList<Event>
 }
 
 interface EventTypeRepository : PagingAndSortingRepository<EventType, Long> {

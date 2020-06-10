@@ -1,19 +1,22 @@
 package com.footiestats.statsengine.services.feed.statsbomb.feeds
 
+import com.footiestats.statsengine.dtos.statsbomb.mappers.StatsBombCompetitionMapper
 import com.footiestats.statsengine.entities.engine.*
 import com.footiestats.statsengine.entities.engine.enums.Gender
-import com.footiestats.statsengine.dtos.statsbomb.mappers.StatsBombCompetitionMapper
 import com.footiestats.statsengine.services.feed.statsbomb.StatsBombBaseEntityService
 import com.footiestats.statsengine.services.feed.statsbomb.StatsBombRestService
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.RelaxedMockK
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.test.context.junit.jupiter.SpringExtension
 
 @ExtendWith(SpringExtension::class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class StatsBombCompetitionFeedServiceTest {
 
     @RelaxedMockK
@@ -25,9 +28,13 @@ internal class StatsBombCompetitionFeedServiceTest {
     @InjectMockKs
     private lateinit var service: StatsBombCompetitionFeedService
 
+    @BeforeAll
+    fun setup() {
+        MockKAnnotations.init(this)
+    }
+
     @Test
     fun run() {
-        MockKAnnotations.init(this)
 
         val json = getStatsBombCompetitionsJson()
         every { restService.getStatsBombCompetitions() } returns

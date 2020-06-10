@@ -9,11 +9,14 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
-class CompetitionService(private val competitionRepository: CompetitionRepository) {
+class CompetitionService(
+        private val competitionRepository: CompetitionRepository,
+        private val competitionMapper: CompetitionMapper
+) {
 
     fun getCompetitionDtos(): Array<CompetitionDTO> {
         return competitionRepository.findAll()
-                .map { CompetitionMapper.toDto(it) }
+                .map { competitionMapper.toDto(it) }
                 .toTypedArray()
     }
 
@@ -21,7 +24,7 @@ class CompetitionService(private val competitionRepository: CompetitionRepositor
         val competition = competitionRepository.findByIdOrNull(id)
                 ?: throw EntityNotFound("Competition not found for id $id")
 
-        return CompetitionMapper.toDto(competition)
+        return competitionMapper.toDto(competition)
     }
 
 }
