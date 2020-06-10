@@ -1,11 +1,6 @@
 package com.footiestats.statsengine.services.engine
 
 import com.footiestats.statsengine.dtos.engine.mocks.EngineMockObjects
-import com.footiestats.statsengine.entities.engine.*
-import com.footiestats.statsengine.entities.engine.enums.Gender
-import com.footiestats.statsengine.entities.engine.events.Event
-import com.footiestats.statsengine.entities.engine.events.EventType
-import com.footiestats.statsengine.entities.engine.events.refdata.PlayPattern
 import com.footiestats.statsengine.repos.engine.EventRepository
 import com.footiestats.statsengine.services.engine.exceptions.EntityIdMustBeGreaterThanZero
 import io.mockk.MockKAnnotations
@@ -16,9 +11,6 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.LocalTime
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class EventServiceTest {

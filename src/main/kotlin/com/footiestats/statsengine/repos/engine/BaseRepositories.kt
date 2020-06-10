@@ -85,6 +85,4 @@ interface PlayerRepository : PagingAndSortingRepository<Player, Long> {
     fun findBySourceExternalId(id: String): Player?
 }
 
-interface LineupPlayerRepository : PagingAndSortingRepository<LineupPlayer, Long> {
-
-}
+interface LineupPlayerRepository : PagingAndSortingRepository<LineupPlayer, Long>

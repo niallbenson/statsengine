@@ -1,4 +1,4 @@
-package com.footiestats.statsengine.entities.engine;
+package com.footiestats.statsengine.entities.engine
 
 import javax.persistence.*
 

@@ -86,14 +86,12 @@ internal class StatsBombMatchFeedServiceTest {
     private fun mockSource() = Source("source")
 
     private fun mockCompetition(): Competition {
-        val competition = Competition(
+        return Competition(
                 "Competition name",
                 Gender.MALE,
                 "1",
                 mockCountry(),
                 mockSource())
-
-        return competition
     }
 
     private fun mockSeason() = Season("1999-00", "1", mockSource())

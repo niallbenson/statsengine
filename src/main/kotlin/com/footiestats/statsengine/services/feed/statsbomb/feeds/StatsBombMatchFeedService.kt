@@ -54,12 +54,12 @@ class StatsBombMatchFeedService(
         if (match == null) {
             val stadium =
                     if (statsBombMatch.stadium != null)
-                        baseEntityService.getOrCreateStadium(statsBombMatch.stadium!!)
+                        baseEntityService.getOrCreateStadium(statsBombMatch.stadium)
                     else null
 
             val referee =
                     if (statsBombMatch.referee != null)
-                        baseEntityService.getOrCreateReferee(statsBombMatch.referee!!)
+                        baseEntityService.getOrCreateReferee(statsBombMatch.referee)
                     else null
 
             val homeTeam = baseEntityService.getOrCreateTeam(statsBombMatch.homeTeam)

@@ -1,8 +1,6 @@
 package com.footiestats.statsengine.dtos.statsbomb
 
 import com.fasterxml.jackson.annotation.JsonAlias
-import com.sun.org.apache.xpath.internal.operations.Bool
-import java.time.LocalTime
 
 class StatsBombEvent(
         @JsonAlias("id") val id: String,

@@ -2,7 +2,6 @@ package com.footiestats.statsengine.services.engine
 
 import com.footiestats.statsengine.dtos.engine.CompetitionDTO
 import com.footiestats.statsengine.dtos.engine.mappers.CompetitionMapper
-import com.footiestats.statsengine.entities.engine.Competition
 import com.footiestats.statsengine.repos.engine.CompetitionRepository
 import com.footiestats.statsengine.services.engine.exceptions.EntityNotFound
 import org.springframework.data.repository.findByIdOrNull

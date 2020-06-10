@@ -1,10 +1,7 @@
 package com.footiestats.statsengine.services.feed.statsbomb
 
 import com.footiestats.statsengine.repos.engine.*
-import io.mockk.every
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
 
 internal class StatsBombEntityServiceTest {
 

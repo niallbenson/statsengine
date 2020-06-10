@@ -1,8 +1,10 @@
 package com.footiestats.statsengine.entities.engine.events
 
 import com.footiestats.statsengine.entities.engine.Source
-import org.hibernate.annotations.CacheConcurrencyStrategy
-import javax.persistence.*
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.Id
+import javax.persistence.ManyToOne
 
 @Entity
 //@Cacheable
