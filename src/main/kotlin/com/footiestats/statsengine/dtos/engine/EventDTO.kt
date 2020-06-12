@@ -8,5 +8,4 @@ data class EventDTO(
         val minute: Int,
         val second: Int,
         val eventTeam: TeamDTO,
-        val possessionTeam: TeamDTO
-)
+        val possessionTeam: TeamDTO)

@@ -1,6 +1,9 @@
 package com.footiestats.statsengine.services.engine
 
+import com.footiestats.statsengine.dtos.engine.mappers.EventMapper
 import com.footiestats.statsengine.dtos.engine.mocks.EngineMockObjects
+import com.footiestats.statsengine.entities.engine.enums.EventTypeEnum
+import com.footiestats.statsengine.entities.engine.enums.OutcomeEnum
 import com.footiestats.statsengine.repos.engine.EventRepository
 import com.footiestats.statsengine.services.engine.exceptions.EntityIdMustBeGreaterThanZero
 import io.mockk.MockKAnnotations
@@ -16,6 +19,9 @@ import org.junit.jupiter.api.assertThrows
 internal class EventServiceTest {
 
     private val mockObjects = EngineMockObjects()
+
+    @RelaxedMockK
+    private lateinit var eventMapper: EventMapper
 
     @RelaxedMockK
     private lateinit var eventRepository: EventRepository
@@ -51,12 +57,70 @@ internal class EventServiceTest {
         val playerId = 1L
         val matchId = 1L
 
+        val mockEvent = mockObjects.mockEvent()
+
         every { eventRepository.findAllByPlayer_IdAndMatch_Id(playerId, matchId) } returns
-                arrayListOf(mockObjects.mockEvent())
+                arrayListOf(mockEvent)
 
         val result = service.getPlayerMatchEvents(playerId, matchId)
 
         assert(result.size == 1)
     }
 
+    @Test
+    fun `getMatchEventsByType expect exception when matchId is not greater than zero`() {
+        val matchId = -1L
+        val eventTypeid = 1L
+
+        assertThrows<EntityIdMustBeGreaterThanZero> {
+            service.getMatchEventsByType(matchId, eventTypeid)
+        }
+    }
+
+    @Test
+    fun `getMatchEventsByType expect exception when eventTypeId is not greater than zero`() {
+        val matchId = 1L
+        val eventTypeid = -1L
+
+        assertThrows<EntityIdMustBeGreaterThanZero> {
+            service.getMatchEventsByType(matchId, eventTypeid)
+        }
+    }
+
+    @Test
+    fun `getMatchEventsByType expect one Event for valid inputs`() {
+        val matchId = 1L
+        val eventTypeId = 1L
+
+        every { eventRepository.findAllByMatch_IdAndType_Id(matchId, eventTypeId) } returns
+                arrayListOf(mockObjects.mockEvent())
+
+        val result = service.getMatchEventsByType(matchId, eventTypeId)
+
+        assert(result.size == 1)
+    }
+
+    @Test
+    fun `getMatchGoals expect exception when matchId is not greater than zero`() {
+        val matchId = -1L
+
+        assertThrows<EntityIdMustBeGreaterThanZero> {
+            service.getMatchGoals(matchId)
+        }
+    }
+
+    @Test
+    fun `getMatchGoals expect one event for valid input`() {
+        val matchId = 1L
+
+        every {
+            eventRepository.findAllByMatch_IdAndType_IdAndShot_Outcome_IdOrderByEventIndex(
+                    matchId, EventTypeEnum.SHOT.id, OutcomeEnum.GOAL.id)
+        } returns
+                arrayListOf(mockObjects.mockEvent())
+
+        val result = service.getMatchGoals(matchId)
+
+        assert(result.size == 1)
+    }
 }

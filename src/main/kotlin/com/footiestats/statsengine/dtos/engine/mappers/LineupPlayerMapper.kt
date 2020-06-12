@@ -9,7 +9,7 @@ class LineupPlayerMapper {
 
     fun toDto(lineupPlayer: LineupPlayer): LineupPlayerDTO {
         return LineupPlayerDTO(
-                lineupPlayer.id ?: -1,
+                lineupPlayer.player.id ?: -1,
                 lineupPlayer.player.name,
                 lineupPlayer.player.nickName,
                 lineupPlayer.player.id ?: -1,
