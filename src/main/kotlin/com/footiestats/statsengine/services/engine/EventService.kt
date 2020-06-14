@@ -35,11 +35,12 @@ class EventService(
                 .toTypedArray()
     }
 
-    fun getMatchGoals(matchId: Long): Array<EventDTO> {
+    fun getMatchGoals(matchId: Long, teamId: Long): Array<EventDTO> {
         if (matchId < 1) throw EntityIdMustBeGreaterThanZero("matchId $matchId is invalid")
+        if (teamId < 1) throw EntityIdMustBeGreaterThanZero("teamId $teamId is invalid")
 
-        return eventRepository.findAllByMatch_IdAndType_IdAndShot_Outcome_IdOrderByEventIndex(
-                matchId, EventTypeEnum.SHOT.id, OutcomeEnum.GOAL.id)
+        return eventRepository.findAllByMatch_IdAndType_IdAndShot_Outcome_IdAndEventTeam_IdOrderByEventIndex(
+                matchId, EventTypeEnum.SHOT.id, OutcomeEnum.GOAL.id, teamId)
                 .map { eventMapper.toDto(it) }
                 .toTypedArray()
     }

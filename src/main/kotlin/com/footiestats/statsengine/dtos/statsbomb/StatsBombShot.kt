@@ -8,7 +8,7 @@ class StatsBombShot(
         @JsonAlias("key_pass_id") val keyPassId: String?,
         @JsonAlias("technique") val technique: StatsBombTechnique,
         @JsonAlias("outcome") val outcome: StatsBombOutcome,
-        @JsonAlias("type") val type: StatsBombEventType,
+        @JsonAlias("type") val type: StatsBombShotType,
         @JsonAlias("body_part") val bodyPart: StatsBombBodyPart,
         @JsonAlias("freeze_frame") val freezeFrame: Iterable<StatsBombFreezeFrame>?,
         @JsonAlias("first_time") val firstTime: Boolean?,

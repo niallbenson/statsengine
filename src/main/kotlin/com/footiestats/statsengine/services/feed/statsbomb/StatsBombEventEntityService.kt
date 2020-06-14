@@ -5,12 +5,7 @@ import com.footiestats.statsengine.entities.engine.Match
 import com.footiestats.statsengine.entities.engine.events.Event
 import com.footiestats.statsengine.entities.engine.events.EventType
 import com.footiestats.statsengine.entities.engine.events.metadata.PassHeight
-import com.footiestats.statsengine.entities.engine.events.refdata.Technique
-import com.footiestats.statsengine.entities.engine.events.refdata.Position
-import com.footiestats.statsengine.entities.engine.events.refdata.BodyPart
-import com.footiestats.statsengine.entities.engine.events.refdata.Outcome
-import com.footiestats.statsengine.entities.engine.events.refdata.Card
-import com.footiestats.statsengine.entities.engine.events.refdata.PlayPattern
+import com.footiestats.statsengine.entities.engine.events.refdata.*
 import com.footiestats.statsengine.repos.engine.*
 import com.footiestats.statsengine.services.feed.statsbomb.exceptions.StatsBombEntityNotFound
 import org.springframework.stereotype.Service
@@ -26,7 +21,12 @@ class StatsBombEventEntityService(
         private val outcomeRepository: OutcomeRepository,
         private val playPatternRepository: PlayPatternRepository,
         private val positionRepository: PositionRepository,
-        private val techniqueRepository: TechniqueRepository
+        private val techniqueRepository: TechniqueRepository,
+        private val duelTypeRepository: DuelTypeRepository,
+        private val foulCommittedTypeRepository: FoulCommittedTypeRepository,
+        private val goalkeeperTypeRepository: GoalkeeperTypeRepository,
+        private val passTypeRepository: PassTypeRepository,
+        private val shotTypeRepository: ShotTypeRepository
 ) {
     // Source
     fun getStatsBombSource() = sourceRepository.findByName("StatsBomb")
@@ -34,7 +34,7 @@ class StatsBombEventEntityService(
 
     // Event
     fun save(event: Event) = eventRepository.save(event)
-    fun saveAll(events: Iterable<Event>) = eventRepository.saveAll(events)
+    fun saveAll(events: Iterable<Event>): MutableIterable<Event> = eventRepository.saveAll(events)
     fun getEventById(id: String) = eventRepository.findBySourceExternalId(id)
     fun getEventsCount(match: Match) = eventRepository.countAllByMatch(match)
     fun getEvents(match: Match) = eventRepository.findAllByMatch(match)
@@ -137,5 +137,68 @@ class StatsBombEventEntityService(
             )
         }
         return passHeight
+    }
+
+    // Duel Type
+    fun getOrCreateDuelType(statsBombDuelType: StatsBombDuelType): DuelType {
+        var duelType = duelTypeRepository.findBySourceExternalId(statsBombDuelType.id.toString())
+
+        if (duelType == null) {
+            duelType = duelTypeRepository.save(
+                    DuelType(statsBombDuelType.name, getStatsBombSource(), statsBombDuelType.id.toString())
+            )
+        }
+        return duelType
+    }
+
+    // Foul Committed Type
+    fun getOrCreateFoulCommittedType(statsBombFoulCommittedType: StatsBombFoulCommittedType): FoulCommittedType {
+        var foulCommittedType =
+                foulCommittedTypeRepository.findBySourceExternalId(statsBombFoulCommittedType.id.toString())
+
+        if (foulCommittedType == null) {
+            foulCommittedType = foulCommittedTypeRepository.save(
+                    FoulCommittedType(statsBombFoulCommittedType.name, getStatsBombSource(),
+                            statsBombFoulCommittedType.id.toString())
+            )
+        }
+        return foulCommittedType
+    }
+
+    // Goalkeeper Type
+    fun getOrCreateGoalkeeperType(statsBombGoalkeeperType: StatsBombGoalkeeperType): GoalkeeperType {
+        var goalkeeperType = goalkeeperTypeRepository.findBySourceExternalId(statsBombGoalkeeperType.id.toString())
+
+        if (goalkeeperType == null) {
+            goalkeeperType = goalkeeperTypeRepository.save(
+                    GoalkeeperType(statsBombGoalkeeperType.name, getStatsBombSource(),
+                            statsBombGoalkeeperType.id.toString())
+            )
+        }
+        return goalkeeperType
+    }
+
+    // Pass Type
+    fun getOrCreatePassType(statsBombPassType: StatsBombPassType): PassType {
+        var passType = passTypeRepository.findBySourceExternalId(statsBombPassType.id.toString())
+
+        if (passType == null) {
+            passType = passTypeRepository.save(
+                    PassType(statsBombPassType.name, getStatsBombSource(), statsBombPassType.id.toString())
+            )
+        }
+        return passType
+    }
+
+    // Shot Type
+    fun getOrCreateShotType(statsBombShotType: StatsBombShotType): ShotType {
+        var shotType = shotTypeRepository.findBySourceExternalId(statsBombShotType.id.toString())
+
+        if (shotType == null) {
+            shotType = shotTypeRepository.save(
+                    ShotType(statsBombShotType.name, getStatsBombSource(), statsBombShotType.id.toString())
+            )
+        }
+        return shotType
     }
 }

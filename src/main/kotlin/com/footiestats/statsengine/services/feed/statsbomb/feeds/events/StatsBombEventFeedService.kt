@@ -304,7 +304,7 @@ class StatsBombEventFeedService(
 
     private fun getDuel(statsBombDuel: StatsBombDuel): Duel {
         val duel = Duel(
-                eventEntityService.getOrCreateEventType(statsBombDuel.type)
+                eventEntityService.getOrCreateDuelType(statsBombDuel.type)
         )
 
         if (statsBombDuel.outcome != null) {
@@ -323,7 +323,7 @@ class StatsBombEventFeedService(
         val foulCommitted = FoulCommitted()
 
         if (statsBombFoulCommitted.type != null) {
-            foulCommitted.eventType = eventEntityService.getOrCreateEventType(statsBombFoulCommitted.type)
+            foulCommitted.foulCommittedType = eventEntityService.getOrCreateFoulCommittedType(statsBombFoulCommitted.type)
         }
 
         if (statsBombFoulCommitted.card != null) {
@@ -348,7 +348,7 @@ class StatsBombEventFeedService(
     }
 
     private fun getGoalKeeper(statsBombGoalkeeper: StatsBombGoalkeeper): GoalKeeper {
-        val eventType = eventEntityService.getOrCreateEventType(statsBombGoalkeeper.type)
+        val eventType = eventEntityService.getOrCreateGoalkeeperType(statsBombGoalkeeper.type)
 
         val goalKeeper = GoalKeeper(eventType)
 
@@ -438,7 +438,7 @@ class StatsBombEventFeedService(
         }
 
         if (statsBombPass.type != null) {
-            pass.eventType = eventEntityService.getOrCreateEventType(statsBombPass.type)
+            pass.eventType = eventEntityService.getOrCreatePassType(statsBombPass.type)
         }
 
         if (statsBombPass.outcome != null) {
@@ -490,7 +490,7 @@ class StatsBombEventFeedService(
                 getShotEndLocation(statsBombShot.endLocation),
                 eventEntityService.getOrCreateTechnique(statsBombShot.technique),
                 eventEntityService.getOrCreateOutcome(statsBombShot.outcome),
-                eventEntityService.getOrCreateEventType(statsBombShot.type),
+                eventEntityService.getOrCreateShotType(statsBombShot.type),
                 eventEntityService.getOrCreateBodyPart(statsBombShot.bodyPart)
         )
 

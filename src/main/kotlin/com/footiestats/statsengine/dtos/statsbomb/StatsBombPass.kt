@@ -9,7 +9,7 @@ class StatsBombPass(
         @JsonAlias("height") val passHeight: StatsBombPassHeight,
         @JsonAlias("end_location") val endLocation: Array<Double>,
         @JsonAlias("body_part") val bodyPart: StatsBombBodyPart?,
-        @JsonAlias("type") val type: StatsBombEventType?,
+        @JsonAlias("type") val type: StatsBombPassType?,
         @JsonAlias("outcome") val outcome: StatsBombOutcome?,
         @JsonAlias("no_touch") val noTouch: Boolean?,
         @JsonAlias("cross") val cross: Boolean?,

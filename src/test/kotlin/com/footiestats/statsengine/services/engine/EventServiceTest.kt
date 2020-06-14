@@ -103,23 +103,35 @@ internal class EventServiceTest {
     @Test
     fun `getMatchGoals expect exception when matchId is not greater than zero`() {
         val matchId = -1L
+        val teamId = 1L
 
         assertThrows<EntityIdMustBeGreaterThanZero> {
-            service.getMatchGoals(matchId)
+            service.getMatchGoals(matchId, teamId)
+        }
+    }
+
+    @Test
+    fun `getMatchGoals expect exception when teamId is not greater than zero`() {
+        val matchId = 1L
+        val teamId = -1L
+
+        assertThrows<EntityIdMustBeGreaterThanZero> {
+            service.getMatchGoals(matchId, teamId)
         }
     }
 
     @Test
     fun `getMatchGoals expect one event for valid input`() {
         val matchId = 1L
+        val teamId = 1L
 
         every {
-            eventRepository.findAllByMatch_IdAndType_IdAndShot_Outcome_IdOrderByEventIndex(
-                    matchId, EventTypeEnum.SHOT.id, OutcomeEnum.GOAL.id)
+            eventRepository.findAllByMatch_IdAndType_IdAndShot_Outcome_IdAndEventTeam_IdOrderByEventIndex(
+                    matchId, EventTypeEnum.SHOT.id, OutcomeEnum.GOAL.id, teamId)
         } returns
                 arrayListOf(mockObjects.mockEvent())
 
-        val result = service.getMatchGoals(matchId)
+        val result = service.getMatchGoals(matchId, teamId)
 
         assert(result.size == 1)
     }

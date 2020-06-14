@@ -1,9 +1,9 @@
 package com.footiestats.statsengine.entities.engine.events.metadata
 
 import com.footiestats.statsengine.entities.engine.events.Event
-import com.footiestats.statsengine.entities.engine.events.EventType
 import com.footiestats.statsengine.entities.engine.events.refdata.BodyPart
 import com.footiestats.statsengine.entities.engine.events.refdata.Outcome
+import com.footiestats.statsengine.entities.engine.events.refdata.ShotType
 import com.footiestats.statsengine.entities.engine.events.refdata.Technique
 import javax.persistence.*
 
@@ -13,7 +13,7 @@ class Shot(
         @OneToOne(cascade = [CascadeType.ALL]) var endLocation: Location3D,
         @ManyToOne var technique: Technique,
         @ManyToOne var outcome: Outcome,
-        @ManyToOne var eventType: EventType,
+        @ManyToOne var shotType: ShotType,
         @ManyToOne var bodyPart: BodyPart,
         @Id @GeneratedValue var id: Long? = null
 ) {

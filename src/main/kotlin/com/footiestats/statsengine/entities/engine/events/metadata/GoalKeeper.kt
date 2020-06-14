@@ -1,16 +1,12 @@
 package com.footiestats.statsengine.entities.engine.events.metadata
 
-import com.footiestats.statsengine.entities.engine.events.EventType
-import com.footiestats.statsengine.entities.engine.events.refdata.BodyPart
-import com.footiestats.statsengine.entities.engine.events.refdata.Outcome
-import com.footiestats.statsengine.entities.engine.events.refdata.Position
-import com.footiestats.statsengine.entities.engine.events.refdata.Technique
+import com.footiestats.statsengine.entities.engine.events.refdata.*
 import javax.persistence.*
 
 @Entity
 class GoalKeeper(
-    @ManyToOne var eventType: EventType,
-    @Id @GeneratedValue var id: Long? = null
+        @ManyToOne var goalkeeperType: GoalkeeperType,
+        @Id @GeneratedValue var id: Long? = null
 ) {
     @ManyToOne(cascade = [CascadeType.ALL]) var endLocation: Location2D? = null
     @ManyToOne var position: Position? = null

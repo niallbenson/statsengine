@@ -13,7 +13,8 @@ interface EventRepository : PagingAndSortingRepository<Event, Long> {
     fun countAllByMatch(match: Match): Long
     fun findAllByPlayer_IdAndMatch_Id(playerId: Long, matchId: Long): ArrayList<Event>
     fun findAllByMatch_IdAndType_Id(matchId: Long, eventTypeId: Long): ArrayList<Event>
-    fun findAllByMatch_IdAndType_IdAndShot_Outcome_IdOrderByEventIndex(matchId: Long, eventTypeId: Long, outcomeId: Long): ArrayList<Event>
+    fun findAllByMatch_IdAndType_IdAndShot_Outcome_IdAndEventTeam_IdOrderByEventIndex(
+            matchId: Long, eventTypeId: Long, outcomeId: Long, teamId: Long): ArrayList<Event>
 }
 
 interface EventTypeRepository : PagingAndSortingRepository<EventType, Long> {
@@ -96,4 +97,24 @@ interface TacticsRepository : PagingAndSortingRepository<Tactics, Long>
 
 interface TechniqueRepository : PagingAndSortingRepository<Technique, Long> {
     fun findBySourceExternalId(id: String): Technique?
+}
+
+interface DuelTypeRepository : PagingAndSortingRepository<DuelType, Long> {
+    fun findBySourceExternalId(id: String): DuelType?
+}
+
+interface FoulCommittedTypeRepository : PagingAndSortingRepository<FoulCommittedType, Long> {
+    fun findBySourceExternalId(id: String): FoulCommittedType?
+}
+
+interface GoalkeeperTypeRepository : PagingAndSortingRepository<GoalkeeperType, Long> {
+    fun findBySourceExternalId(id: String): GoalkeeperType?
+}
+
+interface PassTypeRepository : PagingAndSortingRepository<PassType, Long> {
+    fun findBySourceExternalId(id: String): PassType?
+}
+
+interface ShotTypeRepository : PagingAndSortingRepository<ShotType, Long> {
+    fun findBySourceExternalId(id: String): ShotType?
 }

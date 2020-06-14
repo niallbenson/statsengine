@@ -2,9 +2,9 @@ package com.footiestats.statsengine.entities.engine.events.metadata
 
 import com.footiestats.statsengine.entities.engine.Player
 import com.footiestats.statsengine.entities.engine.events.Event
-import com.footiestats.statsengine.entities.engine.events.EventType
 import com.footiestats.statsengine.entities.engine.events.refdata.BodyPart
 import com.footiestats.statsengine.entities.engine.events.refdata.Outcome
+import com.footiestats.statsengine.entities.engine.events.refdata.PassType
 import com.footiestats.statsengine.entities.engine.events.refdata.Technique
 import javax.persistence.*
 
@@ -18,7 +18,7 @@ class Pass(
 
     @ManyToOne var recipient: Player? = null
     @ManyToOne var bodyPart: BodyPart? = null
-    @ManyToOne var eventType: EventType? = null
+    @ManyToOne var eventType: PassType? = null
     @ManyToOne var outcome: Outcome? = null
     @ManyToOne var technique: Technique? = null
 

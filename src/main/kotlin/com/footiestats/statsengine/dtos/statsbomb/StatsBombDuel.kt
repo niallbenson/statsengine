@@ -4,5 +4,5 @@ import com.fasterxml.jackson.annotation.JsonAlias
 
 class StatsBombDuel(
         @JsonAlias("outcome") val outcome: StatsBombOutcome?,
-        @JsonAlias("type") val type: StatsBombEventType
+        @JsonAlias("type") val type: StatsBombDuelType
 )
