@@ -1,5 +1,6 @@
 package com.footiestats.statsengine.services.feed.statsbomb.feeds
 
+import com.footiestats.statsengine.dtos.engine.mappers.MatchMapper
 import com.footiestats.statsengine.dtos.statsbomb.*
 import com.footiestats.statsengine.dtos.statsbomb.mappers.StatsBombMatchMapper
 import com.footiestats.statsengine.entities.engine.*
@@ -16,6 +17,9 @@ import org.junit.jupiter.api.Test
 internal class StatsBombMatchFeedServiceTest {
 
     private val matchDataJsonPath = "src/test/kotlin/com/footiestats/statsengine/services/feed/statsbomb/matches.json"
+
+    @RelaxedMockK
+    private lateinit var matchMapper: MatchMapper
 
     @RelaxedMockK
     private lateinit var baseEntityService: StatsBombBaseEntityService

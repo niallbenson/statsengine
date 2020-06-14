@@ -57,6 +57,7 @@ class EventService(
                 EventTypeEnum.OWN_GOAL_AGAINST.id, opposingTeamId)
 
         return (shotsWithGoalOutcomes + ownGoalsFor)
+                .sortedBy { it.eventIndex }
                 .map { eventMapper.toDto(it) }
                 .toTypedArray()
     }

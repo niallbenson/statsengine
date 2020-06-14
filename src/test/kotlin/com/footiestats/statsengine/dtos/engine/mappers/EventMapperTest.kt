@@ -20,7 +20,7 @@ internal class EventMapperTest {
     private var teamMapper = TeamMapper()
 
     @InjectMockKs
-    var mapper = EventMapper(playerMapper, teamMapper)
+    private var mapper = EventMapper(playerMapper, teamMapper)
 
     @BeforeAll
     fun setup() = MockKAnnotations.init(this)
