@@ -2,9 +2,13 @@ package com.footiestats.statsengine.services.engine
 
 import com.footiestats.statsengine.dtos.engine.mappers.EventMapper
 import com.footiestats.statsengine.dtos.engine.mocks.EngineMockObjects
+import com.footiestats.statsengine.entities.engine.Match
+import com.footiestats.statsengine.entities.engine.Team
 import com.footiestats.statsengine.entities.engine.enums.EventTypeEnum
+import com.footiestats.statsengine.entities.engine.enums.Gender
 import com.footiestats.statsengine.entities.engine.enums.OutcomeEnum
 import com.footiestats.statsengine.repos.engine.EventRepository
+import com.footiestats.statsengine.repos.engine.MatchRepository
 import com.footiestats.statsengine.services.engine.exceptions.EntityIdMustBeGreaterThanZero
 import io.mockk.MockKAnnotations
 import io.mockk.every
@@ -14,6 +18,8 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
+import org.springframework.data.repository.findByIdOrNull
+import java.time.LocalDateTime
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class EventServiceTest {
@@ -25,6 +31,9 @@ internal class EventServiceTest {
 
     @RelaxedMockK
     private lateinit var eventRepository: EventRepository
+
+    @RelaxedMockK
+    private lateinit var matchRepository: MatchRepository
 
     @InjectMockKs
     private lateinit var service: EventService
@@ -106,7 +115,7 @@ internal class EventServiceTest {
         val teamId = 1L
 
         assertThrows<EntityIdMustBeGreaterThanZero> {
-            service.getMatchGoals(matchId, teamId)
+            service.getMatchTeamGoals(matchId, teamId)
         }
     }
 
@@ -116,7 +125,7 @@ internal class EventServiceTest {
         val teamId = -1L
 
         assertThrows<EntityIdMustBeGreaterThanZero> {
-            service.getMatchGoals(matchId, teamId)
+            service.getMatchTeamGoals(matchId, teamId)
         }
     }
 
@@ -124,6 +133,7 @@ internal class EventServiceTest {
     fun `getMatchGoals expect one event for valid input`() {
         val matchId = 1L
         val teamId = 1L
+        var opposingTeamId = 2L
 
         every {
             eventRepository.findAllByMatch_IdAndType_IdAndShot_Outcome_IdAndEventTeam_IdOrderByEventIndex(
@@ -131,8 +141,24 @@ internal class EventServiceTest {
         } returns
                 arrayListOf(mockObjects.mockEvent())
 
-        val result = service.getMatchGoals(matchId, teamId)
+        every { matchRepository.findByIdOrNull(matchId) } returns mockMatch()
 
-        assert(result.size == 1)
+        every { eventRepository.findAllByMatch_IdAndType_IdAndEventTeam_Id(
+                matchId, EventTypeEnum.OWN_GOAL_AGAINST.id, opposingTeamId) } returns
+                arrayListOf(mockObjects.mockEvent())
+
+        val result = service.getMatchTeamGoals(matchId, teamId)
+
+        assert(result.size == 2)
     }
+
+    private fun mockMatch() = Match(
+            LocalDateTime.MIN, 1, 1, "available", LocalDateTime.MAX, 1,
+            "1", mockObjects.mockCompetitionSeason(), mockTeam(1), mockTeam(2), mutableListOf(),
+            mutableListOf(), mockObjects.mockMatchMetadata(), mockObjects.mockCompetitionStage(), null, null,
+            mockObjects.mockSource(), 1)
+
+    private fun mockTeam(id: Long) = Team(
+            "Team $id", Gender.MALE, "group", id.toString(), mockObjects.mockCountry(),
+            mutableListOf(), mockObjects.mockSource(), id)
 }

@@ -13,6 +13,7 @@ interface EventRepository : PagingAndSortingRepository<Event, Long> {
     fun countAllByMatch(match: Match): Long
     fun findAllByPlayer_IdAndMatch_Id(playerId: Long, matchId: Long): ArrayList<Event>
     fun findAllByMatch_IdAndType_Id(matchId: Long, eventTypeId: Long): ArrayList<Event>
+    fun findAllByMatch_IdAndType_IdAndEventTeam_Id(matchId: Long, eventTypeId: Long, teamId: Long): ArrayList<Event>
     fun findAllByMatch_IdAndType_IdAndShot_Outcome_IdAndEventTeam_IdOrderByEventIndex(
             matchId: Long, eventTypeId: Long, outcomeId: Long, teamId: Long): ArrayList<Event>
 }

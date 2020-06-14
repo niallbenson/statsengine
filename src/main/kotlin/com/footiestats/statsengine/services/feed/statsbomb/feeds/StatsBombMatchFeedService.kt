@@ -1,7 +1,10 @@
 package com.footiestats.statsengine.services.feed.statsbomb.feeds
 
+import com.footiestats.statsengine.dtos.engine.MatchDTO
+import com.footiestats.statsengine.dtos.engine.mappers.MatchMapper
 import com.footiestats.statsengine.dtos.statsbomb.StatsBombMatch
-import com.footiestats.statsengine.entities.engine.*
+import com.footiestats.statsengine.entities.engine.CompetitionSeason
+import com.footiestats.statsengine.entities.engine.Match
 import com.footiestats.statsengine.services.feed.statsbomb.StatsBombBaseEntityService
 import com.footiestats.statsengine.services.feed.statsbomb.StatsBombRestService
 import com.footiestats.statsengine.services.feed.statsbomb.utils.StatsBombDateUtils
@@ -13,9 +16,10 @@ private val log = KotlinLogging.logger {}
 @Service
 class StatsBombMatchFeedService(
         private val baseEntityService: StatsBombBaseEntityService,
-        private val restService: StatsBombRestService) {
+        private val restService: StatsBombRestService,
+        private val matchMapper: MatchMapper) {
 
-    fun run(): ArrayList<Match> {
+    fun run(): Array<MatchDTO> {
         log.info { "Updating matches from StatsBomb" }
 
         val matches = ArrayList<Match>()
@@ -27,7 +31,7 @@ class StatsBombMatchFeedService(
                     processCompetitionSeason(cs)
             )
         }
-        return matches
+        return matches.map { matchMapper.toDto(it) }.toTypedArray()
     }
 
     private fun processCompetitionSeason(

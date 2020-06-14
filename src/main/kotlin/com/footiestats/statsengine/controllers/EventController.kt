@@ -18,6 +18,6 @@ class EventController(private val eventService: EventService) {
 
     @GetMapping("/match/{matchId}/team/{teamId}/goals")
     fun getMatchGoals(@PathVariable matchId: Long, @PathVariable teamId: Long) =
-            eventService.getMatchGoals(matchId, teamId)
+            eventService.getMatchTeamGoals(matchId, teamId)
 
 }

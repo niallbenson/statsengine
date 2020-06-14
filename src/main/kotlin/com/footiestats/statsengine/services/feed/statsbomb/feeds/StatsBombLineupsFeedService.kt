@@ -1,5 +1,7 @@
 package com.footiestats.statsengine.services.feed.statsbomb.feeds
 
+import com.footiestats.statsengine.dtos.engine.MatchLineupDTO
+import com.footiestats.statsengine.dtos.engine.mappers.MatchLineupMapper
 import com.footiestats.statsengine.dtos.statsbomb.StatsBombLineup
 import com.footiestats.statsengine.entities.engine.*
 import com.footiestats.statsengine.services.feed.statsbomb.StatsBombBaseEntityService
@@ -13,9 +15,10 @@ private val log = KotlinLogging.logger {}
 @Service
 class StatsBombLineupsFeedService(
         private val baseEntityService: StatsBombBaseEntityService,
-        private val restService: StatsBombRestService) {
+        private val restService: StatsBombRestService,
+        private val matchLineupMapper: MatchLineupMapper) {
 
-    fun run(): ArrayList<MatchLineup> {
+    fun run(): Array<MatchLineupDTO> {
         log.info { "Starting StatsBomb Lineups Feed" }
 
         val competitionSeasons = baseEntityService.getCompetitionSeasons()
@@ -29,14 +32,16 @@ class StatsBombLineupsFeedService(
         }
         log.info { "Finished StatsBomb Lineups Feed" }
 
-        return lineups
+        return lineups.map { matchLineupMapper.toDto(it) }.toTypedArray()
     }
 
     private fun processCompetitionSeason(
             competitionSeason: CompetitionSeason
     ): ArrayList<MatchLineup> {
-        log.info { "Importing line ups for competition=${competitionSeason.competition.name} " +
-                "season=${competitionSeason.season.name}" }
+        log.info {
+            "Importing line ups for competition=${competitionSeason.competition.name} " +
+                    "season=${competitionSeason.season.name}"
+        }
 
         val matches = baseEntityService.getMatchesForCompetitionSeason(competitionSeason)
 
