@@ -4,7 +4,8 @@ import com.footiestats.statsengine.entities.engine.*
 import com.footiestats.statsengine.entities.engine.enums.Gender
 import com.footiestats.statsengine.entities.engine.events.Event
 import com.footiestats.statsengine.entities.engine.events.EventType
-import com.footiestats.statsengine.entities.engine.events.refdata.PlayPattern
+import com.footiestats.statsengine.entities.engine.events.metadata.*
+import com.footiestats.statsengine.entities.engine.events.refdata.*
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -67,5 +68,45 @@ class EngineMockObjects {
     fun mockPlayer() = Player("Dave", "DJ", "1", mockCountry(), mockSource(), 1)
 
     fun mockMatchLineup() = MatchLineup(mockMatch(), mockTeam1(), 1)
+
+    fun mockShotEvent(): Event {
+        val event = Event(mockMatch(), 99, 2, LocalTime.NOON, 12, 45,
+                mockShotEventType(), 1, mockTeam1(), mockPlayPattern(),
+                mockTeam2(), 1.0, mockSource(), "1", 1)
+
+        val shot = Shot(
+                0.5,
+                Location3D(1.5, 2.5, 0.5, 1),
+                Technique("Volley", mockSource(), "1", 1),
+                Outcome("Goal", mockSource(), "1", 1),
+                ShotType("Open Play", mockSource(), "1", 1),
+                BodyPart("Right Foot", mockSource(), "1", 1),
+                1)
+        shot.firstTime = true
+
+        event.shot = shot
+
+        return event
+    }
+
+    fun mockShotEventType() = EventType("Shot", mockSource(), "1", 1)
+
+    fun mockPassEvent(): Event {
+        val event = Event(mockMatch(), 99, 2, LocalTime.NOON, 12, 45,
+                mockPassEventType(), 1, mockTeam1(), mockPlayPattern(),
+                mockTeam2(), 1.0, mockSource(), "1", 1)
+
+        event.player = mockPlayer()
+
+        val pass = Pass(
+                12.0, 25.6, PassHeight("High", mockSource(), "1"),
+                Location2D(1.5,2.5, 1), 1)
+
+        event.pass = pass
+
+        return event
+    }
+
+    fun mockPassEventType() = EventType("Pass", mockSource(), "1", 1)
     
 }

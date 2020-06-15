@@ -5,4 +5,4 @@ import org.springframework.web.bind.annotation.ResponseStatus
 import java.lang.RuntimeException
 
 @ResponseStatus(HttpStatus.BAD_REQUEST)
-class EventHasNullWhereValueExpected(message: String?) : RuntimeException(message)
+class EventHasUnexpectedNullValue(message: String?) : RuntimeException(message)
