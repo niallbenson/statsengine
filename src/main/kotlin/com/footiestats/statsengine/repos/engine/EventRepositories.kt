@@ -1,10 +1,12 @@
 package com.footiestats.statsengine.repos.engine
 
 import com.footiestats.statsengine.entities.engine.Match
+import com.footiestats.statsengine.entities.engine.enums.OutcomeEnum
 import com.footiestats.statsengine.entities.engine.events.Event
 import com.footiestats.statsengine.entities.engine.events.EventType
 import com.footiestats.statsengine.entities.engine.events.metadata.*
 import com.footiestats.statsengine.entities.engine.events.refdata.*
+import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.PagingAndSortingRepository
 
 interface EventRepository : PagingAndSortingRepository<Event, Long> {
@@ -16,6 +18,20 @@ interface EventRepository : PagingAndSortingRepository<Event, Long> {
     fun findAllByMatch_IdAndType_IdAndEventTeam_Id(matchId: Long, eventTypeId: Long, teamId: Long): ArrayList<Event>
     fun findAllByMatch_IdAndType_IdAndShot_Outcome_IdAndEventTeam_IdOrderByEventIndex(
             matchId: Long, eventTypeId: Long, outcomeId: Long, teamId: Long): ArrayList<Event>
+
+//    @Query("from Event e " +
+//            "join fetch e.shot s " +
+//            "join fetch s.outcome o " +
+//            "where e.match.id = ?1 " +
+//            "e.type.id = com.footiestats.statsengine.entities.engine.enums.EventTypeEnum.SHOT.id " +
+//            "and o.id = com.footiestats.statsengine.entities.engine.enums.OutcomeEnum.GOAL.id " +
+//            "and e.eventTeam.id = ?2 " +
+//            "union " +
+//            "from Event e" +
+//            "where e.match.id = ?1 " +
+//            "e.type.id = com.footiestats.statsengine.entities.engine.enums.EventTypeEnum.OWN_GOAL_AGAINST.id " +
+//            "and e.eventTeam.id != ?2")
+//    fun getMatchTeamGoals(matchId: Long, teamId: Long): ArrayList<Event>
 }
 
 interface EventTypeRepository : PagingAndSortingRepository<EventType, Long> {
