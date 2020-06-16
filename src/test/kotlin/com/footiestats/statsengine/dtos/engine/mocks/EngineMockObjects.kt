@@ -108,5 +108,12 @@ class EngineMockObjects {
     }
 
     fun mockPassEventType() = EventType("Pass", mockSource(), "1", 1)
-    
+
+    fun mockTactics() = Tactics(442, 12)
+
+    fun mockTacticalLineupPlayer() = TacticalLineupPlayer(
+            17, mockPlayer(), mockPosition(), 1)
+
+    fun mockPosition() = Position("Left Back", mockSource(), "1", 94)
+
 }

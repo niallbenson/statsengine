@@ -110,7 +110,9 @@ interface SubstitutionRepository : PagingAndSortingRepository<Substitution, Long
 
 interface TacticalLineupPlayerRepository : PagingAndSortingRepository<TacticalLineupPlayer, Long>
 
-interface TacticsRepository : PagingAndSortingRepository<Tactics, Long>
+interface TacticsRepository : PagingAndSortingRepository<Tactics, Long> {
+    fun findAllByEvent_Match_IdAndEvent_EventTeam_Id(matchId: Long, teamId: Long): ArrayList<Tactics>
+}
 
 interface TechniqueRepository : PagingAndSortingRepository<Technique, Long> {
     fun findBySourceExternalId(id: String): Technique?
