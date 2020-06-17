@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*
 @CrossOrigin("http://localhost:4200")
 class TacticsController(private val tacticsService: TacticsService) {
 
-    @GetMapping("/match/{matchId}/team/{teamId}/tactics")
+    @GetMapping("/match/{matchId}/team/{teamId}")
     fun getMatchTeamTactics(@PathVariable matchId: Long, @PathVariable teamId: Long) =
             tacticsService.getMatchTeamTacticsDto(matchId, teamId)
 }

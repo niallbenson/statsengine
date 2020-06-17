@@ -14,7 +14,7 @@ class TacticalLineupPlayerMapper {
                 tacticalLineupPlayer.player.name,
                 tacticalLineupPlayer.player.nickName,
                 tacticalLineupPlayer.player.id ?: -1,
-                17,
+                tacticalLineupPlayer.jerseyNumber,
                 tacticalLineupPlayer.position.id ?: -1,
                 tacticalLineupPlayer.position.name
         )

@@ -18,6 +18,9 @@ class TacticsService(
 
         val tactics = tacticsRepository.findAllByEvent_Match_IdAndEvent_EventTeam_Id(matchId, teamId)
 
-        return tactics.map { tacticsMapper.toDto(it) }.toTypedArray()
+        return tactics
+                .sortedBy { it.event.eventIndex }
+                .map { tacticsMapper.toDto(it) }
+                .toTypedArray()
     }
 }
