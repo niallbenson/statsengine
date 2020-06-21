@@ -1,7 +1,7 @@
 package com.footiestats.statsengine.services.engine
 
 import com.footiestats.statsengine.dtos.engine.mappers.ShotMapper
-import com.footiestats.statsengine.dtos.engine.mocks.EngineMockObjects
+import com.footiestats.statsengine.dtos.engine.mocks.EngineMockEventObjects
 import com.footiestats.statsengine.entities.engine.enums.EventTypeEnum
 import com.footiestats.statsengine.repos.engine.EventRepository
 import com.footiestats.statsengine.services.engine.exceptions.EntityIdMustBeGreaterThanZero
@@ -17,7 +17,7 @@ import org.junit.jupiter.api.assertThrows
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class ShotServiceTest {
 
-    private val mockObjects = EngineMockObjects()
+    private val mockEventObjects = EngineMockEventObjects()
 
     @RelaxedMockK
     private lateinit var shotMapper: ShotMapper
@@ -58,7 +58,7 @@ internal class ShotServiceTest {
 
         every {
             eventRepository.findAllByMatch_IdAndType_IdAndEventTeam_Id(matchId, EventTypeEnum.SHOT.id, teamId)
-        } returns arrayListOf(mockObjects.mockShotEvent())
+        } returns setOf(mockEventObjects.mockShotEventGoalOutcome())
 
         val result = service.getMatchTeamShotsDtos(matchId, teamId)
 

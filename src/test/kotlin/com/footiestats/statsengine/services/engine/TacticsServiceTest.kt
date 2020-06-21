@@ -2,7 +2,7 @@ package com.footiestats.statsengine.services.engine
 
 
 import com.footiestats.statsengine.dtos.engine.mappers.TacticsMapper
-import com.footiestats.statsengine.dtos.engine.mocks.EngineMockObjects
+import com.footiestats.statsengine.dtos.engine.mocks.EngineMockEventObjects
 import com.footiestats.statsengine.repos.engine.TacticsRepository
 import com.footiestats.statsengine.services.engine.exceptions.EntityIdMustBeGreaterThanZero
 import io.mockk.MockKAnnotations
@@ -17,7 +17,7 @@ import org.junit.jupiter.api.assertThrows
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class TacticsServiceTest {
 
-    private val mockObjects = EngineMockObjects()
+    private val mockEventObjectObjects = EngineMockEventObjects()
 
     @RelaxedMockK
     private lateinit var tacticsMapper: TacticsMapper
@@ -58,7 +58,7 @@ internal class TacticsServiceTest {
 
         every {
             tacticsRepository.findAllByEvent_Match_IdAndEvent_EventTeam_Id(matchId, teamId)
-        } returns arrayListOf(mockObjects.mockTactics())
+        } returns arrayListOf(mockEventObjectObjects.mockTactics())
 
         val result = service.getMatchTeamTacticsDto(matchId, teamId)
 

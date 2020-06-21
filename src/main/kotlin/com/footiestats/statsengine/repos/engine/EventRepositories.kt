@@ -11,13 +11,13 @@ import org.springframework.data.repository.PagingAndSortingRepository
 
 interface EventRepository : PagingAndSortingRepository<Event, Long> {
     fun findBySourceExternalId(id: String): Event?
-    fun findAllByMatch(match: Match): ArrayList<Event>
+    fun findAllByMatch(match: Match): Set<Event>
     fun countAllByMatch(match: Match): Long
-    fun findAllByPlayer_IdAndMatch_Id(playerId: Long, matchId: Long): ArrayList<Event>
-    fun findAllByMatch_IdAndType_Id(matchId: Long, eventTypeId: Long): ArrayList<Event>
-    fun findAllByMatch_IdAndType_IdAndEventTeam_Id(matchId: Long, eventTypeId: Long, teamId: Long): ArrayList<Event>
+    fun findAllByPlayer_IdAndMatch_Id(playerId: Long, matchId: Long): Set<Event>
+    fun findAllByMatch_IdAndType_Id(matchId: Long, eventTypeId: Long): Set<Event>
+    fun findAllByMatch_IdAndType_IdAndEventTeam_Id(matchId: Long, eventTypeId: Long, teamId: Long): Set<Event>
     fun findAllByMatch_IdAndType_IdAndShot_Outcome_IdAndEventTeam_IdOrderByEventIndex(
-            matchId: Long, eventTypeId: Long, outcomeId: Long, teamId: Long): ArrayList<Event>
+            matchId: Long, eventTypeId: Long, outcomeId: Long, teamId: Long): Set<Event>
 
 //    @Query("from Event e " +
 //            "join fetch e.shot s " +

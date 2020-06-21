@@ -1,6 +1,7 @@
 package com.footiestats.statsengine.services.engine
 
 import com.footiestats.statsengine.dtos.engine.mappers.EventMapper
+import com.footiestats.statsengine.dtos.engine.mocks.EngineMockEventObjects
 import com.footiestats.statsengine.dtos.engine.mocks.EngineMockObjects
 import com.footiestats.statsengine.entities.engine.Match
 import com.footiestats.statsengine.entities.engine.Team
@@ -25,6 +26,7 @@ import java.time.LocalDateTime
 internal class EventServiceTest {
 
     private val mockObjects = EngineMockObjects()
+    private val mockEventObjects = EngineMockEventObjects()
 
     @RelaxedMockK
     private lateinit var eventMapper: EventMapper
@@ -66,10 +68,10 @@ internal class EventServiceTest {
         val playerId = 1L
         val matchId = 1L
 
-        val mockEvent = mockObjects.mockEvent()
+        val mockEvent = mockEventObjects.mockEvent()
 
         every { eventRepository.findAllByPlayer_IdAndMatch_Id(playerId, matchId) } returns
-                arrayListOf(mockEvent)
+                setOf(mockEvent)
 
         val result = service.getPlayerMatchEvents(playerId, matchId)
 
@@ -102,7 +104,7 @@ internal class EventServiceTest {
         val eventTypeId = 1L
 
         every { eventRepository.findAllByMatch_IdAndType_Id(matchId, eventTypeId) } returns
-                arrayListOf(mockObjects.mockEvent())
+                setOf(mockEventObjects.mockEvent())
 
         val result = service.getMatchEventsByType(matchId, eventTypeId)
 
@@ -133,19 +135,19 @@ internal class EventServiceTest {
     fun `getMatchGoals expect one event for valid input`() {
         val matchId = 1L
         val teamId = 1L
-        var opposingTeamId = 2L
+        val opposingTeamId = 2L
 
         every {
             eventRepository.findAllByMatch_IdAndType_IdAndShot_Outcome_IdAndEventTeam_IdOrderByEventIndex(
                     matchId, EventTypeEnum.SHOT.id, OutcomeEnum.GOAL.id, teamId)
         } returns
-                arrayListOf(mockObjects.mockEvent())
+                setOf(mockEventObjects.mockEvent())
 
         every { matchRepository.findByIdOrNull(matchId) } returns mockMatch()
 
         every { eventRepository.findAllByMatch_IdAndType_IdAndEventTeam_Id(
                 matchId, EventTypeEnum.OWN_GOAL_AGAINST.id, opposingTeamId) } returns
-                arrayListOf(mockObjects.mockEvent())
+                setOf(mockEventObjects.mockEvent())
 
         val result = service.getMatchTeamGoals(matchId, teamId)
 
