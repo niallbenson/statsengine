@@ -30,7 +30,9 @@ class AttackingEventSummaryService(
                 getTotalShots(typesMap),
                 getShotsOnTarget(typesMap),
                 getTotalPasses(typesMap),
-                getAccuratePasses(typesMap), 0, 0
+                getAccuratePasses(typesMap),
+                getKeyPasses(typesMap),
+                getAssists(typesMap)
         )
     }
 
@@ -65,8 +67,21 @@ class AttackingEventSummaryService(
     private fun getAccuratePasses(typeEventMap: Map<Long, MutableSet<Event>>): Int {
         return typeEventMap[EventTypeEnum.PASS.id]
                 ?.filter {
-                    it.relatedEvents.find { r -> r.type.id == EventTypeEnum.BALL_RECEIPT.id } != null
+                    it.pass?.outcome == null
+                            && it.relatedEvents.find { r -> r.type.id == EventTypeEnum.BALL_RECEIPT.id } != null
                 }
+                ?.count() ?: 0
+    }
+
+    private fun getKeyPasses(typeEventMap: Map<Long, MutableSet<Event>>): Int {
+        return typeEventMap[EventTypeEnum.PASS.id]
+                ?.filter { it.pass?.assistedShot != null }
+                ?.count() ?: 0
+    }
+
+    private fun getAssists(typeEventMap: Map<Long, MutableSet<Event>>): Int {
+        return typeEventMap[EventTypeEnum.PASS.id]
+                ?.filter { it.pass?.assistedShot?.shot?.outcome?.id == OutcomeEnum.GOAL.id }
                 ?.count() ?: 0
     }
 

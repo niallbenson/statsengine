@@ -80,6 +80,8 @@ class EngineMockEventObjects {
                 Location2D(1.5,2.5, 1), 1)
         pass.outcome = outcome
 
+        event.pass = pass
+
         if (ballReceiptEvent != null) {
             event.relatedEvents.add(ballReceiptEvent)
         }
