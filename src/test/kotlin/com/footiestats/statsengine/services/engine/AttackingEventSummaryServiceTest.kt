@@ -5,10 +5,13 @@ import com.footiestats.statsengine.entities.engine.enums.EventTypeEnum
 import com.footiestats.statsengine.entities.engine.enums.OutcomeEnum
 import com.footiestats.statsengine.repos.engine.EventRepository
 import com.footiestats.statsengine.services.engine.exceptions.EntityIdMustBeGreaterThanZero
+import com.footiestats.statsengine.services.engine.eventanalysis.PassAnalysisService
+import com.footiestats.statsengine.services.engine.eventanalysis.ShotAnalysisService
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.impl.annotations.SpyK
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -21,6 +24,12 @@ internal class AttackingEventSummaryServiceTest {
 
     @RelaxedMockK
     private lateinit var eventRepository: EventRepository
+
+    @SpyK
+    private var passAnalysisService = PassAnalysisService()
+
+    @SpyK
+    private var shotAnalysisService = ShotAnalysisService()
 
     @InjectMockKs
     private lateinit var service: AttackingEventSummaryService
@@ -53,14 +62,14 @@ internal class AttackingEventSummaryServiceTest {
         val playerId = 1L
         val matchId = 1L
 
-        val passEvent = mockEventObjects.mockPassEvent()
+        val passEvent = mockEventObjects.passEvent()
 
-        val shotEventType = mockEventObjects.mockEventType(EventTypeEnum.SHOT.id, "Shot")
-        val goalOutcome = mockEventObjects.mockOutcome(OutcomeEnum.GOAL.id, "Goal")
-        val waywardOutcome = mockEventObjects.mockOutcome(OutcomeEnum.WAYWARD.id, "Wayward")
+        val shotEventType = mockEventObjects.eventType(EventTypeEnum.SHOT.id, "Shot")
+        val goalOutcome = mockEventObjects.outcome(OutcomeEnum.GOAL.id, "Goal")
+        val waywardOutcome = mockEventObjects.outcome(OutcomeEnum.WAYWARD.id, "Wayward")
 
-        val goalEvent = mockEventObjects.mockShotEvent(shotEventType, goalOutcome, 34)
-        val waywardEvent = mockEventObjects.mockShotEvent(shotEventType, waywardOutcome, 78)
+        val goalEvent = mockEventObjects.shotEvent(shotEventType, goalOutcome, 34)
+        val waywardEvent = mockEventObjects.shotEvent(shotEventType, waywardOutcome, 78)
 
         every { eventRepository.findAllByPlayer_IdAndMatch_Id(playerId, matchId) } returns
                 setOf(passEvent, goalEvent, waywardEvent)
@@ -99,17 +108,17 @@ internal class AttackingEventSummaryServiceTest {
         val playerId = 1L
         val matchId = 1L
 
-        val shotEventType = mockEventObjects.mockEventType(EventTypeEnum.SHOT.id, "Shot")
-        val goalOutcome = mockEventObjects.mockOutcome(OutcomeEnum.GOAL.id, "Goal")
+        val shotEventType = mockEventObjects.eventType(EventTypeEnum.SHOT.id, "Shot")
+        val goalOutcome = mockEventObjects.outcome(OutcomeEnum.GOAL.id, "Goal")
 
-        val goal1Event = mockEventObjects.mockShotEvent(shotEventType, goalOutcome, 662)
-        val goal2Event = mockEventObjects.mockShotEvent(shotEventType, goalOutcome, 784)
-        val goal3Event = mockEventObjects.mockShotEvent(shotEventType, goalOutcome, 819)
+        val goal1Event = mockEventObjects.shotEvent(shotEventType, goalOutcome, 662)
+        val goal2Event = mockEventObjects.shotEvent(shotEventType, goalOutcome, 784)
+        val goal3Event = mockEventObjects.shotEvent(shotEventType, goalOutcome, 819)
 
-        val waywardOutcome = mockEventObjects.mockOutcome(OutcomeEnum.WAYWARD.id, "Wayward")
+        val waywardOutcome = mockEventObjects.outcome(OutcomeEnum.WAYWARD.id, "Wayward")
 
-        val waywardShot1 = mockEventObjects.mockShotEvent(shotEventType, waywardOutcome, 564)
-        val waywardShot2 = mockEventObjects.mockShotEvent(shotEventType, waywardOutcome, 725)
+        val waywardShot1 = mockEventObjects.shotEvent(shotEventType, waywardOutcome, 564)
+        val waywardShot2 = mockEventObjects.shotEvent(shotEventType, waywardOutcome, 725)
 
         every { eventRepository.findAllByPlayer_IdAndMatch_Id(playerId, matchId) } returns
                 setOf(goal1Event, goal2Event, goal3Event, waywardShot1, waywardShot2)
@@ -124,20 +133,20 @@ internal class AttackingEventSummaryServiceTest {
         val playerId = 1L
         val matchId = 1L
 
-        val shotEventType = mockEventObjects.mockEventType(EventTypeEnum.SHOT.id, "Shot")
-        val goalOutcome = mockEventObjects.mockOutcome(OutcomeEnum.GOAL.id, "Goal")
+        val shotEventType = mockEventObjects.eventType(EventTypeEnum.SHOT.id, "Shot")
+        val goalOutcome = mockEventObjects.outcome(OutcomeEnum.GOAL.id, "Goal")
 
-        val goalShot1 = mockEventObjects.mockShotEvent(shotEventType, goalOutcome, 662)
-        val goalShot2 = mockEventObjects.mockShotEvent(shotEventType, goalOutcome, 784)
-        val goalShot3 = mockEventObjects.mockShotEvent(shotEventType, goalOutcome, 819)
+        val goalShot1 = mockEventObjects.shotEvent(shotEventType, goalOutcome, 662)
+        val goalShot2 = mockEventObjects.shotEvent(shotEventType, goalOutcome, 784)
+        val goalShot3 = mockEventObjects.shotEvent(shotEventType, goalOutcome, 819)
 
-        val savedOutcome = mockEventObjects.mockOutcome(OutcomeEnum.SAVED.id,"Saved")
-        val savedShot = mockEventObjects.mockShotEvent(shotEventType, savedOutcome, 480)
+        val savedOutcome = mockEventObjects.outcome(OutcomeEnum.SAVED.id,"Saved")
+        val savedShot = mockEventObjects.shotEvent(shotEventType, savedOutcome, 480)
 
-        val waywardOutcome = mockEventObjects.mockOutcome(OutcomeEnum.WAYWARD.id, "Wayward")
+        val waywardOutcome = mockEventObjects.outcome(OutcomeEnum.WAYWARD.id, "Wayward")
 
-        val waywardShot1 = mockEventObjects.mockShotEvent(shotEventType, waywardOutcome, 564)
-        val waywardShot2 = mockEventObjects.mockShotEvent(shotEventType, waywardOutcome, 725)
+        val waywardShot1 = mockEventObjects.shotEvent(shotEventType, waywardOutcome, 564)
+        val waywardShot2 = mockEventObjects.shotEvent(shotEventType, waywardOutcome, 725)
 
         every { eventRepository.findAllByPlayer_IdAndMatch_Id(playerId, matchId) } returns
                 setOf(goalShot1, goalShot2, goalShot3, savedShot, waywardShot1, waywardShot2)
@@ -152,20 +161,20 @@ internal class AttackingEventSummaryServiceTest {
         val playerId = 1L
         val matchId = 1L
 
-        val shotEventType = mockEventObjects.mockEventType(EventTypeEnum.SHOT.id, "Shot")
-        val goalOutcome = mockEventObjects.mockOutcome(OutcomeEnum.GOAL.id, "Goal")
+        val shotEventType = mockEventObjects.eventType(EventTypeEnum.SHOT.id, "Shot")
+        val goalOutcome = mockEventObjects.outcome(OutcomeEnum.GOAL.id, "Goal")
 
-        val goalShot1 = mockEventObjects.mockShotEvent(shotEventType, goalOutcome, 662)
-        val goalShot2 = mockEventObjects.mockShotEvent(shotEventType, goalOutcome, 784)
-        val goalShot3 = mockEventObjects.mockShotEvent(shotEventType, goalOutcome, 819)
+        val goalShot1 = mockEventObjects.shotEvent(shotEventType, goalOutcome, 662)
+        val goalShot2 = mockEventObjects.shotEvent(shotEventType, goalOutcome, 784)
+        val goalShot3 = mockEventObjects.shotEvent(shotEventType, goalOutcome, 819)
 
-        val savedOutcome = mockEventObjects.mockOutcome(OutcomeEnum.SAVED.id,"Saved")
-        val savedShot = mockEventObjects.mockShotEvent(shotEventType, savedOutcome, 480)
+        val savedOutcome = mockEventObjects.outcome(OutcomeEnum.SAVED.id,"Saved")
+        val savedShot = mockEventObjects.shotEvent(shotEventType, savedOutcome, 480)
 
-        val waywardOutcome = mockEventObjects.mockOutcome(OutcomeEnum.WAYWARD.id, "Wayward")
+        val waywardOutcome = mockEventObjects.outcome(OutcomeEnum.WAYWARD.id, "Wayward")
 
-        val waywardShot1 = mockEventObjects.mockShotEvent(shotEventType, waywardOutcome, 564)
-        val waywardShot2 = mockEventObjects.mockShotEvent(shotEventType, waywardOutcome, 725)
+        val waywardShot1 = mockEventObjects.shotEvent(shotEventType, waywardOutcome, 564)
+        val waywardShot2 = mockEventObjects.shotEvent(shotEventType, waywardOutcome, 725)
 
         every { eventRepository.findAllByPlayer_IdAndMatch_Id(playerId, matchId) } returns
                 setOf(goalShot1, goalShot2, goalShot3, savedShot, waywardShot1, waywardShot2)
@@ -180,13 +189,13 @@ internal class AttackingEventSummaryServiceTest {
         val playerId = 1L
         val matchId = 1L
 
-        val passEvent1 = mockEventObjects.mockPassEvent(1, null, null)
-        val passEvent2 = mockEventObjects.mockPassEvent(2, null, null)
-        val passEvent3 = mockEventObjects.mockPassEvent(3, null, null)
-        val passEvent4 = mockEventObjects.mockPassEvent(4, null, null)
-        val passEvent5 = mockEventObjects.mockPassEvent(5, null, null)
-        val passEvent6 = mockEventObjects.mockPassEvent(6, null, null)
-        val passEvent7 = mockEventObjects.mockPassEvent(7, null, null)
+        val passEvent1 = mockEventObjects.passEvent(1, null, null)
+        val passEvent2 = mockEventObjects.passEvent(2, null, null)
+        val passEvent3 = mockEventObjects.passEvent(3, null, null)
+        val passEvent4 = mockEventObjects.passEvent(4, null, null)
+        val passEvent5 = mockEventObjects.passEvent(5, null, null)
+        val passEvent6 = mockEventObjects.passEvent(6, null, null)
+        val passEvent7 = mockEventObjects.passEvent(7, null, null)
 
         every { eventRepository.findAllByPlayer_IdAndMatch_Id(playerId, matchId) } returns
                 setOf(passEvent1, passEvent2, passEvent3, passEvent4, passEvent5, passEvent6, passEvent7)
@@ -201,18 +210,18 @@ internal class AttackingEventSummaryServiceTest {
         val playerId = 1L
         val matchId = 1L
 
-        val incompleteOutcome = mockEventObjects.mockOutcome(OutcomeEnum.INCOMPLETE.id, "Incomplete")
+        val incompleteOutcome = mockEventObjects.outcome(OutcomeEnum.INCOMPLETE.id, "Incomplete")
 
-        val receipt1 = mockEventObjects.mockBallReceipt(11)
-        val passEvent1 = mockEventObjects.mockPassEvent(1, null, receipt1)
-        val passEvent2 = mockEventObjects.mockPassEvent(2, incompleteOutcome, null)
-        val receipt3 = mockEventObjects.mockBallReceipt(13)
-        val passEvent3 = mockEventObjects.mockPassEvent(3, null, receipt3)
-        val passEvent4 = mockEventObjects.mockPassEvent(4, incompleteOutcome, null)
-        val receipt5 = mockEventObjects.mockBallReceipt(15)
-        val passEvent5 = mockEventObjects.mockPassEvent(5, null, receipt5)
-        val passEvent6 = mockEventObjects.mockPassEvent(6, incompleteOutcome, null)
-        val passEvent7 = mockEventObjects.mockPassEvent(7, incompleteOutcome, null)
+        val receipt1 = mockEventObjects.ballReceipt(11)
+        val passEvent1 = mockEventObjects.passEvent(1, null, receipt1)
+        val passEvent2 = mockEventObjects.passEvent(2, incompleteOutcome, null)
+        val receipt3 = mockEventObjects.ballReceipt(13)
+        val passEvent3 = mockEventObjects.passEvent(3, null, receipt3)
+        val passEvent4 = mockEventObjects.passEvent(4, incompleteOutcome, null)
+        val receipt5 = mockEventObjects.ballReceipt(15)
+        val passEvent5 = mockEventObjects.passEvent(5, null, receipt5)
+        val passEvent6 = mockEventObjects.passEvent(6, incompleteOutcome, null)
+        val passEvent7 = mockEventObjects.passEvent(7, incompleteOutcome, null)
 
         every { eventRepository.findAllByPlayer_IdAndMatch_Id(playerId, matchId) } returns
                 setOf(passEvent1, passEvent2, passEvent3, passEvent4, passEvent5, passEvent6, passEvent7)
@@ -227,21 +236,21 @@ internal class AttackingEventSummaryServiceTest {
         val playerId = 1L
         val matchId = 1L
 
-        val shotEventType = mockEventObjects.mockEventType(EventTypeEnum.SHOT.id, "Shot")
-        val waywardOutcome = mockEventObjects.mockOutcome(OutcomeEnum.WAYWARD.id, "Wayward")
+        val shotEventType = mockEventObjects.eventType(EventTypeEnum.SHOT.id, "Shot")
+        val waywardOutcome = mockEventObjects.outcome(OutcomeEnum.WAYWARD.id, "Wayward")
 
-        val waywardShot1 = mockEventObjects.mockShotEvent(shotEventType, waywardOutcome, 564)
-        val waywardShot2 = mockEventObjects.mockShotEvent(shotEventType, waywardOutcome, 725)
+        val waywardShot1 = mockEventObjects.shotEvent(shotEventType, waywardOutcome, 564)
+        val waywardShot2 = mockEventObjects.shotEvent(shotEventType, waywardOutcome, 725)
 
-        val passEvent1 = mockEventObjects.mockPassEvent(1, null, null)
-        val passEvent2 = mockEventObjects.mockPassEvent(2, null, null)
-        val passEvent3 = mockEventObjects.mockPassEvent(3, null, null)
+        val passEvent1 = mockEventObjects.passEvent(1, null, null)
+        val passEvent2 = mockEventObjects.passEvent(2, null, null)
+        val passEvent3 = mockEventObjects.passEvent(3, null, null)
         passEvent3.pass?.assistedShot = waywardShot1
-        val passEvent4 = mockEventObjects.mockPassEvent(4, null, null)
-        val passEvent5 = mockEventObjects.mockPassEvent(5, null, null)
-        val passEvent6 = mockEventObjects.mockPassEvent(6, null, null)
+        val passEvent4 = mockEventObjects.passEvent(4, null, null)
+        val passEvent5 = mockEventObjects.passEvent(5, null, null)
+        val passEvent6 = mockEventObjects.passEvent(6, null, null)
         passEvent6.pass?.assistedShot = waywardShot2
-        val passEvent7 = mockEventObjects.mockPassEvent(7, null, null)
+        val passEvent7 = mockEventObjects.passEvent(7, null, null)
 
         every { eventRepository.findAllByPlayer_IdAndMatch_Id(playerId, matchId) } returns
                 setOf(passEvent1, passEvent2, passEvent3, passEvent4, passEvent5, passEvent6, passEvent7)
@@ -256,22 +265,26 @@ internal class AttackingEventSummaryServiceTest {
         val playerId = 1L
         val matchId = 1L
 
-        val shotEventType = mockEventObjects.mockEventType(EventTypeEnum.SHOT.id, "Shot")
-        val waywardOutcome = mockEventObjects.mockOutcome(OutcomeEnum.WAYWARD.id, "Wayward")
-        val goalOutcome = mockEventObjects.mockOutcome(OutcomeEnum.GOAL.id, "Goal")
+        val shotEventType = mockEventObjects.eventType(EventTypeEnum.SHOT.id, "Shot")
+        val waywardOutcome = mockEventObjects.outcome(OutcomeEnum.WAYWARD.id, "Wayward")
+        val goalOutcome = mockEventObjects.outcome(OutcomeEnum.GOAL.id, "Goal")
 
-        val waywardShot = mockEventObjects.mockShotEvent(shotEventType, waywardOutcome, 564)
-        val goalShot = mockEventObjects.mockShotEvent(shotEventType, goalOutcome, 725)
+        val waywardShot = mockEventObjects.shotEvent(shotEventType, waywardOutcome, 564)
+        val goalShot = mockEventObjects.shotEvent(shotEventType, goalOutcome, 725)
 
-        val passEvent1 = mockEventObjects.mockPassEvent(1, null, null)
-        val passEvent2 = mockEventObjects.mockPassEvent(2, null, null)
-        val passEvent3 = mockEventObjects.mockPassEvent(3, null, null)
+        val passEvent1 = mockEventObjects.passEvent(1, null, null)
+        val passEvent2 = mockEventObjects.passEvent(2, null, null)
+
+        val passEvent3 = mockEventObjects.passEvent(3, null, null)
         passEvent3.pass?.assistedShot = waywardShot
-        val passEvent4 = mockEventObjects.mockPassEvent(4, null, null)
-        val passEvent5 = mockEventObjects.mockPassEvent(5, null, null)
-        val passEvent6 = mockEventObjects.mockPassEvent(6, null, null)
+
+        val passEvent4 = mockEventObjects.passEvent(4, null, null)
+        val passEvent5 = mockEventObjects.passEvent(5, null, null)
+
+        val passEvent6 = mockEventObjects.passEvent(6, null, null)
         passEvent6.pass?.assistedShot = goalShot
-        val passEvent7 = mockEventObjects.mockPassEvent(7, null, null)
+
+        val passEvent7 = mockEventObjects.passEvent(7, null, null)
 
         every { eventRepository.findAllByPlayer_IdAndMatch_Id(playerId, matchId) } returns
                 setOf(passEvent1, passEvent2, passEvent3, passEvent4, passEvent5, passEvent6, passEvent7)

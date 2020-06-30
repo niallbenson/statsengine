@@ -12,35 +12,35 @@ class EngineMockEventObjects {
 
     private val mockObjects = EngineMockObjects()
 
-    fun mockEvent() = Event(
-            mockObjects.mockMatch(), 99, 2, LocalTime.NOON, 12, 45,
-            mockObjects.mockEventType(), 1, mockObjects.mockTeam1(), mockObjects.mockPlayPattern(),
-            mockObjects.mockTeam2(), 1.0, mockObjects.mockSource(), "1", 1)
+    fun event() = Event(
+            mockObjects.match(), 99, 2, LocalTime.NOON, 12, 45,
+            mockObjects.eventType(), 1, mockObjects.team1(), mockObjects.playPattern(),
+            mockObjects.team2(), 1.0, mockObjects.source(), "1", 1)
 
-    fun mockShotEventGoalOutcome(): Event {
-        val outcome = mockOutcome(OutcomeEnum.GOAL.id,"Goal")
+    fun shotEventGoalOutcome(): Event {
+        val outcome = outcome(OutcomeEnum.GOAL.id,"Goal")
 
-        return mockShotEvent(mockShotEventType(), outcome, 452)
+        return shotEvent(shotEventType(), outcome, 452)
     }
 
-    fun mockEventType(id: Long, typeName: String) = EventType(
-            typeName, mockObjects.mockSource(), "1", id)
+    fun eventType(id: Long, typeName: String) = EventType(
+            typeName, mockObjects.source(), "1", id)
 
-    fun mockOutcome(id: Long, outcomeName: String) = Outcome(
-            outcomeName, mockObjects.mockSource(), "1", id)
+    fun outcome(id: Long, outcomeName: String) = Outcome(
+            outcomeName, mockObjects.source(), "1", id)
 
-    fun mockShotEvent(eventType: EventType, outcome: Outcome, eventId: Long): Event {
-        val event = Event(mockObjects.mockMatch(), 99, 2, LocalTime.NOON, 12, 45,
-                eventType, 1, mockObjects.mockTeam1(), mockObjects.mockPlayPattern(),
-                mockObjects.mockTeam2(), 1.0, mockObjects.mockSource(), "1", eventId)
+    fun shotEvent(eventType: EventType, outcome: Outcome, eventId: Long): Event {
+        val event = Event(mockObjects.match(), 99, 2, LocalTime.NOON, 12, 45,
+                eventType, 1, mockObjects.team1(), mockObjects.playPattern(),
+                mockObjects.team2(), 1.0, mockObjects.source(), "1", eventId)
 
         val shot = Shot(
                 0.5,
                 Location3D(1.5, 2.5, 0.5, 1),
-                Technique("Volley", mockObjects.mockSource(), "1", 1),
+                Technique("Volley", mockObjects.source(), "1", 1),
                 outcome,
-                ShotType("Open Play", mockObjects.mockSource(), "1", 1),
-                BodyPart("Right Foot", mockObjects.mockSource(), "1", 1),
+                ShotType("Open Play", mockObjects.source(), "1", 1),
+                BodyPart("Right Foot", mockObjects.source(), "1", 1),
                 1)
         shot.firstTime = true
 
@@ -49,18 +49,18 @@ class EngineMockEventObjects {
         return event
     }
 
-    fun mockShotEventType() = EventType(
-            "Shot", mockObjects.mockSource(), "1", EventTypeEnum.SHOT.id)
+    fun shotEventType() = EventType(
+            "Shot", mockObjects.source(), "1", EventTypeEnum.SHOT.id)
 
-    fun mockPassEvent(): Event {
-        val event = Event(mockObjects.mockMatch(), 99, 2, LocalTime.NOON, 12, 45,
-                mockPassEventType(), 1, mockObjects.mockTeam1(), mockObjects.mockPlayPattern(),
-                mockObjects.mockTeam2(), 1.0, mockObjects.mockSource(), "1", 78)
+    fun passEvent(): Event {
+        val event = Event(mockObjects.match(), 99, 2, LocalTime.NOON, 12, 45,
+                passEventType(), 1, mockObjects.team1(), mockObjects.playPattern(),
+                mockObjects.team2(), 1.0, mockObjects.source(), "1", 78)
 
         event.player = mockObjects.mockPlayer()
 
         val pass = Pass(
-                12.0, 25.6, PassHeight("High", mockObjects.mockSource(), "1"),
+                12.0, 25.6, PassHeight("High", mockObjects.source(), "1"),
                 Location2D(1.5,2.5, 1), 1)
 
         event.pass = pass
@@ -68,15 +68,15 @@ class EngineMockEventObjects {
         return event
     }
 
-    fun mockPassEvent(id: Long, outcome: Outcome?, ballReceiptEvent: Event?): Event {
-        val event = Event(mockObjects.mockMatch(), 99, 2, LocalTime.NOON, 12, 45,
-                mockPassEventType(), 1, mockObjects.mockTeam1(), mockObjects.mockPlayPattern(),
-                mockObjects.mockTeam2(), 1.0, mockObjects.mockSource(), "1", id)
+    fun passEvent(id: Long, outcome: Outcome?, ballReceiptEvent: Event?): Event {
+        val event = Event(mockObjects.match(), 99, 2, LocalTime.NOON, 12, 45,
+                passEventType(), 1, mockObjects.team1(), mockObjects.playPattern(),
+                mockObjects.team2(), 1.0, mockObjects.source(), "1", id)
 
         event.player = mockObjects.mockPlayer()
 
         val pass = Pass(
-                12.0, 25.6, PassHeight("High", mockObjects.mockSource(), "1"),
+                12.0, 25.6, PassHeight("High", mockObjects.source(), "1"),
                 Location2D(1.5,2.5, 1), 1)
         pass.outcome = outcome
 
@@ -89,20 +89,20 @@ class EngineMockEventObjects {
         return event
     }
 
-    fun mockBallReceipt(id: Long) = Event(
-            mockObjects.mockMatch(), 99, 2, LocalTime.NOON, 12, 45,
-                mockEventType(EventTypeEnum.BALL_RECEIPT.id, "Ball Receipt"),
-                1, mockObjects.mockTeam1(), mockObjects.mockPlayPattern(),
-                mockObjects.mockTeam2(), 1.0, mockObjects.mockSource(), "1", id)
+    fun ballReceipt(id: Long) = Event(
+            mockObjects.match(), 99, 2, LocalTime.NOON, 12, 45,
+                eventType(EventTypeEnum.BALL_RECEIPT.id, "Ball Receipt"),
+                1, mockObjects.team1(), mockObjects.playPattern(),
+                mockObjects.team2(), 1.0, mockObjects.source(), "1", id)
 
-    fun mockPassEventType() = EventType(
-            "Pass", mockObjects.mockSource(), "1", EventTypeEnum.PASS.id)
+    fun passEventType() = EventType(
+            "Pass", mockObjects.source(), "1", EventTypeEnum.PASS.id)
 
-    fun mockTactics() = Tactics(442, 12)
+    fun tactics() = Tactics(442, 12)
 
-    fun mockTacticalLineupPlayer() = TacticalLineupPlayer(
-            17, mockObjects.mockPlayer(), mockPosition(), 1)
+    fun tacticalLineupPlayer() = TacticalLineupPlayer(
+            17, mockObjects.mockPlayer(), position(), 1)
 
-    fun mockPosition() = Position("Left Back", mockObjects.mockSource(), "1", 94)
+    fun position() = Position("Left Back", mockObjects.source(), "1", 94)
 
 }

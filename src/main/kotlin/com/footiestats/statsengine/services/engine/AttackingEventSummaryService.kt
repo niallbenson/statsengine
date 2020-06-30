@@ -2,15 +2,18 @@ package com.footiestats.statsengine.services.engine
 
 import com.footiestats.statsengine.dtos.engine.AttackingEventSummaryDTO
 import com.footiestats.statsengine.entities.engine.enums.EventTypeEnum
-import com.footiestats.statsengine.entities.engine.enums.OutcomeEnum
 import com.footiestats.statsengine.entities.engine.events.Event
 import com.footiestats.statsengine.repos.engine.EventRepository
 import com.footiestats.statsengine.services.engine.exceptions.EntityIdMustBeGreaterThanZero
+import com.footiestats.statsengine.services.engine.eventanalysis.PassAnalysisService
+import com.footiestats.statsengine.services.engine.eventanalysis.ShotAnalysisService
 import org.springframework.stereotype.Service
 
 @Service
 class AttackingEventSummaryService(
-        private val eventRepository: EventRepository
+        private val eventRepository: EventRepository,
+        private val shotAnalysisService: ShotAnalysisService,
+        private val passAnalysisService: PassAnalysisService
 ) {
 
     fun getPlayerMatchEventsTypeIdMap(playerId: Long, matchId: Long): Map<Long, MutableSet<Event>> {
@@ -38,7 +41,7 @@ class AttackingEventSummaryService(
 
     private fun getGoalCount(typeEventMap: Map<Long, MutableSet<Event>>): Int {
         return typeEventMap[EventTypeEnum.SHOT.id]
-                ?.filter { e -> e.shot?.outcome?.id == OutcomeEnum.GOAL.id }
+                ?.filter { shotAnalysisService.isGoal(it) }
                 ?.count() ?: 0
     }
 
@@ -48,14 +51,8 @@ class AttackingEventSummaryService(
     }
 
     private fun getShotsOnTarget(typeEventMap: Map<Long, MutableSet<Event>>): Int {
-        val onTargetOutcomeIds = arrayOf(
-                OutcomeEnum.SAVED.id,
-                OutcomeEnum.SAVED_TO_POST.id,
-                OutcomeEnum.GOAL.id,
-                OutcomeEnum.BLOCKED.id)
-
         return typeEventMap[EventTypeEnum.SHOT.id]
-                ?.filter { e -> onTargetOutcomeIds.contains(e.shot?.outcome?.id) }
+                ?.filter { shotAnalysisService.isShotOnTarget(it) }
                 ?.count() ?: 0
     }
 
@@ -66,22 +63,19 @@ class AttackingEventSummaryService(
 
     private fun getAccuratePasses(typeEventMap: Map<Long, MutableSet<Event>>): Int {
         return typeEventMap[EventTypeEnum.PASS.id]
-                ?.filter {
-                    it.pass?.outcome == null
-                            && it.relatedEvents.find { r -> r.type.id == EventTypeEnum.BALL_RECEIPT.id } != null
-                }
+                ?.filter { passAnalysisService.isPassAccurate(it) }
                 ?.count() ?: 0
     }
 
     private fun getKeyPasses(typeEventMap: Map<Long, MutableSet<Event>>): Int {
         return typeEventMap[EventTypeEnum.PASS.id]
-                ?.filter { it.pass?.assistedShot != null }
+                ?.filter { passAnalysisService.isKeyPass(it) }
                 ?.count() ?: 0
     }
 
     private fun getAssists(typeEventMap: Map<Long, MutableSet<Event>>): Int {
         return typeEventMap[EventTypeEnum.PASS.id]
-                ?.filter { it.pass?.assistedShot?.shot?.outcome?.id == OutcomeEnum.GOAL.id }
+                ?.filter { passAnalysisService.isAssist(it) }
                 ?.count() ?: 0
     }
 

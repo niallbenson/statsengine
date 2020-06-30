@@ -37,7 +37,7 @@ class StatsBombBaseEntityService(
     // Competition
     fun save(competition: Competition) = competitionRepository.save(competition)
 
-    fun getCompetitionsBySouce(source: Source) = competitionRepository.findAllBySource(source)
+    fun getCompetitionsBySource(source: Source) = competitionRepository.findAllBySource(source)
     fun getCompetitionByExternalId(id: String) = competitionRepository.findBySourceExternalId(id)
     fun getOrCreateCompetition(statsBombCompetition: StatsBombCompetition): Competition {
         var competition =
@@ -86,14 +86,13 @@ class StatsBombBaseEntityService(
     fun save(country: Country) = countryRepository.save(country)
 
     fun getAllCountries() = countryRepository.findAll()
-    fun getCountryByExternalId(id: Long) = countryRepository.findById(id)
     fun getOrCreateCountry(name: String): Country {
         var country = countryRepository.findByName(name)
 
         if (country == null) {
             country = Country(name, null, getStatsBombSource())
 
-            countryRepository.save(country)
+            country = countryRepository.save(country)
         }
         return country
     }
@@ -121,36 +120,16 @@ class StatsBombBaseEntityService(
 
     fun getSeasonsBySource(source: Source) = seasonRepository.findBySource(source)
     fun getSeasonByExternalId(id: String) = seasonRepository.findBySourceExternalId(id)
-    fun getOrCreateSeason(statsBombSeason: StatsBombSeason): Season {
-        var season = seasonRepository.findBySourceExternalId(statsBombSeason.seasonId.toString())
 
-        if (season == null) {
-            season = Season(
-                    statsBombSeason.seasonName,
-                    statsBombSeason.seasonId.toString(),
-                    getStatsBombSource()
-            )
-            seasonRepository.save(season)
-        } else {
-            if (season.name != statsBombSeason.seasonName) {
-                season.name = statsBombSeason.seasonName
-
-                seasonRepository.save(season)
-            }
-        }
-        return season
-    }
-
-    fun getOrCreateSeason(seasonId: String, seasonName: String): Season {
-        var season = seasonRepository.findBySourceExternalId(seasonId)
+    fun getOrCreateSeason(externalSeasonId: String, seasonName: String): Season {
+        var season = seasonRepository.findBySourceExternalId(externalSeasonId)
 
         if (season == null) {
             season = Season(
                     seasonName,
-                    seasonId,
+                    externalSeasonId,
                     getStatsBombSource()
             )
-
             seasonRepository.save(season)
         } else {
             if (season.name != seasonName) {
@@ -194,7 +173,6 @@ class StatsBombBaseEntityService(
     fun save(team: Team) = teamRepository.save(team)
 
     fun getTeamByExternalId(id: String) = teamRepository.findBySourceExternalId(id)
-    fun getManagerById(id: Long) = managerRepository.findById(id)
     fun getOrCreateTeam(statsBombTeam: StatsBombTeam): Team {
         var team = teamRepository.findBySourceExternalId(statsBombTeam.teamId.toString())
 
@@ -227,11 +205,7 @@ class StatsBombBaseEntityService(
                 team.country = getOrCreateCountry(statsBombTeam.country)
                 team.managers = managers
 
-                try {
-                    teamRepository.save(team)
-                } catch (e: Exception) {
-                    log.error { e.localizedMessage }
-                }
+                teamRepository.save(team)
             }
         }
         return team
@@ -274,7 +248,7 @@ class StatsBombBaseEntityService(
             if (manager.name != statsBombManager.name
                     || manager.nickname != statsBombManager.nickname
                     || manager.dateOfBirth != StatsBombDateUtils.convertToDateFromShort(statsBombManager.dob)
-                    || manager.country.id != statsBombManager.country.id) {
+                    || manager.country.sourceExternalId != statsBombManager.country.id.toString()) {
                 manager.name = statsBombManager.name
                 manager.nickname = statsBombManager.nickname
                 manager.dateOfBirth = StatsBombDateUtils.convertToDateFromShort(statsBombManager.dob)

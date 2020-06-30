@@ -13,4 +13,5 @@ class PlayerEventSummaryController(
     @GetMapping("/player/{playerId}/match/{matchId}/attacking")
     fun getPlayerMatchAttackingEventSummary(@PathVariable playerId: Long, @PathVariable matchId: Long) =
             attackingEventSummaryService.getPlayerMatchAttackSummaryDto(playerId, matchId)
+
 }

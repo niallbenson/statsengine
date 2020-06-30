@@ -68,7 +68,7 @@ internal class EventServiceTest {
         val playerId = 1L
         val matchId = 1L
 
-        val mockEvent = mockEventObjects.mockEvent()
+        val mockEvent = mockEventObjects.event()
 
         every { eventRepository.findAllByPlayer_IdAndMatch_Id(playerId, matchId) } returns
                 setOf(mockEvent)
@@ -104,7 +104,7 @@ internal class EventServiceTest {
         val eventTypeId = 1L
 
         every { eventRepository.findAllByMatch_IdAndType_Id(matchId, eventTypeId) } returns
-                setOf(mockEventObjects.mockEvent())
+                setOf(mockEventObjects.event())
 
         val result = service.getMatchEventsByType(matchId, eventTypeId)
 
@@ -141,13 +141,13 @@ internal class EventServiceTest {
             eventRepository.findAllByMatch_IdAndType_IdAndShot_Outcome_IdAndEventTeam_IdOrderByEventIndex(
                     matchId, EventTypeEnum.SHOT.id, OutcomeEnum.GOAL.id, teamId)
         } returns
-                setOf(mockEventObjects.mockEvent())
+                setOf(mockEventObjects.event())
 
         every { matchRepository.findByIdOrNull(matchId) } returns mockMatch()
 
         every { eventRepository.findAllByMatch_IdAndType_IdAndEventTeam_Id(
                 matchId, EventTypeEnum.OWN_GOAL_AGAINST.id, opposingTeamId) } returns
-                setOf(mockEventObjects.mockEvent())
+                setOf(mockEventObjects.event())
 
         val result = service.getMatchTeamGoals(matchId, teamId)
 
@@ -156,11 +156,11 @@ internal class EventServiceTest {
 
     private fun mockMatch() = Match(
             LocalDateTime.MIN, 1, 1, "available", LocalDateTime.MAX, 1,
-            "1", mockObjects.mockCompetitionSeason(), mockTeam(1), mockTeam(2), mutableListOf(),
-            mutableListOf(), mockObjects.mockMatchMetadata(), mockObjects.mockCompetitionStage(), null, null,
-            mockObjects.mockSource(), 1)
+            "1", mockObjects.competitionSeason(), mockTeam(1), mockTeam(2), mutableListOf(),
+            mutableListOf(), mockObjects.matchMetadata(), mockObjects.competitionStage(), null, null,
+            mockObjects.source(), 1)
 
     private fun mockTeam(id: Long) = Team(
-            "Team $id", Gender.MALE, "group", id.toString(), mockObjects.mockCountry(),
-            mutableListOf(), mockObjects.mockSource(), id)
+            "Team $id", Gender.MALE, "group", id.toString(), mockObjects.country(),
+            mutableListOf(), mockObjects.source(), id)
 }

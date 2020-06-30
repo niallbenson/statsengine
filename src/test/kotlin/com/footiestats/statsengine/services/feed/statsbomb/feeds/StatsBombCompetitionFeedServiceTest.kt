@@ -51,7 +51,7 @@ internal class StatsBombCompetitionFeedServiceTest {
         val country = Country("name", "1", source)
         every { baseEntityService.save(any<Country>()) } returns country
 
-        every { baseEntityService.getCompetitionsBySouce(source) } returns ArrayList()
+        every { baseEntityService.getCompetitionsBySource(source) } returns ArrayList()
         val competition = Competition("name", Gender.MALE, "1", country, source)
 
         every { baseEntityService.save(any<Competition>()) } returns competition

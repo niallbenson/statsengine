@@ -9,57 +9,56 @@ import java.time.LocalDateTime
 
 class EngineMockObjects {
 
-    fun mockMatch() = Match(
+    fun match() = Match(
             LocalDateTime.MIN, 0, 1, "available", LocalDateTime.MAX, 1,
-            "1", mockCompetitionSeason(), mockTeam1(), mockTeam2(), mockTeam1Managers(),
-            mockTeam2Managers(), mockMatchMetadata(), mockCompetitionStage(), mockStadium(), mockReferee(),
-            mockSource(), 1)
+            "1", competitionSeason(), team1(), team2(), team1Managers(),
+            team2Managers(), matchMetadata(), competitionStage(), stadium(), referee(),
+            source(), 1)
 
-    fun mockCompetition() = Competition(
-            "competition", Gender.MALE, "1", mockCountry(), mockSource(), 1)
+    fun competition() = Competition(
+            "competition", Gender.MALE, "1", country(), source(), 1)
 
-    fun mockCountry() = Country(
-            "England", "1", mockSource(), 1)
+    fun competition(name: String) = Competition(
+            name, Gender.MALE, "1", country(), source(), 1)
 
-    fun mockSource() = Source("source", 1)
+    fun country() = Country(
+            "England", "1", source(), 1)
 
-    fun mockSeason() = Season("season", "1", mockSource(), 1)
+    fun source() = Source("source", 1)
 
-    fun mockCompetitionSeason() = CompetitionSeason(mockCompetition(), mockSeason(), 1)
+    fun season() = Season("season", "1", source(), 1)
 
-    fun mockTeam1() = Team(
-            "Ipswich", Gender.MALE, "group", "1", mockCountry(),
-            mockTeam1Managers(), mockSource(), 1)
+    fun competitionSeason() = CompetitionSeason(competition(), season(), 1)
 
-    fun mockTeam1Managers() = mutableListOf(
+    fun team1() = Team(
+            "Ipswich", Gender.MALE, "group", "1", country(),
+            team1Managers(), source(), 1)
+
+    fun team1Managers() = mutableListOf(
             Manager("Bob", "Team 1 Manager Nickname", LocalDate.MIN,
-                    "1", mockCountry(), mockSource()))
+                    "1", country(), source()))
 
-    fun mockTeam2() = Team(
-            "Braintree", Gender.MALE, "group", "1", mockCountry(),
-            mockTeam2Managers(), mockSource(), 2)
+    fun team2() = Team(
+            "Braintree", Gender.MALE, "group", "1", country(),
+            team2Managers(), source(), 2)
 
-    fun mockTeam2Managers() = mutableListOf(
+    fun team2Managers() = mutableListOf(
             Manager("Clive", "Team 2 Manager Nickname", LocalDate.MIN,
-                    "2", mockCountry(), mockSource()))
+                    "2", country(), source()))
 
-    fun mockMatchMetadata() = MatchMetadata(
-            "d", "s", "x", mockSource(), 1)
+    fun matchMetadata() = MatchMetadata(
+            "d", "s", "x", source(), 1)
 
-    fun mockCompetitionStage() = CompetitionStage("stage", "1", mockSource(), 1)
+    fun competitionStage() = CompetitionStage("stage", "1", source(), 1)
 
-    fun mockStadium() = Stadium("stadium", "1", mockCountry(), mockSource(), 1)
+    fun stadium() = Stadium("stadium", "1", country(), source(), 1)
 
-    fun mockReferee() = Referee("referee", "1", mockCountry(), mockSource(), 1)
+    fun referee() = Referee("referee", "1", country(), source(), 1)
 
-    fun mockEventType() = EventType("Goal", mockSource(), "1", 1)
+    fun eventType() = EventType("Goal", source(), "1", 1)
 
-    fun mockPlayPattern() = PlayPattern("pattern", mockSource(), "1", 1)
+    fun playPattern() = PlayPattern("pattern", source(), "1", 1)
 
-    fun mockLineupPlayer() = LineupPlayer(1, mockPlayer(), mockMatchLineup(), 1)
-
-    fun mockPlayer() = Player("Dave", "DJ", "1", mockCountry(), mockSource(), 1)
-
-    fun mockMatchLineup() = MatchLineup(mockMatch(), mockTeam1(), 1)
+    fun mockPlayer() = Player("Dave", "DJ", "1", country(), source(), 1)
 
 }

@@ -58,7 +58,7 @@ internal class TacticsServiceTest {
 
         every {
             tacticsRepository.findAllByEvent_Match_IdAndEvent_EventTeam_Id(matchId, teamId)
-        } returns arrayListOf(mockEventObjectObjects.mockTactics())
+        } returns arrayListOf(mockEventObjectObjects.tactics())
 
         val result = service.getMatchTeamTacticsDto(matchId, teamId)
 

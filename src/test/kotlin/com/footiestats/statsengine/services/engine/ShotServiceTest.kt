@@ -58,7 +58,7 @@ internal class ShotServiceTest {
 
         every {
             eventRepository.findAllByMatch_IdAndType_IdAndEventTeam_Id(matchId, EventTypeEnum.SHOT.id, teamId)
-        } returns setOf(mockEventObjects.mockShotEventGoalOutcome())
+        } returns setOf(mockEventObjects.shotEventGoalOutcome())
 
         val result = service.getMatchTeamShotsDtos(matchId, teamId)
 

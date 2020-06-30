@@ -20,7 +20,7 @@ internal class TacticalLineupPlayerMapperTest {
 
     @Test
     fun `when entity id is 1 then dto id should be 1`() {
-        val tacticalLineupPlayer = mockEventObjects.mockTacticalLineupPlayer()
+        val tacticalLineupPlayer = mockEventObjects.tacticalLineupPlayer()
 
         val result = mapper.toDto(tacticalLineupPlayer)
 
@@ -29,7 +29,7 @@ internal class TacticalLineupPlayerMapperTest {
 
     @Test
     fun `when entity player name is Dave then dto player name should be Dave`() {
-        val tacticalLineupPlayer = mockEventObjects.mockTacticalLineupPlayer()
+        val tacticalLineupPlayer = mockEventObjects.tacticalLineupPlayer()
 
         val result = mapper.toDto(tacticalLineupPlayer)
 
@@ -38,7 +38,7 @@ internal class TacticalLineupPlayerMapperTest {
 
     @Test
     fun `when entity player nickName is DJ then dto nickName should be DJ`() {
-        val tacticalLineupPlayer = mockEventObjects.mockTacticalLineupPlayer()
+        val tacticalLineupPlayer = mockEventObjects.tacticalLineupPlayer()
 
         val result = mapper.toDto(tacticalLineupPlayer)
 
@@ -47,7 +47,7 @@ internal class TacticalLineupPlayerMapperTest {
 
     @Test
     fun `when entity player id is 1 then dto playerId should be 1`() {
-        val tacticalLineupPlayer = mockEventObjects.mockTacticalLineupPlayer()
+        val tacticalLineupPlayer = mockEventObjects.tacticalLineupPlayer()
 
         val result = mapper.toDto(tacticalLineupPlayer)
 
@@ -56,7 +56,7 @@ internal class TacticalLineupPlayerMapperTest {
 
     @Test
     fun `when entity jerseyNumber is 17 then dto jerseyNumber should be 17`() {
-        val tacticalLineupPlayer = mockEventObjects.mockTacticalLineupPlayer()
+        val tacticalLineupPlayer = mockEventObjects.tacticalLineupPlayer()
 
         val result = mapper.toDto(tacticalLineupPlayer)
 
@@ -65,7 +65,7 @@ internal class TacticalLineupPlayerMapperTest {
 
     @Test
     fun `when entity position id is 94 then dto positionId should be 94`() {
-        val tacticalLineupPlayer = mockEventObjects.mockTacticalLineupPlayer()
+        val tacticalLineupPlayer = mockEventObjects.tacticalLineupPlayer()
 
         val result = mapper.toDto(tacticalLineupPlayer)
 
@@ -74,7 +74,7 @@ internal class TacticalLineupPlayerMapperTest {
 
     @Test
     fun `when entity position name is Left Back then dto position should be Left Back`() {
-        val tacticalLineupPlayer = mockEventObjects.mockTacticalLineupPlayer()
+        val tacticalLineupPlayer = mockEventObjects.tacticalLineupPlayer()
 
         val result = mapper.toDto(tacticalLineupPlayer)
 

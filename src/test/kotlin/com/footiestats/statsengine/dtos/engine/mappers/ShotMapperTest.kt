@@ -25,7 +25,7 @@ internal class ShotMapperTest {
 
     @Test
     fun `when entity shot value is null then expect exception`() {
-        val nonShotEvent = mockEventObjects.mockEvent()
+        val nonShotEvent = mockEventObjects.event()
 
         assertThrows<EventHasUnexpectedNullValue> {
             mapper.toDto(nonShotEvent)
@@ -34,7 +34,7 @@ internal class ShotMapperTest {
 
     @Test
     fun `when entity event id is 452 then dto event id should be 452`() {
-        val shotEvent = mockEventObjects.mockShotEventGoalOutcome()
+        val shotEvent = mockEventObjects.shotEventGoalOutcome()
 
         val result = mapper.toDto(shotEvent)
 
@@ -43,7 +43,7 @@ internal class ShotMapperTest {
 
     @Test
     fun `when entity shot type is Open Play then dto shot type should be Open Play`() {
-        val shotEvent = mockEventObjects.mockShotEventGoalOutcome()
+        val shotEvent = mockEventObjects.shotEventGoalOutcome()
 
         val result = mapper.toDto(shotEvent)
 
@@ -52,7 +52,7 @@ internal class ShotMapperTest {
 
     @Test
     fun `when entity shot outcome is Goal then dto shot outcome should be Goal`() {
-        val shotEvent = mockEventObjects.mockShotEventGoalOutcome()
+        val shotEvent = mockEventObjects.shotEventGoalOutcome()
 
         val result = mapper.toDto(shotEvent)
 
@@ -61,7 +61,7 @@ internal class ShotMapperTest {
 
     @Test
     fun `when entity shot body part is Right Foot then dto shot body part should be Right Foot`() {
-        val shotEvent = mockEventObjects.mockShotEventGoalOutcome()
+        val shotEvent = mockEventObjects.shotEventGoalOutcome()
 
         val result = mapper.toDto(shotEvent)
 
@@ -70,7 +70,7 @@ internal class ShotMapperTest {
 
     @Test
     fun `when entity shot technique is Volley then dto shot technique should be Volley`() {
-        val shotEvent = mockEventObjects.mockShotEventGoalOutcome()
+        val shotEvent = mockEventObjects.shotEventGoalOutcome()
 
         val result = mapper.toDto(shotEvent)
 
@@ -79,8 +79,8 @@ internal class ShotMapperTest {
 
     @Test
     fun `when entity shot assist player is Dave then dto shot assist player should be Dave`() {
-        val shotEvent = mockEventObjects.mockShotEventGoalOutcome()
-        shotEvent.shot?.keyPass = mockEventObjects.mockPassEvent()
+        val shotEvent = mockEventObjects.shotEventGoalOutcome()
+        shotEvent.shot?.keyPass = mockEventObjects.passEvent()
 
         val result = mapper.toDto(shotEvent)
 
@@ -89,7 +89,7 @@ internal class ShotMapperTest {
 
     @Test
     fun `when entity shot has no assist player then dto shot assist player should be null`() {
-        val shotEvent = mockEventObjects.mockShotEventGoalOutcome()
+        val shotEvent = mockEventObjects.shotEventGoalOutcome()
 
         val result = mapper.toDto(shotEvent)
 

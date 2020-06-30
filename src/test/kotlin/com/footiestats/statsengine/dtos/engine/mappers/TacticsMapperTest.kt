@@ -33,8 +33,8 @@ internal class TacticsMapperTest {
 
     @Test
     fun `when tactics id is 12 then dto id should be 12`() {
-        val tactics = mockEventObjects.mockTactics()
-        tactics.event = mockEventObjects.mockEvent()
+        val tactics = mockEventObjects.tactics()
+        tactics.event = mockEventObjects.event()
 
         val result = mapper.toDto(tactics)
 
@@ -43,8 +43,8 @@ internal class TacticsMapperTest {
 
     @Test
     fun `when tactics formation is 442 then dto formation should be 442`() {
-        val tactics = mockEventObjects.mockTactics()
-        tactics.event = mockEventObjects.mockEvent()
+        val tactics = mockEventObjects.tactics()
+        tactics.event = mockEventObjects.event()
 
         val result = mapper.toDto(tactics)
 
@@ -53,8 +53,8 @@ internal class TacticsMapperTest {
 
     @Test
     fun `when tactics has event id 1 then dto event id should be 1`() {
-        val tactics = mockEventObjects.mockTactics()
-        tactics.event = mockEventObjects.mockEvent()
+        val tactics = mockEventObjects.tactics()
+        tactics.event = mockEventObjects.event()
 
         val result = mapper.toDto(tactics)
 
@@ -63,10 +63,10 @@ internal class TacticsMapperTest {
 
     @Test
     fun `when tactics lineup has 2 players then dto lineup should have 2 players`() {
-        val tactics = mockEventObjects.mockTactics()
-        tactics.event = mockEventObjects.mockEvent()
+        val tactics = mockEventObjects.tactics()
+        tactics.event = mockEventObjects.event()
         tactics.lineup = mutableSetOf(
-                mockEventObjects.mockTacticalLineupPlayer(), mockEventObjects.mockTacticalLineupPlayer())
+                mockEventObjects.tacticalLineupPlayer(), mockEventObjects.tacticalLineupPlayer())
 
         val result = mapper.toDto(tactics)
 
