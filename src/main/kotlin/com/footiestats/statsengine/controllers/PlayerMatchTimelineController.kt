@@ -14,4 +14,8 @@ class PlayerMatchTimelineController(
     fun getPlayerMatchAttackingEventSummary(@PathVariable playerId: Long, @PathVariable matchId: Long) =
             playerMatchTimelineService.getPlayerMatchTimelineDto(playerId, matchId)
 
+    @GetMapping("/player/{playerId}/match/{matchId}/key")
+    fun getPlayerKeyAttackingEventsSummary(@PathVariable playerId: Long, @PathVariable matchId: Long) =
+            playerMatchTimelineService.getPlayerMatchTimelineKeyEventsDto(playerId, matchId)
+
 }

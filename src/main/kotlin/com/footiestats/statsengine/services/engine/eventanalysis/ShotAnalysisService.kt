@@ -30,7 +30,11 @@ class ShotAnalysisService {
     fun shotOutcome(event: Event): String {
         validateEventType(event)
 
-        return "Shot outcome TBC"
+        if (event.shot?.outcome?.id == OutcomeEnum.GOAL.id) {
+            return "Goal"
+        }
+
+        return "Shot"
     }
 
     private fun validateEventType(event: Event) {

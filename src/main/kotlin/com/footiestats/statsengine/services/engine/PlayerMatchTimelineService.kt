@@ -21,18 +21,43 @@ class PlayerMatchTimelineService(
 ) {
 
     fun getPlayerMatchTimelineDto(playerId: Long, matchId: Long): PlayerMatchTimelineDTO {
-        if (playerId < 1) throw EntityIdMustBeGreaterThanZero("$playerId playerId is invalid")
-        if (matchId < 1) throw EntityIdMustBeGreaterThanZero("$matchId matchId is invalid")
+        validateEntityIds(playerId, matchId)
 
-        val player = playerRepository.findByIdOrNull(playerId)
-                ?: throw EntityNotFound("Player $playerId not found")
+        val player = getPlayer(playerId)
 
-        val events = eventRepository.findAllByPlayer_IdAndMatch_Id(playerId, matchId)
+        val events = getEvents(playerId, matchId)
 
         return PlayerMatchTimelineDTO(
                 playerMapper.toDto(player),
-                events.sortedBy { it.eventIndex }.map { mapTimelineItem(it) }.toTypedArray()
+                events.map { mapTimelineItem(it) }.toTypedArray()
         )
+    }
+
+    fun getPlayerMatchTimelineKeyEventsDto(playerId: Long, matchId: Long): PlayerMatchTimelineDTO {
+        validateEntityIds(playerId, matchId)
+
+        val player = getPlayer(playerId)
+
+        val events = getEvents(playerId, matchId)
+                .filter { eventAnalysisService.isKeyEvent(it) }
+                .toTypedArray()
+
+        return PlayerMatchTimelineDTO(
+                playerMapper.toDto(player),
+                events.map { mapTimelineItem(it) }.toTypedArray()
+        )
+    }
+
+    private fun getEvents(playerId: Long, matchId: Long) =
+            eventRepository.findAllByPlayer_IdAndMatch_Id(playerId, matchId)
+                    .sortedBy { it.eventIndex }
+
+    private fun getPlayer(playerId: Long) = playerRepository.findByIdOrNull(playerId)
+            ?: throw EntityNotFound("Player $playerId not found")
+
+    private fun validateEntityIds(playerId: Long, matchId: Long) {
+        if (playerId < 1) throw EntityIdMustBeGreaterThanZero("$playerId playerId is invalid")
+        if (matchId < 1) throw EntityIdMustBeGreaterThanZero("$matchId matchId is invalid")
     }
 
     private fun mapTimelineItem(event: Event) = TimelineItemDTO(

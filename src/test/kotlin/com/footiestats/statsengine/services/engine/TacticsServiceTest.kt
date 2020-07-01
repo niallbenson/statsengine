@@ -64,4 +64,5 @@ internal class TacticsServiceTest {
 
         assert(result.size == 1)
     }
+
 }

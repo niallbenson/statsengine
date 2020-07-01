@@ -229,7 +229,7 @@ internal class StatsBombBaseEntityServiceTest {
         val result = service.getSeasonsBySource(source)
 
         assert(result.size == 1)
-        assert(result[0]?.name == "season")
+        assert(result[0].name == "season")
     }
 
     @Test
@@ -255,7 +255,7 @@ internal class StatsBombBaseEntityServiceTest {
 
         val result = service.getOrCreateSeason(season.sourceExternalId, season.name)
 
-        assert(result?.name == season.name)
+        assert(result.name == season.name)
     }
 
     @Test
