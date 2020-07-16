@@ -3,11 +3,8 @@ package com.footiestats.statsengine.services.engine
 import com.footiestats.statsengine.dtos.engine.ShotDTO
 import com.footiestats.statsengine.dtos.engine.mappers.ShotMapper
 import com.footiestats.statsengine.entities.engine.enums.EventTypeEnum
-import com.footiestats.statsengine.entities.engine.enums.OutcomeEnum
-import com.footiestats.statsengine.entities.engine.events.Event
 import com.footiestats.statsengine.repos.engine.EventRepository
 import com.footiestats.statsengine.services.engine.exceptions.EntityIdMustBeGreaterThanZero
-import com.footiestats.statsengine.services.engine.exceptions.UnexpectedEventType
 import org.springframework.stereotype.Service
 
 @Service

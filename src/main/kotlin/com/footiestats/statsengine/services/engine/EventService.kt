@@ -1,19 +1,15 @@
 package com.footiestats.statsengine.services.engine
 
 import com.footiestats.statsengine.dtos.engine.EventDTO
-import com.footiestats.statsengine.dtos.engine.PlayerDTO
-import com.footiestats.statsengine.dtos.engine.TeamDTO
 import com.footiestats.statsengine.dtos.engine.mappers.EventMapper
 import com.footiestats.statsengine.entities.engine.enums.EventTypeEnum
 import com.footiestats.statsengine.entities.engine.enums.OutcomeEnum
-import com.footiestats.statsengine.entities.engine.events.Event
 import com.footiestats.statsengine.repos.engine.EventRepository
 import com.footiestats.statsengine.repos.engine.MatchRepository
 import com.footiestats.statsengine.services.engine.exceptions.EntityIdMustBeGreaterThanZero
 import com.footiestats.statsengine.services.engine.exceptions.EntityNotFound
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
-import java.util.stream.Collectors
 
 @Service
 class EventService(

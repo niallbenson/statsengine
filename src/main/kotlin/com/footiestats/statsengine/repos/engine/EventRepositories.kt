@@ -18,6 +18,7 @@ interface EventRepository : PagingAndSortingRepository<Event, Long> {
     fun findAllByMatch_IdAndType_IdAndEventTeam_Id(matchId: Long, eventTypeId: Long, teamId: Long): Set<Event>
     fun findAllByMatch_IdAndType_IdAndShot_Outcome_IdAndEventTeam_IdOrderByEventIndex(
             matchId: Long, eventTypeId: Long, outcomeId: Long, teamId: Long): Set<Event>
+    fun findByMatch_IdAndEventIndex(matchId: Long, eventIndex: Long): Event
 
 //    @Query("from Event e " +
 //            "join fetch e.shot s " +
