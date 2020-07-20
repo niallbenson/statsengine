@@ -59,9 +59,7 @@ class EngineMockEventObjects {
 
         event.player = mockObjects.mockPlayer()
 
-        val pass = Pass(
-                12.0, 25.6, PassHeight("High", mockObjects.source(), "1"),
-                Location2D(1.5,2.5, 1), 1)
+        val pass = pass()
 
         event.pass = pass
 
@@ -75,9 +73,7 @@ class EngineMockEventObjects {
 
         event.player = mockObjects.mockPlayer()
 
-        val pass = Pass(
-                12.0, 25.6, PassHeight("High", mockObjects.source(), "1"),
-                Location2D(1.5,2.5, 1), 1)
+        val pass = pass()
         pass.outcome = outcome
 
         event.pass = pass
@@ -89,11 +85,21 @@ class EngineMockEventObjects {
         return event
     }
 
-    fun ballReceipt(id: Long) = Event(
-            mockObjects.match(), 99, 2, LocalTime.NOON, 12, 45,
+    fun pass() = Pass(
+                12.0, 25.6, PassHeight("High", mockObjects.source(), "1"),
+                Location2D(1.5, 2.5, 1), 1)
+
+    fun ballReceipt(id: Long): Event {
+        val event = Event(mockObjects.match(), 99, 2, LocalTime.NOON, 12, 45,
                 eventType(EventTypeEnum.BALL_RECEIPT.id, "Ball Receipt"),
                 1, mockObjects.team1(), mockObjects.playPattern(),
                 mockObjects.team2(), 1.0, mockObjects.source(), "1", id)
+
+        event.player = mockObjects.mockPlayer()
+        event.location = Location2D(26.5, 75.6)
+
+        return event
+    }
 
     fun passEventType() = EventType(
             "Pass", mockObjects.source(), "1", EventTypeEnum.PASS.id)
@@ -104,5 +110,7 @@ class EngineMockEventObjects {
             17, mockObjects.mockPlayer(), position(), 1)
 
     fun position() = Position("Left Back", mockObjects.source(), "1", 94)
+
+    fun location2D() = Location2D(15.6, 87.8)
 
 }

@@ -6,6 +6,7 @@ import com.footiestats.statsengine.entities.engine.events.Event
 import com.footiestats.statsengine.entities.engine.events.EventType
 import com.footiestats.statsengine.entities.engine.events.metadata.*
 import com.footiestats.statsengine.entities.engine.events.refdata.*
+import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.PagingAndSortingRepository
 
@@ -18,7 +19,16 @@ interface EventRepository : PagingAndSortingRepository<Event, Long> {
     fun findAllByMatch_IdAndType_IdAndEventTeam_Id(matchId: Long, eventTypeId: Long, teamId: Long): Set<Event>
     fun findAllByMatch_IdAndType_IdAndShot_Outcome_IdAndEventTeam_IdOrderByEventIndex(
             matchId: Long, eventTypeId: Long, outcomeId: Long, teamId: Long): Set<Event>
-    fun findByMatch_IdAndEventIndex(matchId: Long, eventIndex: Long): Event
+
+    fun findByMatch_IdAndEventIndex(matchId: Long, eventIndex: Int): Event
+
+    @Query("select l from Event e join e.tactics t join t.lineup l " +
+            "where e.match.id  = ?1 and l.player.id = ?2 and e.eventIndex < ?3 and e.type.id in (?4, ?5) " +
+            "order by e.eventIndex desc")
+    fun getTacticalLineupPlayerAtEventIndex(
+            matchId: Long, playerId: Long, eventIndex: Int, statingXiTypeId: Long, tacticalShiftId: Long,
+            pageable: Pageable
+    ): ArrayList<TacticalLineupPlayer>
 
 //    @Query("from Event e " +
 //            "join fetch e.shot s " +
