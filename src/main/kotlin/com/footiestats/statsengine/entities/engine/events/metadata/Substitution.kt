@@ -1,11 +1,9 @@
 package com.footiestats.statsengine.entities.engine.events.metadata
 
 import com.footiestats.statsengine.entities.engine.Player
+import com.footiestats.statsengine.entities.engine.events.Event
 import com.footiestats.statsengine.entities.engine.events.refdata.Outcome
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
-import javax.persistence.ManyToOne
+import javax.persistence.*
 
 @Entity
 class Substitution(
@@ -13,4 +11,7 @@ class Substitution(
         @Id @GeneratedValue var id: Long? = null
 ) {
     @ManyToOne var outcome: Outcome? = null
+
+    @OneToOne(mappedBy = "substitution") var event: Event? = null
+
 }

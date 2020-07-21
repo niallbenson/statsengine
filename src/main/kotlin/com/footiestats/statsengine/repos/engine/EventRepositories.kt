@@ -1,6 +1,7 @@
 package com.footiestats.statsengine.repos.engine
 
 import com.footiestats.statsengine.entities.engine.Match
+import com.footiestats.statsengine.entities.engine.Player
 import com.footiestats.statsengine.entities.engine.enums.OutcomeEnum
 import com.footiestats.statsengine.entities.engine.events.Event
 import com.footiestats.statsengine.entities.engine.events.EventType
@@ -26,7 +27,8 @@ interface EventRepository : PagingAndSortingRepository<Event, Long> {
             "where e.match.id  = ?1 and l.player.id = ?2 and e.eventIndex < ?3 and e.type.id in (?4, ?5) " +
             "order by e.eventIndex desc")
     fun getTacticalLineupPlayerAtEventIndex(
-            matchId: Long, playerId: Long, eventIndex: Int, statingXiTypeId: Long, tacticalShiftId: Long,
+            matchId: Long, playerId: Long, eventIndex: Int,
+            statingXiTypeId: Long, tacticalShiftId: Long,
             pageable: Pageable
     ): ArrayList<TacticalLineupPlayer>
 
@@ -117,7 +119,9 @@ interface PositionRepository : PagingAndSortingRepository<Position, Long> {
 
 interface ShotRepository : PagingAndSortingRepository<Shot, Long>
 
-interface SubstitutionRepository : PagingAndSortingRepository<Substitution, Long>
+interface SubstitutionRepository : PagingAndSortingRepository<Substitution, Long> {
+    fun findByEvent_MatchAndReplacement(match: Match, replacement: Player): Substitution
+}
 
 interface TacticalLineupPlayerRepository : PagingAndSortingRepository<TacticalLineupPlayer, Long>
 

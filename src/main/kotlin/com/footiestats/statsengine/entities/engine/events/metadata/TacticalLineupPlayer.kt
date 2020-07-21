@@ -8,7 +8,7 @@ import javax.persistence.Id
 import javax.persistence.ManyToOne
 
 @Entity
-class TacticalLineupPlayer(
+data class TacticalLineupPlayer(
         var jerseyNumber: Int,
         @ManyToOne var player: Player,
         @ManyToOne var position: Position,
