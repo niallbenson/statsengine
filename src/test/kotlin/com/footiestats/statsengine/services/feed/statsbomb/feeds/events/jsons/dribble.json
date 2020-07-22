@@ -1,0 +1,48 @@
+[
+  {
+    "id": "6b4d5169-c144-45df-9c2c-cb1b23798620",
+    "index": 2442,
+    "period": 2,
+    "timestamp": "00:37:00.165",
+    "minute": 82,
+    "second": 0,
+    "type": {
+      "id": 14,
+      "name": "Dribble"
+    },
+    "possession": 165,
+    "possession_team": {
+      "id": 974,
+      "name": "Reading WFC"
+    },
+    "play_pattern": {
+      "id": 6,
+      "name": "From Counter"
+    },
+    "team": {
+      "id": 974,
+      "name": "Reading WFC"
+    },
+    "player": {
+      "id": 26570,
+      "name": "Amalie Vevle Eikeland"
+    },
+    "position": {
+      "id": 24,
+      "name": "Left Center Forward"
+    },
+    "location": [
+      107.4,
+      40.9
+    ],
+    "duration": 0.0,
+    "under_pressure": true,
+    "related_events": [  ],
+    "dribble": {
+      "outcome": {
+        "id": 9,
+        "name": "Incomplete"
+      }
+    }
+  }
+]

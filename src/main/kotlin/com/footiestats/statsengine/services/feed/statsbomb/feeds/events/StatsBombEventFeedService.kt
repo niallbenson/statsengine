@@ -50,7 +50,7 @@ class StatsBombEventFeedService(
 
         for (m in matches) {
             if (eventEntityService.getEventsCount(m) == 0L) {
-                var future = statsBombEventMatchAsync.processMatch(m)
+                statsBombEventMatchAsync.processMatch(m)
             }
         }
     }

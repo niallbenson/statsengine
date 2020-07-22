@@ -1,0 +1,47 @@
+[
+  {
+    "id" : "8894d38b-9881-4a55-8bcd-6f4e1a362122",
+    "index" : 121,
+    "period" : 1,
+    "timestamp" : "00:03:34.256",
+    "minute" : 3,
+    "second" : 34,
+    "type" : {
+      "id" : 9,
+      "name" : "Clearance"
+    },
+    "possession" : 9,
+    "possession_team" : {
+      "id" : 974,
+      "name" : "Reading WFC"
+    },
+    "play_pattern" : {
+      "id" : 3,
+      "name" : "From Free Kick"
+    },
+    "out" : true,
+    "team" : {
+      "id" : 972,
+      "name" : "West Ham United LFC"
+    },
+    "player" : {
+      "id" : 31553,
+      "name" : "Cecilie Redisch Kvamme"
+    },
+    "position" : {
+      "id" : 2,
+      "name" : "Right Back"
+    },
+    "location" : [ 45.6, 61.5 ],
+    "duration" : 0.0,
+    "under_pressure" : true,
+    "related_events" : [  ],
+    "clearance" : {
+      "head" : true,
+      "body_part" : {
+        "id" : 37,
+        "name" : "Head"
+      }
+    }
+  }
+]

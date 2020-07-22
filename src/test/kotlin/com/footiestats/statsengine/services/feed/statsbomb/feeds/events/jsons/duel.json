@@ -1,0 +1,48 @@
+[
+  {
+    "id": "b1cc0eb3-0b41-4d8e-884d-365e7cf96143",
+    "index": 2508,
+    "period": 2,
+    "timestamp": "00:38:36.564",
+    "minute": 83,
+    "second": 36,
+    "type": {
+      "id": 4,
+      "name": "Duel"
+    },
+    "possession": 170,
+    "possession_team": {
+      "id": 972,
+      "name": "West Ham United LFC"
+    },
+    "play_pattern": {
+      "id": 4,
+      "name": "From Throw In"
+    },
+    "team": {
+      "id": 974,
+      "name": "Reading WFC"
+    },
+    "player": {
+      "id": 31628,
+      "name": "Kristine Leine"
+    },
+    "position": {
+      "id": 5,
+      "name": "Left Center Back"
+    },
+    "location": [
+      60.1,
+      67.4
+    ],
+    "duration": 0.0,
+    "under_pressure": true,
+    "related_events": [ ],
+    "duel": {
+      "type": {
+        "id": 10,
+        "name": "Aerial Lost"
+      }
+    }
+  }
+]

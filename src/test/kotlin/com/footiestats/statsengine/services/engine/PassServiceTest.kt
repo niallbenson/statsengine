@@ -2,7 +2,6 @@ package com.footiestats.statsengine.services.engine
 
 import com.footiestats.statsengine.dtos.engine.mappers.Location2DMapper
 import com.footiestats.statsengine.dtos.engine.mappers.PassEventOverviewItemMapper
-import com.footiestats.statsengine.dtos.engine.mappers.PlayerMapper
 import com.footiestats.statsengine.dtos.engine.mappers.TacticalLineupPlayerMapper
 import com.footiestats.statsengine.dtos.engine.mocks.EngineMockEventObjects
 import com.footiestats.statsengine.dtos.engine.mocks.EngineMockObjects
@@ -10,19 +9,20 @@ import com.footiestats.statsengine.entities.engine.Match
 import com.footiestats.statsengine.entities.engine.enums.EventTypeEnum
 import com.footiestats.statsengine.entities.engine.events.Event
 import com.footiestats.statsengine.entities.engine.events.metadata.Location2D
-import com.footiestats.statsengine.entities.engine.events.metadata.Pass
 import com.footiestats.statsengine.repos.engine.EventRepository
+import com.footiestats.statsengine.repos.engine.LineupPlayerRepository
+import com.footiestats.statsengine.repos.engine.SubstitutionRepository
 import com.footiestats.statsengine.services.engine.eventanalysis.PassAnalysisService
 import com.footiestats.statsengine.services.engine.exceptions.EntityIdMustBeGreaterThanZero
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.RelaxedMockK
-import io.mockk.impl.annotations.SpyK
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
 import java.time.LocalTime
 
@@ -34,6 +34,12 @@ internal class PassServiceTest {
 
     @RelaxedMockK
     private lateinit var eventRepository: EventRepository
+
+    @RelaxedMockK
+    private lateinit var substitutionRepository: SubstitutionRepository
+
+    @RelaxedMockK
+    private lateinit var lineupPlayerRepository: LineupPlayerRepository
 
     private var passAnalysisService = PassAnalysisService()
 
@@ -120,8 +126,27 @@ internal class PassServiceTest {
 
         every { eventRepository.findByIdOrNull(eventId) } returns passEvent
 
+        val previousPassEvent = getPreviousPassEvent()
         every { eventRepository.findByMatch_IdAndEventIndex(match.id!!, eventIndex - 1) } returns
-                getPreviousPassEvent()
+                previousPassEvent
+
+        every {
+            eventRepository.getTacticalLineupPlayerAtEventIndex(
+                    match.id!!, passEvent.player?.id!!, eventIndex,
+                    EventTypeEnum.STARTING_XI.id, EventTypeEnum.TACTICAL_SHIFT.id,
+                    PageRequest.of(0, 1))
+        } returns arrayListOf(
+                mockEventObjects.tacticalLineupPlayer()
+        )
+
+        every {
+            eventRepository.getTacticalLineupPlayerAtEventIndex(
+                    match.id!!, passEvent.player?.id!!, previousPassEvent.eventIndex,
+                    EventTypeEnum.STARTING_XI.id, EventTypeEnum.TACTICAL_SHIFT.id,
+                    PageRequest.of(0, 1))
+        } returns arrayListOf(
+                mockEventObjects.tacticalLineupPlayer()
+        )
 
         val result = service.getPassEventOverviewDto(eventId)
 
@@ -137,7 +162,7 @@ internal class PassServiceTest {
                 mockObjects.team1(), 1.56, mockObjects.source(), "1", eventId)
 
         event.location = Location2D(2.5, 35.8)
-        event.player = mockObjects.mockPlayer()
+        event.player = mockObjects.player()
         event.pass = mockEventObjects.pass()
         event.relatedEvents.add(mockEventObjects.ballReceipt(65))
 

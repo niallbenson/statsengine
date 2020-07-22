@@ -74,7 +74,7 @@ internal class PlayerMatchTimelineServiceTest {
         val matchId = 1L
 
         every { playerRepository.findByIdOrNull(playerId) } returns
-                mockObjects.mockPlayer()
+                mockObjects.player()
 
         every { eventRepository.findAllByPlayer_IdAndMatch_Id(playerId, matchId) } returns
                 setOf()
@@ -90,7 +90,7 @@ internal class PlayerMatchTimelineServiceTest {
         val matchId = 1L
 
         every { playerRepository.findByIdOrNull(playerId) } returns
-                mockObjects.mockPlayer()
+                mockObjects.player()
 
         val pass1 = mockEventObjects.passEvent()
         val ballReceipt = mockEventObjects.ballReceipt(1)

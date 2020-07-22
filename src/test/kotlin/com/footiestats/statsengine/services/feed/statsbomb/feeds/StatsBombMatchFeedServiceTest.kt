@@ -12,8 +12,11 @@ import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.RelaxedMockK
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class StatsBombMatchFeedServiceTest {
 
     private val matchDataJsonPath = "src/test/kotlin/com/footiestats/statsengine/services/feed/statsbomb/matches.json"
@@ -30,10 +33,11 @@ internal class StatsBombMatchFeedServiceTest {
     @InjectMockKs
     private lateinit var service: StatsBombMatchFeedService
 
+    @BeforeAll
+    fun setup() = MockKAnnotations.init(this)
+
     @Test
     fun run() {
-        MockKAnnotations.init(this)
-
         val competition = mockCompetition()
         val season = mockSeason()
 

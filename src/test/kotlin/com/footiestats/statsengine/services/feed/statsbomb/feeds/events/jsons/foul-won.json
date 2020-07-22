@@ -1,0 +1,45 @@
+[
+  {
+    "id": "09dc6b0d-1dbe-4935-9f9f-d5a2c6ac5f42",
+    "index": 2089,
+    "period": 2,
+    "timestamp": "00:22:33.557",
+    "minute": 67,
+    "second": 33,
+    "type": {
+      "id": 21,
+      "name": "Foul Won"
+    },
+    "possession": 139,
+    "possession_team": {
+      "id": 972,
+      "name": "West Ham United LFC"
+    },
+    "play_pattern": {
+      "id": 7,
+      "name": "From Goal Kick"
+    },
+    "team": {
+      "id": 972,
+      "name": "West Ham United LFC"
+    },
+    "player": {
+      "id": 31558,
+      "name": "Martha Thomas"
+    },
+    "position": {
+      "id": 23,
+      "name": "Center Forward"
+    },
+    "location": [
+      50.1,
+      30.0
+    ],
+    "duration": 0.0,
+    "under_pressure": true,
+    "related_events": [  ],
+    "foul_won": {
+      "defensive": true
+    }
+  }
+]

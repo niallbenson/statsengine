@@ -1,0 +1,60 @@
+[
+  {
+    "id" : "699122d6-4e6b-4bea-9754-d4872a2500a2",
+    "index" : 495,
+    "period" : 1,
+    "timestamp" : "00:15:27.198",
+    "minute" : 15,
+    "second" : 27,
+    "type" : {
+      "id" : 23,
+      "name" : "Goal Keeper"
+    },
+    "possession" : 39,
+    "possession_team" : {
+      "id" : 974,
+      "name" : "Reading WFC"
+    },
+    "play_pattern" : {
+      "id" : 1,
+      "name" : "Regular Play"
+    },
+    "team" : {
+      "id" : 972,
+      "name" : "West Ham United LFC"
+    },
+    "player" : {
+      "id" : 22027,
+      "name" : "Anne Moorhouse"
+    },
+    "position" : {
+      "id" : 1,
+      "name" : "Goalkeeper"
+    },
+    "location" : [ 5.6, 37.7 ],
+    "duration" : 0.0,
+    "related_events" : [  ],
+    "goalkeeper" : {
+      "outcome" : {
+        "id" : 59,
+        "name" : "Touched Out"
+      },
+      "type" : {
+        "id" : 33,
+        "name" : "Shot Saved"
+      },
+      "body_part" : {
+        "id" : 38,
+        "name" : "Left Foot"
+      },
+      "position" : {
+        "id" : 44,
+        "name" : "Set"
+      },
+      "technique" : {
+        "id" : 46,
+        "name" : "Standing"
+      }
+    }
+  }
+]

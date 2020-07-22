@@ -1,0 +1,46 @@
+[
+  {
+    "id": "dc4d1ac5-1444-438d-8d5b-572b9707048b",
+    "index": 26,
+    "period": 1,
+    "timestamp": "00:00:15.562",
+    "minute": 0,
+    "second": 15,
+    "type": {
+      "id": 42,
+      "name": "Ball Receipt*"
+    },
+    "possession": 2,
+    "possession_team": {
+      "id": 974,
+      "name": "Reading WFC"
+    },
+    "play_pattern": {
+      "id": 9,
+      "name": "From Kick Off"
+    },
+    "team": {
+      "id": 974,
+      "name": "Reading WFC"
+    },
+    "player": {
+      "id": 15725,
+      "name": "Natasha Harding"
+    },
+    "position": {
+      "id": 2,
+      "name": "Right Back"
+    },
+    "location": [
+      108.1,
+      70.0
+    ],
+    "related_events": [],
+    "ball_receipt": {
+      "outcome": {
+        "id": 9,
+        "name": "Incomplete"
+      }
+    }
+  }
+]

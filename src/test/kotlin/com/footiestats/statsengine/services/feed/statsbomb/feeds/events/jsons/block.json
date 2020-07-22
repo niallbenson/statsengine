@@ -1,0 +1,41 @@
+[
+  {
+    "id" : "10bd114e-ad42-4ad1-b93f-dd71a05de001",
+    "index" : 1913,
+    "period" : 2,
+    "timestamp" : "00:12:44.748",
+    "minute" : 57,
+    "second" : 44,
+    "type" : {
+      "id" : 6,
+      "name" : "Block"
+    },
+    "possession" : 125,
+    "possession_team" : {
+      "id" : 974,
+      "name" : "Reading WFC"
+    },
+    "play_pattern" : {
+      "id" : 4,
+      "name" : "From Throw In"
+    },
+    "team" : {
+      "id" : 972,
+      "name" : "West Ham United LFC"
+    },
+    "player" : {
+      "id" : 31553,
+      "name" : "Cecilie Redisch Kvamme"
+    },
+    "position" : {
+      "id" : 2,
+      "name" : "Right Back"
+    },
+    "location" : [ 16.1, 52.8 ],
+    "duration" : 0.0,
+    "related_events" : [ ],
+    "block" : {
+      "deflection" : true
+    }
+  }
+]

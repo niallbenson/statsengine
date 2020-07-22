@@ -1,0 +1,42 @@
+[
+  {
+    "id": "c3428e3a-d863-43e6-8243-f4a89e598150",
+    "index": 764,
+    "period": 1,
+    "timestamp": "00:23:26.140",
+    "minute": 23,
+    "second": 26,
+    "type": {
+      "id": 24,
+      "name": "Bad Behaviour"
+    },
+    "possession": 56,
+    "possession_team": {
+      "id": 974,
+      "name": "Reading WFC"
+    },
+    "play_pattern": {
+      "id": 3,
+      "name": "From Free Kick"
+    },
+    "team": {
+      "id": 972,
+      "name": "West Ham United LFC"
+    },
+    "player": {
+      "id": 18147,
+      "name": "Kate Longhurst"
+    },
+    "position": {
+      "id": 11,
+      "name": "Left Defensive Midfield"
+    },
+    "duration": 0.0,
+    "bad_behaviour": {
+      "card": {
+        "id": 7,
+        "name": "Yellow Card"
+      }
+    }
+  }
+]

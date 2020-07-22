@@ -1,0 +1,43 @@
+[
+  {
+    "id": "d02a9340-2f81-4350-be7d-f7975a05dd34",
+    "index": 2112,
+    "period": 2,
+    "timestamp": "00:23:51.387",
+    "minute": 68,
+    "second": 51,
+    "type": {
+      "id": 2,
+      "name": "Ball Recovery"
+    },
+    "possession": 141,
+    "possession_team": {
+      "id": 972,
+      "name": "West Ham United LFC"
+    },
+    "play_pattern": {
+      "id": 3,
+      "name": "From Free Kick"
+    },
+    "team": {
+      "id": 974,
+      "name": "Reading WFC"
+    },
+    "player": {
+      "id": 10251,
+      "name": "Fara Williams"
+    },
+    "position": {
+      "id": 19,
+      "name": "Center Attacking Midfield"
+    },
+    "location": [
+      39.7,
+      22.2
+    ],
+    "duration": 0.0,
+    "ball_recovery": {
+      "recovery_failure": true
+    }
+  }
+]

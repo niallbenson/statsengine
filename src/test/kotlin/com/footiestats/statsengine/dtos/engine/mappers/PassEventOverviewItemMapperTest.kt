@@ -3,8 +3,6 @@ package com.footiestats.statsengine.dtos.engine.mappers
 import com.footiestats.statsengine.dtos.engine.mappers.exceptions.UnexpectedEventType
 import com.footiestats.statsengine.dtos.engine.mocks.EngineMockEventObjects
 import com.footiestats.statsengine.dtos.engine.mocks.EngineMockObjects
-import com.footiestats.statsengine.entities.engine.LineupPlayer
-import com.footiestats.statsengine.entities.engine.MatchLineup
 import com.footiestats.statsengine.entities.engine.events.Event
 import com.footiestats.statsengine.entities.engine.events.metadata.Location2D
 import com.footiestats.statsengine.entities.engine.events.metadata.TacticalLineupPlayer
@@ -25,7 +23,7 @@ internal class PassEventOverviewItemMapperTest {
 
     private val mockEventObjects = EngineMockEventObjects()
 
-    private var playerMapper = PlayerMapper()
+    private var playerMapper = TacticalLineupPlayerMapper()
 
     private var location2DMapper = Location2DMapper()
 
@@ -43,7 +41,7 @@ internal class PassEventOverviewItemMapperTest {
         val shotEvent = mockEventObjects.shotEventGoalOutcome()
 
         assertThrows<UnexpectedEventType> {
-            mapper.toDtoFromPassEvent(shotEvent, getLineupPlayer(shotEvent))
+            mapper.toDtoFromPassEvent(shotEvent, mockEventObjects.tacticalLineupPlayer(shotEvent))
         }
     }
 
@@ -51,7 +49,7 @@ internal class PassEventOverviewItemMapperTest {
     fun `expect DTO eventId to match entity eventId`() {
         val passEvent = getPassEvent()
 
-        val result = mapper.toDtoFromPassEvent(passEvent, getLineupPlayer(passEvent))
+        val result = mapper.toDtoFromPassEvent(passEvent, mockEventObjects.tacticalLineupPlayer(passEvent))
 
         assert(result.eventId == passEvent.id)
     }
@@ -60,7 +58,7 @@ internal class PassEventOverviewItemMapperTest {
     fun `when event player is called Dave expect DTO player to be called Dave`() {
         val passEvent = getPassEvent()
 
-        val result = mapper.toDtoFromPassEvent(passEvent, getLineupPlayer(passEvent))
+        val result = mapper.toDtoFromPassEvent(passEvent, mockEventObjects.tacticalLineupPlayer(passEvent))
 
         assert(result.player.name == "Dave")
     }
@@ -69,7 +67,7 @@ internal class PassEventOverviewItemMapperTest {
     fun `expect event type to be Pass`() {
         val passEvent = getPassEvent()
 
-        val result = mapper.toDtoFromPassEvent(passEvent, getLineupPlayer(passEvent))
+        val result = mapper.toDtoFromPassEvent(passEvent, mockEventObjects.tacticalLineupPlayer(passEvent))
 
         assert(result.type == "Pass")
     }
@@ -78,7 +76,7 @@ internal class PassEventOverviewItemMapperTest {
     fun `expect start location on DTO to match Pass event`() {
         val passEvent = getPassEvent()
 
-        val result = mapper.toDtoFromPassEvent(passEvent, getLineupPlayer(passEvent))
+        val result = mapper.toDtoFromPassEvent(passEvent, mockEventObjects.tacticalLineupPlayer(passEvent))
 
         assert(result.startLocation.x == passEvent.location?.x)
         assert(result.startLocation.y == passEvent.location?.y)
@@ -88,7 +86,7 @@ internal class PassEventOverviewItemMapperTest {
     fun `expect end location on DTO to match Pass event`() {
         val passEvent = getPassEvent()
 
-        val result = mapper.toDtoFromPassEvent(passEvent, getLineupPlayer(passEvent))
+        val result = mapper.toDtoFromPassEvent(passEvent, mockEventObjects.tacticalLineupPlayer(passEvent))
 
         assert(result.endLocation != null)
         assert(result.endLocation?.x == passEvent.pass?.endLocation?.x)
@@ -107,12 +105,5 @@ internal class PassEventOverviewItemMapperTest {
         passEvent.location = startLocation
         return passEvent
     }
-
-    private fun getLineupPlayer(event: Event) = TacticalLineupPlayer(
-            3,
-            event.player!!,
-            Position("Central Defender", mockObjects.source(), "1", 45),
-            75
-    )
 
 }

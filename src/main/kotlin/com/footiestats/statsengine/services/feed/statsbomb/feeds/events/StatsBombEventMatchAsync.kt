@@ -30,7 +30,7 @@ class StatsBombEventMatchAsync(
 
     @Async("threadPoolTaskExecutor")
     @Transactional
-    fun processMatch(m: Match): Future<Boolean> {
+    fun processMatch(m: Match): Future<MutableSet<Event>> {
         log.info { "${Thread.currentThread().name}: Processing match ID ${m.id} ${m.homeTeam.name} vs ${m.awayTeam.name} ${m.matchDate}" }
 
         val statsBombEvents = restService.getStatsBombEvents(m.sourceExternalId)
@@ -68,7 +68,7 @@ class StatsBombEventMatchAsync(
 
         log.info { "${Thread.currentThread().name}: Saved ${events.size} events" }
 
-        return AsyncResult(true)
+        return AsyncResult(events)
     }
 
     private fun getTransientEventResultData(

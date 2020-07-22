@@ -59,6 +59,6 @@ class EngineMockObjects {
 
     fun playPattern() = PlayPattern("pattern", source(), "1", 1)
 
-    fun mockPlayer() = Player("Dave", "DJ", "1", country(), source(), 1)
+    fun player() = Player("Dave", "DJ", "1", country(), source(), 1)
 
 }

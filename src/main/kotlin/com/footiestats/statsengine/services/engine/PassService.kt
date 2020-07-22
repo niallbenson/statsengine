@@ -106,8 +106,6 @@ class PassService(
                 ?: throw EntityNotFound("Replaced player for ${replacement.id} not found in match ${match.id}")
     }
 
-    private fun getUnknownPosition() = Position("Unknown", Source("N/A"), "N/A")
-
     private fun getNextEventDto(passEvent: Event, target: Event?): PassEventOverviewItemDTO {
         val event = if (passAnalysisService.isPassAccurate(passEvent) && target != null) {
             target

@@ -39,7 +39,7 @@ internal class EventMapperTest {
     @Test
     fun `when entity lineupPlayer name is Dave then dto player name should be Dave`() {
         val eventEntity = mockEventObjects.event()
-        eventEntity.player = mockObjects.mockPlayer()
+        eventEntity.player = mockObjects.player()
 
         val result = mapper.toDto(eventEntity)
 

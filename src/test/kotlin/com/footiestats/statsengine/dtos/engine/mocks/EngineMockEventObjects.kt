@@ -33,6 +33,7 @@ class EngineMockEventObjects {
         val event = Event(mockObjects.match(), 99, 2, LocalTime.NOON, 12, 45,
                 eventType, 1, mockObjects.team1(), mockObjects.playPattern(),
                 mockObjects.team2(), 1.0, mockObjects.source(), "1", eventId)
+        event.player = mockObjects.player()
 
         val shot = Shot(
                 0.5,
@@ -57,7 +58,7 @@ class EngineMockEventObjects {
                 passEventType(), 1, mockObjects.team1(), mockObjects.playPattern(),
                 mockObjects.team2(), 1.0, mockObjects.source(), "1", 78)
 
-        event.player = mockObjects.mockPlayer()
+        event.player = mockObjects.player()
 
         val pass = pass()
 
@@ -71,7 +72,7 @@ class EngineMockEventObjects {
                 passEventType(), 1, mockObjects.team1(), mockObjects.playPattern(),
                 mockObjects.team2(), 1.0, mockObjects.source(), "1", id)
 
-        event.player = mockObjects.mockPlayer()
+        event.player = mockObjects.player()
 
         val pass = pass()
         pass.outcome = outcome
@@ -95,7 +96,7 @@ class EngineMockEventObjects {
                 1, mockObjects.team1(), mockObjects.playPattern(),
                 mockObjects.team2(), 1.0, mockObjects.source(), "1", id)
 
-        event.player = mockObjects.mockPlayer()
+        event.player = mockObjects.player()
         event.location = Location2D(26.5, 75.6)
 
         return event
@@ -107,10 +108,17 @@ class EngineMockEventObjects {
     fun tactics() = Tactics(442, 12)
 
     fun tacticalLineupPlayer() = TacticalLineupPlayer(
-            17, mockObjects.mockPlayer(), position(), 1)
+            17, mockObjects.player(), position(), 1)
 
     fun position() = Position("Left Back", mockObjects.source(), "1", 94)
 
     fun location2D() = Location2D(15.6, 87.8)
+
+    fun tacticalLineupPlayer(event: Event) = TacticalLineupPlayer(
+            3,
+            event.player!!,
+            Position("Central Defender", mockObjects.source(), "1", 45),
+            75
+    )
 
 }

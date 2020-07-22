@@ -20,7 +20,7 @@ internal class PlayerMapperTest {
 
     @Test
     fun `when entity playerId is 1 then dto id should be 1`() {
-        val player = mockObjects.mockPlayer()
+        val player = mockObjects.player()
 
         val result = mapper.toDto(player)
 
@@ -29,7 +29,7 @@ internal class PlayerMapperTest {
 
     @Test
     fun `when entity name is Dave then dto name should be Dave`() {
-        val player = mockObjects.mockPlayer()
+        val player = mockObjects.player()
 
         val result = mapper.toDto(player)
 
@@ -38,7 +38,7 @@ internal class PlayerMapperTest {
 
     @Test
     fun `when entity nickName is DJ then dto name should be nickName`() {
-        val player = mockObjects.mockPlayer()
+        val player = mockObjects.player()
 
         val result = mapper.toDto(player)
 
@@ -47,7 +47,7 @@ internal class PlayerMapperTest {
 
     @Test
     fun `when entity country is England then dto country should be England`() {
-        val player = mockObjects.mockPlayer()
+        val player = mockObjects.player()
 
         val result = mapper.toDto(player)
 

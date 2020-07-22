@@ -1,0 +1,46 @@
+[
+  {
+    "id": "fc1f8533-55f5-4fa0-bc28-2e4921dbcd96",
+    "index": 1803,
+    "period": 2,
+    "timestamp": "00:09:41.464",
+    "minute": 54,
+    "second": 41,
+    "type": {
+      "id": 22,
+      "name": "Foul Committed"
+    },
+    "possession": 119,
+    "possession_team": {
+      "id": 974,
+      "name": "Reading WFC"
+    },
+    "play_pattern": {
+      "id": 2,
+      "name": "From Corner"
+    },
+    "team": {
+      "id": 972,
+      "name": "West Ham United LFC"
+    },
+    "player": {
+      "id": 31556,
+      "name": "Laura Vetterlein"
+    },
+    "position": {
+      "id": 6,
+      "name": "Left Back"
+    },
+    "location": [
+      35.0,
+      0.2
+    ],
+    "duration": 0.0,
+    "foul_committed": {
+      "type": {
+        "id": 23,
+        "name": "Foul Out"
+      }
+    }
+  }
+]

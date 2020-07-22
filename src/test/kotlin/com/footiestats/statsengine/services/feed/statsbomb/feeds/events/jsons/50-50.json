@@ -1,0 +1,49 @@
+[
+  {
+    "id": "f68bbd19-a965-48ed-a461-3024a50a0803",
+    "index": 1801,
+    "period": 2,
+    "timestamp": "00:09:31.652",
+    "minute": 54,
+    "second": 31,
+    "type": {
+      "id": 33,
+      "name": "50/50"
+    },
+    "possession": 119,
+    "possession_team": {
+      "id": 974,
+      "name": "Reading WFC"
+    },
+    "play_pattern": {
+      "id": 2,
+      "name": "From Corner"
+    },
+    "out": true,
+    "team": {
+      "id": 974,
+      "name": "Reading WFC"
+    },
+    "player": {
+      "id": 10190,
+      "name": "Jade Moore"
+    },
+    "position": {
+      "id": 10,
+      "name": "Center Defensive Midfield"
+    },
+    "location": [
+      90.3,
+      71.7
+    ],
+    "duration": 0.0,
+    "under_pressure": true,
+    "related_events": [  ],
+    "50_50": {
+      "outcome": {
+        "id": 2,
+        "name": "Success To Opposition"
+      }
+    }
+  }
+]
