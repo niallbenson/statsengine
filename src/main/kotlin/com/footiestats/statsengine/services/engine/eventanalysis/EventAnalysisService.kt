@@ -2,7 +2,6 @@ package com.footiestats.statsengine.services.engine.eventanalysis
 
 import com.footiestats.statsengine.entities.engine.enums.EventTypeEnum
 import com.footiestats.statsengine.entities.engine.events.Event
-import com.footiestats.statsengine.services.engine.ShotService
 import com.footiestats.statsengine.services.engine.exceptions.UnexpectedEventType
 import org.springframework.stereotype.Service
 

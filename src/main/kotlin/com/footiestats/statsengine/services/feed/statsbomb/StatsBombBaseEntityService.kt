@@ -43,10 +43,10 @@ class StatsBombBaseEntityService(
         var competition =
                 competitionRepository.findBySourceExternalId(statsBombCompetition.competitionId.toString())
 
-        if (competition == null) {
-            competition = createCompetition(statsBombCompetition)
+        competition = if (competition == null) {
+            createCompetition(statsBombCompetition)
         } else {
-            competition = checkAndUpdateCompetition(competition, statsBombCompetition)
+            checkAndUpdateCompetition(competition, statsBombCompetition)
         }
         return competition
     }
@@ -386,9 +386,7 @@ class StatsBombBaseEntityService(
                 )
 
                 lineupPlayerRepository.save(lineupPlayer)
-            }
-        } else {
-            // TODO: test whether line up players are matching, if not then update
+            } // TODO: test whether line up players are matching, if not then update in Else
         }
         return lineup
     }

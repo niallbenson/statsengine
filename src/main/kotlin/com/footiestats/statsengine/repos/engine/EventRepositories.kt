@@ -2,7 +2,6 @@ package com.footiestats.statsengine.repos.engine
 
 import com.footiestats.statsengine.entities.engine.Match
 import com.footiestats.statsengine.entities.engine.Player
-import com.footiestats.statsengine.entities.engine.enums.OutcomeEnum
 import com.footiestats.statsengine.entities.engine.events.Event
 import com.footiestats.statsengine.entities.engine.events.EventType
 import com.footiestats.statsengine.entities.engine.events.metadata.*

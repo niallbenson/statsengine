@@ -1,26 +1,10 @@
 package com.footiestats.statsengine.services.feed.statsbomb.feeds.events
 
-import com.footiestats.statsengine.dtos.statsbomb.*
 import com.footiestats.statsengine.entities.engine.CompetitionSeason
-import com.footiestats.statsengine.entities.engine.Match
-import com.footiestats.statsengine.entities.engine.Player
-import com.footiestats.statsengine.entities.engine.events.Event
-import com.footiestats.statsengine.entities.engine.events.metadata.*
-import com.footiestats.statsengine.entities.engine.events.refdata.Position
 import com.footiestats.statsengine.services.feed.statsbomb.StatsBombBaseEntityService
 import com.footiestats.statsengine.services.feed.statsbomb.StatsBombEventEntityService
-import com.footiestats.statsengine.services.feed.statsbomb.StatsBombRestService
-import com.footiestats.statsengine.services.feed.statsbomb.exceptions.StatsBombPlayerNotFound
-import com.footiestats.statsengine.services.feed.statsbomb.exceptions.StatsBombTeamNotFound
-import com.sun.org.apache.xpath.internal.operations.Bool
 import mu.KotlinLogging
-import org.springframework.core.task.TaskExecutor
-import org.springframework.scheduling.annotation.Async
-import org.springframework.scheduling.annotation.AsyncResult
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
-import java.time.LocalTime
-import java.util.concurrent.Future
 
 private val log = KotlinLogging.logger {}
 

@@ -5,8 +5,6 @@ import com.footiestats.statsengine.dtos.engine.mocks.EngineMockEventObjects
 import com.footiestats.statsengine.dtos.engine.mocks.EngineMockObjects
 import com.footiestats.statsengine.entities.engine.events.Event
 import com.footiestats.statsengine.entities.engine.events.metadata.Location2D
-import com.footiestats.statsengine.entities.engine.events.metadata.TacticalLineupPlayer
-import com.footiestats.statsengine.entities.engine.events.refdata.Position
 import com.footiestats.statsengine.services.engine.eventanalysis.PassAnalysisService
 import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.InjectMockKs

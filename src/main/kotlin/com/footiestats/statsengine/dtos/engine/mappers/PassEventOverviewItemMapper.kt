@@ -6,7 +6,6 @@ import com.footiestats.statsengine.dtos.engine.mappers.exceptions.UnexpectedEven
 import com.footiestats.statsengine.entities.engine.enums.EventTypeEnum
 import com.footiestats.statsengine.entities.engine.events.Event
 import com.footiestats.statsengine.entities.engine.events.metadata.TacticalLineupPlayer
-import com.footiestats.statsengine.services.engine.eventanalysis.PassAnalysisService
 import org.springframework.stereotype.Service
 
 @Service

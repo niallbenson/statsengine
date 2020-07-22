@@ -5,11 +5,9 @@ import com.footiestats.statsengine.dtos.engine.events.pass.PassEventOverviewItem
 import com.footiestats.statsengine.dtos.engine.mappers.PassEventOverviewItemMapper
 import com.footiestats.statsengine.entities.engine.Match
 import com.footiestats.statsengine.entities.engine.Player
-import com.footiestats.statsengine.entities.engine.Source
 import com.footiestats.statsengine.entities.engine.enums.EventTypeEnum
 import com.footiestats.statsengine.entities.engine.events.Event
 import com.footiestats.statsengine.entities.engine.events.metadata.TacticalLineupPlayer
-import com.footiestats.statsengine.entities.engine.events.refdata.Position
 import com.footiestats.statsengine.repos.engine.EventRepository
 import com.footiestats.statsengine.repos.engine.LineupPlayerRepository
 import com.footiestats.statsengine.repos.engine.SubstitutionRepository
