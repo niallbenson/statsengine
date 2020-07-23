@@ -1,0 +1,32 @@
+[
+  {
+    "id": "1f3f70f7-c2b1-4ee2-912d-84f7802dad9b",
+    "index": 3262,
+    "period": 2,
+    "timestamp": "00:50:35.935",
+    "minute": 95,
+    "second": 35,
+    "type": {
+      "id": 34,
+      "name": "Half End"
+    },
+    "possession": 207,
+    "possession_team": {
+      "id": 966,
+      "name": "Liverpool WFC"
+    },
+    "play_pattern": {
+      "id": 4,
+      "name": "From Throw In"
+    },
+    "team": {
+      "id": 966,
+      "name": "Liverpool WFC"
+    },
+    "duration": 0.3,
+    "related_events": [],
+    "half_end": {
+      "early_video_end": true
+    }
+  }
+]

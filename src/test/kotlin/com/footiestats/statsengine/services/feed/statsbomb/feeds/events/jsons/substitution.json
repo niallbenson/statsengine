@@ -1,0 +1,46 @@
+[
+  {
+    "id": "52eef544-9f7b-4194-b066-0673a4ee86cf",
+    "index": 1929,
+    "period": 2,
+    "timestamp": "00:15:29.926",
+    "minute": 60,
+    "second": 29,
+    "type": {
+      "id": 19,
+      "name": "Substitution"
+    },
+    "possession": 125,
+    "possession_team": {
+      "id": 974,
+      "name": "Reading WFC"
+    },
+    "play_pattern": {
+      "id": 4,
+      "name": "From Throw In"
+    },
+    "team": {
+      "id": 974,
+      "name": "Reading WFC"
+    },
+    "player": {
+      "id": 10198,
+      "name": "Josanne Potter"
+    },
+    "position": {
+      "id": 3,
+      "name": "Right Center Back"
+    },
+    "duration": 0.0,
+    "substitution": {
+      "outcome": {
+        "id": 102,
+        "name": "Injury"
+      },
+      "replacement": {
+        "id": 21021,
+        "name": "Molly Bartrip"
+      }
+    }
+  }
+]

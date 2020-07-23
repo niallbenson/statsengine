@@ -5,6 +5,7 @@ import com.footiestats.statsengine.dtos.engine.mocks.EngineMockObjects
 import com.footiestats.statsengine.dtos.statsbomb.*
 import com.footiestats.statsengine.dtos.statsbomb.mappers.StatsBombEventMapper
 import com.footiestats.statsengine.entities.engine.events.EventType
+import com.footiestats.statsengine.entities.engine.events.metadata.PassHeight
 import com.footiestats.statsengine.entities.engine.events.refdata.*
 import com.footiestats.statsengine.services.feed.statsbomb.StatsBombBaseEntityService
 import com.footiestats.statsengine.services.feed.statsbomb.StatsBombEventEntityService
@@ -96,7 +97,7 @@ internal class StatsBombEventMatchAsyncTest {
     }
 
     @Test
-    fun `test ball receipt event type`() {
+    fun `ball receipt event type`() {
         val match = mockObjects.match()
 
         val json = StatsBombFileUtils.readFile(
@@ -145,7 +146,7 @@ internal class StatsBombEventMatchAsyncTest {
     }
 
     @Test
-    fun `test ball recovery event type`() {
+    fun `ball recovery event type`() {
         val match = mockObjects.match()
 
         val json = StatsBombFileUtils.readFile(
@@ -194,7 +195,7 @@ internal class StatsBombEventMatchAsyncTest {
     }
 
     @Test
-    fun `test carry event type`() {
+    fun `carry event type`() {
         val match = mockObjects.match()
 
         val json = StatsBombFileUtils.readFile(
@@ -243,7 +244,7 @@ internal class StatsBombEventMatchAsyncTest {
     }
 
     @Test
-    fun `test clearance event type`() {
+    fun `clearance event type`() {
         val match = mockObjects.match()
 
         val json = StatsBombFileUtils.readFile(
@@ -296,7 +297,7 @@ internal class StatsBombEventMatchAsyncTest {
     }
 
     @Test
-    fun `test block event type`() {
+    fun `block event type`() {
         val match = mockObjects.match()
 
         val json = StatsBombFileUtils.readFile(
@@ -345,7 +346,7 @@ internal class StatsBombEventMatchAsyncTest {
     }
 
     @Test
-    fun `test dribble event type`() {
+    fun `dribble event type`() {
         val match = mockObjects.match()
 
         val json = StatsBombFileUtils.readFile(
@@ -398,7 +399,7 @@ internal class StatsBombEventMatchAsyncTest {
     }
 
     @Test
-    fun `test duel event type`() {
+    fun `duel event type`() {
         val match = mockObjects.match()
 
         val json = StatsBombFileUtils.readFile(
@@ -451,7 +452,7 @@ internal class StatsBombEventMatchAsyncTest {
     }
 
     @Test
-    fun `test fifty fifty event type`() {
+    fun `fifty fifty event type`() {
         val match = mockObjects.match()
 
         val json = StatsBombFileUtils.readFile(
@@ -500,7 +501,7 @@ internal class StatsBombEventMatchAsyncTest {
     }
 
     @Test
-    fun `test foul committed event type`() {
+    fun `foul committed event type`() {
         val match = mockObjects.match()
 
         val json = StatsBombFileUtils.readFile(
@@ -553,7 +554,7 @@ internal class StatsBombEventMatchAsyncTest {
     }
 
     @Test
-    fun `test foul won event type`() {
+    fun `foul won event type`() {
         val match = mockObjects.match()
 
         val json = StatsBombFileUtils.readFile(
@@ -598,7 +599,7 @@ internal class StatsBombEventMatchAsyncTest {
     }
 
     @Test
-    fun `test goalkeeper event type`() {
+    fun `goalkeeper event type`() {
         val match = mockObjects.match()
 
         val json = StatsBombFileUtils.readFile(
@@ -666,4 +667,517 @@ internal class StatsBombEventMatchAsyncTest {
         assert(result.isNotEmpty())
     }
 
+    @Test
+    fun `half end event type`() {
+        val match = mockObjects.match()
+
+        val json = StatsBombFileUtils.readFile(
+                "src/test/kotlin/com/footiestats/statsengine/services/feed/statsbomb/feeds/events/jsons/" +
+                        "half-end.json")
+
+        every {
+            baseEntityService.getStatsBombSource()
+        } returns mockObjects.source()
+
+        every {
+            restService.getStatsBombEvents(match.sourceExternalId)
+        } returns StatsBombEventMapper.fromJson(json)
+
+        every {
+            eventEntityService.getOrCreateEventType(StatsBombEventType(34, "Half End"))
+        } returns EventType("Half End", mockObjects.source(), "1")
+
+        every {
+            baseEntityService.getTeamByExternalId("966")
+        } returns mockObjects.team1()
+
+        every {
+            eventEntityService.getOrCreatePlayPattern(StatsBombPlayPattern(4, "From Throw In"))
+        } returns mockObjects.playPattern()
+
+        every {
+            eventEntityService.saveAll(any())
+        } returns mutableSetOf()
+
+        val result = service.processMatch(match).get()
+
+        assert(result.isNotEmpty())
+    }
+
+    @Test
+    fun `half start event type`() {
+        val match = mockObjects.match()
+
+        val json = StatsBombFileUtils.readFile(
+                "src/test/kotlin/com/footiestats/statsengine/services/feed/statsbomb/feeds/events/jsons/" +
+                        "half-start.json")
+
+        every {
+            baseEntityService.getStatsBombSource()
+        } returns mockObjects.source()
+
+        every {
+            restService.getStatsBombEvents(match.sourceExternalId)
+        } returns StatsBombEventMapper.fromJson(json)
+
+        every {
+            eventEntityService.getOrCreateEventType(StatsBombEventType(18, "Half Start"))
+        } returns EventType("Half Start", mockObjects.source(), "1")
+
+        every {
+            baseEntityService.getTeamByExternalId("974")
+        } returns mockObjects.team1()
+
+        every {
+            baseEntityService.getTeamByExternalId("972")
+        } returns mockObjects.team2()
+
+        every {
+            eventEntityService.getOrCreatePlayPattern(StatsBombPlayPattern(1, "Regular Play"))
+        } returns mockObjects.playPattern()
+
+        every {
+            eventEntityService.saveAll(any())
+        } returns mutableSetOf()
+
+        val result = service.processMatch(match).get()
+
+        assert(result.isNotEmpty())
+    }
+
+    @Test
+    fun `injury stoppage event type`() {
+        val match = mockObjects.match()
+
+        val json = StatsBombFileUtils.readFile(
+                "src/test/kotlin/com/footiestats/statsengine/services/feed/statsbomb/feeds/events/jsons/" +
+                        "injury-stoppage.json")
+
+        every {
+            baseEntityService.getStatsBombSource()
+        } returns mockObjects.source()
+
+        every {
+            restService.getStatsBombEvents(match.sourceExternalId)
+        } returns StatsBombEventMapper.fromJson(json)
+
+        every {
+            eventEntityService.getOrCreateEventType(StatsBombEventType(40, "Injury Stoppage"))
+        } returns EventType("Injury Stoppage", mockObjects.source(), "1")
+
+        every {
+            baseEntityService.getPlayerByExternalId("10190")
+        } returns mockObjects.player()
+
+        every {
+            eventEntityService.getOrCreatePosition(StatsBombPosition(10, "Center Defensive Midfield"))
+        } returns mockEventObjects.position()
+
+        every {
+            baseEntityService.getTeamByExternalId("974")
+        } returns mockObjects.team1()
+
+        every {
+            eventEntityService.getOrCreatePlayPattern(StatsBombPlayPattern(1, "Regular Play"))
+        } returns mockObjects.playPattern()
+
+        every {
+            eventEntityService.saveAll(any())
+        } returns mutableSetOf()
+
+        val result = service.processMatch(match).get()
+
+        assert(result.isNotEmpty())
+    }
+
+    @Test
+    fun `interception event type`() {
+        val match = mockObjects.match()
+
+        val json = StatsBombFileUtils.readFile(
+                "src/test/kotlin/com/footiestats/statsengine/services/feed/statsbomb/feeds/events/jsons/" +
+                        "interception.json")
+
+        every {
+            baseEntityService.getStatsBombSource()
+        } returns mockObjects.source()
+
+        every {
+            restService.getStatsBombEvents(match.sourceExternalId)
+        } returns StatsBombEventMapper.fromJson(json)
+
+        every {
+            eventEntityService.getOrCreateEventType(StatsBombEventType(10, "Interception"))
+        } returns EventType("Interception", mockObjects.source(), "1")
+
+        every {
+            baseEntityService.getPlayerByExternalId("19780")
+        } returns mockObjects.player()
+
+        every {
+            eventEntityService.getOrCreatePosition(StatsBombPosition(6, "Left Back"))
+        } returns mockEventObjects.position()
+
+        every {
+            baseEntityService.getTeamByExternalId("974")
+        } returns mockObjects.team1()
+
+        every {
+            eventEntityService.getOrCreatePlayPattern(StatsBombPlayPattern(1, "Regular Play"))
+        } returns mockObjects.playPattern()
+
+        every {
+            eventEntityService.getOrCreateOutcome(StatsBombOutcome(4, "Won"))
+        } returns mockEventObjects.outcome(45, "Incomplete")
+
+        every {
+            eventEntityService.saveAll(any())
+        } returns mutableSetOf()
+
+        val result = service.processMatch(match).get()
+
+        assert(result.isNotEmpty())
+    }
+
+    @Test
+    fun `miscontrol event type`() {
+        val match = mockObjects.match()
+
+        val json = StatsBombFileUtils.readFile(
+                "src/test/kotlin/com/footiestats/statsengine/services/feed/statsbomb/feeds/events/jsons/" +
+                        "miscontrol.json")
+
+        every {
+            baseEntityService.getStatsBombSource()
+        } returns mockObjects.source()
+
+        every {
+            restService.getStatsBombEvents(match.sourceExternalId)
+        } returns StatsBombEventMapper.fromJson(json)
+
+        every {
+            eventEntityService.getOrCreateEventType(StatsBombEventType(38, "Miscontrol"))
+        } returns EventType("Miscontrol", mockObjects.source(), "1")
+
+        every {
+            baseEntityService.getPlayerByExternalId("31558")
+        } returns mockObjects.player()
+
+        every {
+            eventEntityService.getOrCreatePosition(StatsBombPosition(23, "Center Forward"))
+        } returns mockEventObjects.position()
+
+        every {
+            baseEntityService.getTeamByExternalId("972")
+        } returns mockObjects.team1()
+
+        every {
+            eventEntityService.getOrCreatePlayPattern(StatsBombPlayPattern(3, "From Free Kick"))
+        } returns mockObjects.playPattern()
+
+        every {
+            eventEntityService.saveAll(any())
+        } returns mutableSetOf()
+
+        val result = service.processMatch(match).get()
+
+        assert(result.isNotEmpty())
+    }
+
+    @Test
+    fun `pass event type`() {
+        val match = mockObjects.match()
+
+        val json = StatsBombFileUtils.readFile(
+                "src/test/kotlin/com/footiestats/statsengine/services/feed/statsbomb/feeds/events/jsons/" +
+                        "pass.json")
+
+        every {
+            baseEntityService.getStatsBombSource()
+        } returns mockObjects.source()
+
+        every {
+            restService.getStatsBombEvents(match.sourceExternalId)
+        } returns StatsBombEventMapper.fromJson(json)
+
+        every {
+            eventEntityService.getOrCreateEventType(StatsBombEventType(30, "Pass"))
+        } returns EventType("Pass", mockObjects.source(), "1")
+
+        every {
+            baseEntityService.getPlayerByExternalId("22027")
+        } returns mockObjects.player()
+
+        every {
+            eventEntityService.getOrCreatePosition(StatsBombPosition(1, "Goalkeeper"))
+        } returns mockEventObjects.position()
+
+        every {
+            baseEntityService.getTeamByExternalId("972")
+        } returns mockObjects.team2()
+
+        every {
+            eventEntityService.getOrCreatePlayPattern(StatsBombPlayPattern(3, "From Free Kick"))
+        } returns mockObjects.playPattern()
+
+        every {
+            eventEntityService.getOrCreateBodyPart(StatsBombBodyPart(40,"Right Foot"))
+        } returns BodyPart("Right Foot", mockObjects.source(), "1")
+
+        every {
+            eventEntityService.getOrCreatePassType(StatsBombPassType(62, "Free Kick"))
+        } returns PassType("Free Kick", mockObjects.source(), "1")
+
+        every {
+            eventEntityService.getOrCreatePassHeight(StatsBombPassHeight(3, "High Pass"))
+        } returns PassHeight("High Pass", mockObjects.source(), "1")
+
+        every {
+            baseEntityService.getPlayerByExternalId("31558")
+        } returns mockObjects.player()
+
+        every {
+            eventEntityService.saveAll(any())
+        } returns mutableSetOf()
+
+        val result = service.processMatch(match).get()
+
+        assert(result.isNotEmpty())
+    }
+
+    @Test
+    fun `player off event type`() {
+        val match = mockObjects.match()
+
+        val json = StatsBombFileUtils.readFile(
+                "src/test/kotlin/com/footiestats/statsengine/services/feed/statsbomb/feeds/events/jsons/" +
+                        "player-off.json")
+
+        every {
+            baseEntityService.getStatsBombSource()
+        } returns mockObjects.source()
+
+        every {
+            restService.getStatsBombEvents(match.sourceExternalId)
+        } returns StatsBombEventMapper.fromJson(json)
+
+        every {
+            eventEntityService.getOrCreateEventType(StatsBombEventType(27, "Player Off"))
+        } returns EventType("Player Off", mockObjects.source(), "1")
+
+        every {
+            baseEntityService.getPlayerByExternalId("15575")
+        } returns mockObjects.player()
+
+        every {
+            eventEntityService.getOrCreatePosition(StatsBombPosition(3, "Right Center Back"))
+        } returns mockEventObjects.position()
+
+        every {
+            baseEntityService.getTeamByExternalId("972")
+        } returns mockObjects.team1()
+
+        every {
+            baseEntityService.getTeamByExternalId("967")
+        } returns mockObjects.team1()
+
+        every {
+            eventEntityService.getOrCreatePlayPattern(StatsBombPlayPattern(1, "Regular Play"))
+        } returns mockObjects.playPattern()
+
+        every {
+            eventEntityService.saveAll(any())
+        } returns mutableSetOf()
+
+        val result = service.processMatch(match).get()
+
+        assert(result.isNotEmpty())
+    }
+
+    @Test
+    fun `shot event type`() {
+        val match = mockObjects.match()
+
+        val json = StatsBombFileUtils.readFile(
+                "src/test/kotlin/com/footiestats/statsengine/services/feed/statsbomb/feeds/events/jsons/" +
+                        "shot.json")
+
+        every {
+            baseEntityService.getStatsBombSource()
+        } returns mockObjects.source()
+
+        every {
+            restService.getStatsBombEvents(match.sourceExternalId)
+        } returns StatsBombEventMapper.fromJson(json)
+
+        every {
+            eventEntityService.getOrCreateEventType(StatsBombEventType(16, "Shot"))
+        } returns EventType("Shot", mockObjects.source(), "1")
+
+        every {
+            baseEntityService.getPlayerByExternalId("15573")
+        } returns mockObjects.player()
+
+        every {
+            eventEntityService.getOrCreatePosition(StatsBombPosition(11, "Left Defensive Midfield"))
+        } returns mockEventObjects.position()
+
+        every {
+            baseEntityService.getTeamByExternalId("967")
+        } returns mockObjects.team1()
+
+        every {
+            eventEntityService.getOrCreatePlayPattern(StatsBombPlayPattern(4, "From Throw In"))
+        } returns mockObjects.playPattern()
+
+        every {
+            eventEntityService.getOrCreateTechnique(StatsBombTechnique(93, "Normal"))
+        } returns Technique("Normal", mockObjects.source(), "1")
+
+        every {
+            eventEntityService.getOrCreateOutcome(StatsBombOutcome(98, "Off T"))
+        } returns Outcome("Off T", mockObjects.source(), "1")
+
+        every {
+            eventEntityService.getOrCreateShotType(StatsBombShotType(87, "Open Play"))
+        } returns ShotType("Open Plan", mockObjects.source(), "1")
+
+        every {
+            eventEntityService.getOrCreateBodyPart(StatsBombBodyPart(40, "Right Foot"))
+        } returns BodyPart("Right Foot", mockObjects.source(), "1")
+
+        every {
+            baseEntityService.getPlayerByExternalId("18253")
+        } returns mockObjects.player()
+
+        every {
+            eventEntityService.getOrCreatePosition(StatsBombPosition(20, "Left Attacking Midfield"))
+        } returns Position("Left Attacking Midfield", mockObjects.source(), "1")
+
+        every {
+            baseEntityService.getPlayerByExternalId("15577")
+        } returns mockObjects.player()
+
+        every {
+            eventEntityService.getOrCreatePosition(StatsBombPosition(18, "Right Attacking Midfield"))
+        } returns Position("Right Attacking Midfield", mockObjects.source(), "1")
+
+        every {
+            eventEntityService.saveAll(any())
+        } returns mutableSetOf()
+
+        val result = service.processMatch(match).get()
+
+        assert(result.isNotEmpty())
+    }
+
+    @Test
+    fun `substitution event type`() {
+        val match = mockObjects.match()
+
+        val json = StatsBombFileUtils.readFile(
+                "src/test/kotlin/com/footiestats/statsengine/services/feed/statsbomb/feeds/events/jsons/" +
+                        "substitution.json")
+
+        every {
+            baseEntityService.getStatsBombSource()
+        } returns mockObjects.source()
+
+        every {
+            restService.getStatsBombEvents(match.sourceExternalId)
+        } returns StatsBombEventMapper.fromJson(json)
+
+        every {
+            eventEntityService.getOrCreateEventType(StatsBombEventType(19, "Substitution"))
+        } returns EventType("Substitution", mockObjects.source(), "1")
+
+        every {
+            baseEntityService.getPlayerByExternalId("10198")
+        } returns mockObjects.player()
+
+        every {
+            eventEntityService.getOrCreatePosition(StatsBombPosition(3, "Right Center Back"))
+        } returns mockEventObjects.position()
+
+        every {
+            baseEntityService.getTeamByExternalId("974")
+        } returns mockObjects.team1()
+
+        every {
+            baseEntityService.getTeamByExternalId("972")
+        } returns mockObjects.team2()
+
+        every {
+            eventEntityService.getOrCreatePlayPattern(StatsBombPlayPattern(4, "From Throw In"))
+        } returns mockObjects.playPattern()
+
+        every {
+            eventEntityService.getOrCreateOutcome(StatsBombOutcome(102, "Injury"))
+        } returns mockEventObjects.outcome(45, "Injury")
+
+        every {
+            baseEntityService.getPlayerByExternalId("21021")
+        } returns mockObjects.player()
+
+        every {
+            eventEntityService.saveAll(any())
+        } returns mutableSetOf()
+
+        val result = service.processMatch(match).get()
+
+        assert(result.isNotEmpty())
+    }
+
+    @Test
+    fun `starting XI event type`() {
+        val match = mockObjects.match()
+
+        val json = StatsBombFileUtils.readFile(
+                "src/test/kotlin/com/footiestats/statsengine/services/feed/statsbomb/feeds/events/jsons/" +
+                        "starting-xi.json")
+
+        every {
+            baseEntityService.getStatsBombSource()
+        } returns mockObjects.source()
+
+        every {
+            restService.getStatsBombEvents(match.sourceExternalId)
+        } returns StatsBombEventMapper.fromJson(json)
+
+        every {
+            eventEntityService.getOrCreateEventType(StatsBombEventType(35, "Starting XI"))
+        } returns EventType("Starting XI", mockObjects.source(), "1")
+
+        every {
+            baseEntityService.getPlayerByExternalId("33664")
+        } returns mockObjects.player()
+
+        every {
+            baseEntityService.getPlayerByExternalId("15725")
+        } returns mockObjects.player()
+
+        every {
+            eventEntityService.getOrCreatePosition(StatsBombPosition(1, "Goalkeeper"))
+        } returns mockEventObjects.position()
+
+        every {
+            eventEntityService.getOrCreatePosition(StatsBombPosition(2, "Right Back"))
+        } returns mockEventObjects.position()
+
+        every {
+            baseEntityService.getTeamByExternalId("974")
+        } returns mockObjects.team1()
+
+        every {
+            eventEntityService.getOrCreatePlayPattern(StatsBombPlayPattern(1, "Regular Play"))
+        } returns mockObjects.playPattern()
+
+        every {
+            eventEntityService.saveAll(any())
+        } returns mutableSetOf()
+
+        val result = service.processMatch(match).get()
+
+        assert(result.isNotEmpty())
+    }
 }

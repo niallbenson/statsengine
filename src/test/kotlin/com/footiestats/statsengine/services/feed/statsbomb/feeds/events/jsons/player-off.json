@@ -1,0 +1,39 @@
+[
+  {
+    "id": "e203a43e-78fb-4ceb-b88c-b7f64ac83c52",
+    "index": 2447,
+    "period": 2,
+    "timestamp": "00:36:35.683",
+    "minute": 81,
+    "second": 35,
+    "type": {
+      "id": 27,
+      "name": "Player Off"
+    },
+    "possession": 169,
+    "possession_team": {
+      "id": 972,
+      "name": "West Ham United LFC"
+    },
+    "play_pattern": {
+      "id": 1,
+      "name": "Regular Play"
+    },
+    "team": {
+      "id": 967,
+      "name": "Everton LFC"
+    },
+    "player": {
+      "id": 15575,
+      "name": "Gabrielle George"
+    },
+    "position": {
+      "id": 3,
+      "name": "Right Center Back"
+    },
+    "duration": 0.0,
+    "player_off": {
+      "permanent": true
+    }
+  }
+]

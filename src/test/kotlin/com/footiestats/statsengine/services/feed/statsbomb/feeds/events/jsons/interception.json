@@ -1,0 +1,48 @@
+[
+  {
+    "id": "5c637529-d270-45f7-ac24-269c4ae1dd11",
+    "index": 1653,
+    "period": 2,
+    "timestamp": "00:03:25.149",
+    "minute": 48,
+    "second": 25,
+    "type": {
+      "id": 10,
+      "name": "Interception"
+    },
+    "possession": 108,
+    "possession_team": {
+      "id": 974,
+      "name": "Reading WFC"
+    },
+    "play_pattern": {
+      "id": 1,
+      "name": "Regular Play"
+    },
+    "team": {
+      "id": 974,
+      "name": "Reading WFC"
+    },
+    "player": {
+      "id": 19780,
+      "name": "Rachel Rowe"
+    },
+    "position": {
+      "id": 6,
+      "name": "Left Back"
+    },
+    "location": [
+      73.5,
+      8.3
+    ],
+    "duration": 0.0,
+    "counterpress": true,
+    "related_events": [],
+    "interception": {
+      "outcome": {
+        "id": 4,
+        "name": "Won"
+      }
+    }
+  }
+]
