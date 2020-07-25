@@ -113,15 +113,6 @@ internal class PassServiceTest {
         every { eventRepository.findByMatch_IdAndEventIndex(match.id!!, eventIndex - 1) } returns
                 ballReceiptEvent
 
-        every {
-            eventRepository.getTacticalLineupPlayerAtEventIndex(
-                    ballReceiptEvent.match.id ?: -1,
-                    ballReceiptEvent.id ?: -1,
-                    ballReceiptEvent.eventIndex,
-                    EventTypeEnum.STARTING_XI.id, EventTypeEnum.TACTICAL_SHIFT.id,
-                    PageRequest.of(0, 1))
-        }
-
         val result = service.getPassEventOverviewDto(eventId)
 
         assert(result.previousEvent.eventId == 78L)
