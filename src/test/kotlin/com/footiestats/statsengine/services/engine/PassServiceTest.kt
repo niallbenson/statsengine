@@ -73,7 +73,7 @@ internal class PassServiceTest {
         every { eventRepository.findByIdOrNull(eventId) } returns passEvent
 
         every { eventRepository.findByMatch_IdAndEventIndex(match.id!!, eventIndex - 1) } returns
-                getPreviousPassEvent()
+                getPreviousEventAsPass()
 
         val result = service.getPassEventOverviewDto(eventId)
 
@@ -91,7 +91,36 @@ internal class PassServiceTest {
         every { eventRepository.findByIdOrNull(eventId) } returns passEvent
 
         every { eventRepository.findByMatch_IdAndEventIndex(match.id!!, eventIndex - 1) } returns
-                getPreviousPassEvent()
+                getPreviousEventAsPass()
+
+        val result = service.getPassEventOverviewDto(eventId)
+
+        assert(result.previousEvent.eventId == 78L)
+    }
+
+    @Test
+    fun `when previous event is a ball receipt then expect DTO to have related pass event to ball receipt`() {
+        val match = mockObjects.match()
+        val eventIndex = 25
+        val eventId = 7L
+
+        val passEvent = getPassEvent(match, eventIndex, eventId)
+
+        every { eventRepository.findByIdOrNull(eventId) } returns passEvent
+
+        val ballReceiptEvent = getPreviousEventAsBallReceipt()
+
+        every { eventRepository.findByMatch_IdAndEventIndex(match.id!!, eventIndex - 1) } returns
+                ballReceiptEvent
+
+        every {
+            eventRepository.getTacticalLineupPlayerAtEventIndex(
+                    ballReceiptEvent.match.id ?: -1,
+                    ballReceiptEvent.id ?: -1,
+                    ballReceiptEvent.eventIndex,
+                    EventTypeEnum.STARTING_XI.id, EventTypeEnum.TACTICAL_SHIFT.id,
+                    PageRequest.of(0, 1))
+        }
 
         val result = service.getPassEventOverviewDto(eventId)
 
@@ -109,7 +138,7 @@ internal class PassServiceTest {
         every { eventRepository.findByIdOrNull(eventId) } returns passEvent
 
         every { eventRepository.findByMatch_IdAndEventIndex(match.id!!, eventIndex - 1) } returns
-                getPreviousPassEvent()
+                getPreviousEventAsPass()
 
         val result = service.getPassEventOverviewDto(eventId)
 
@@ -126,7 +155,7 @@ internal class PassServiceTest {
 
         every { eventRepository.findByIdOrNull(eventId) } returns passEvent
 
-        val previousPassEvent = getPreviousPassEvent()
+        val previousPassEvent = getPreviousEventAsPass()
         every { eventRepository.findByMatch_IdAndEventIndex(match.id!!, eventIndex - 1) } returns
                 previousPassEvent
 
@@ -169,9 +198,17 @@ internal class PassServiceTest {
         return event
     }
 
-    private fun getPreviousPassEvent(): Event {
+    private fun getPreviousEventAsPass(): Event {
         val event = mockEventObjects.passEvent()
         event.location = Location2D(2.3, 45.8)
+
+        return event
+    }
+
+    private fun getPreviousEventAsBallReceipt(): Event {
+        val event = mockEventObjects.ballReceipt(12)
+
+        event.player = mockObjects.player()
 
         return event
     }

@@ -66,7 +66,7 @@ class PassService(
     private fun getLineupPlayer(event: Event): TacticalLineupPlayer {
         val lineupPlayerResults = getLineupPlayerResults(event, event.player!!)
 
-        return if (lineupPlayerResults.isNotEmpty()) {
+        return if (lineupPlayerResults.size > 0) {
             lineupPlayerResults[0]
         } else {
             getLineupPlayerForReplacedPlayer(event)
