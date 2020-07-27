@@ -67,8 +67,8 @@ class EngineMockEventObjects {
         return event
     }
 
-    fun passEvent(id: Long, outcome: Outcome?, ballReceiptEvent: Event?): Event {
-        val event = Event(mockObjects.match(), 99, 2, LocalTime.NOON, 12, 45,
+    fun passEventWithIndex(id: Long, outcome: Outcome?, ballReceiptEvent: Event?, index: Int): Event {
+        val event = Event(mockObjects.match(), index, 2, LocalTime.NOON, 12, 45,
                 passEventType(), 1, mockObjects.team1(), mockObjects.playPattern(),
                 mockObjects.team2(), 1.0, mockObjects.source(), "1", id)
 
@@ -85,6 +85,9 @@ class EngineMockEventObjects {
 
         return event
     }
+
+    fun passEvent(id: Long, outcome: Outcome?, ballReceiptEvent: Event?) =
+            passEventWithIndex(id, outcome, ballReceiptEvent, 99)
 
     fun pass() = Pass(
                 12.0, 25.6, PassHeight("High", mockObjects.source(), "1"),

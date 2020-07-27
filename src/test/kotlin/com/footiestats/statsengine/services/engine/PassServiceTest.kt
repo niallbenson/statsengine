@@ -9,6 +9,7 @@ import com.footiestats.statsengine.entities.engine.Match
 import com.footiestats.statsengine.entities.engine.enums.EventTypeEnum
 import com.footiestats.statsengine.entities.engine.events.Event
 import com.footiestats.statsengine.entities.engine.events.metadata.Location2D
+import com.footiestats.statsengine.entities.engine.events.refdata.Position
 import com.footiestats.statsengine.repos.engine.EventRepository
 import com.footiestats.statsengine.repos.engine.LineupPlayerRepository
 import com.footiestats.statsengine.repos.engine.SubstitutionRepository
@@ -34,9 +35,6 @@ internal class PassServiceTest {
 
     @RelaxedMockK
     private lateinit var eventRepository: EventRepository
-
-    @RelaxedMockK
-    private lateinit var substitutionRepository: SubstitutionRepository
 
     @RelaxedMockK
     private lateinit var lineupPlayerRepository: LineupPlayerRepository
@@ -113,18 +111,9 @@ internal class PassServiceTest {
         every { eventRepository.findByMatch_IdAndEventIndex(match.id!!, eventIndex - 1) } returns
                 ballReceiptEvent
 
-        every {
-            eventRepository.getTacticalLineupPlayerAtEventIndex(
-                    ballReceiptEvent.match.id ?: -1,
-                    ballReceiptEvent.id ?: -1,
-                    ballReceiptEvent.eventIndex,
-                    EventTypeEnum.STARTING_XI.id, EventTypeEnum.TACTICAL_SHIFT.id,
-                    PageRequest.of(0, 1))
-        }
-
         val result = service.getPassEventOverviewDto(eventId)
 
-        assert(result.previousEvent.eventId == 78L)
+        assert(result.previousEvent.eventId == 85L)
     }
 
     @Test
@@ -193,7 +182,18 @@ internal class PassServiceTest {
         event.location = Location2D(2.5, 35.8)
         event.player = mockObjects.player()
         event.pass = mockEventObjects.pass()
-        event.relatedEvents.add(mockEventObjects.ballReceipt(65))
+
+        val ballReceipt = mockEventObjects.ballReceipt(65)
+        ballReceipt.position = Position("Goalkeeper", mockObjects.source(), "1")
+
+        val priorPass = mockEventObjects.passEventWithIndex(85, null, ballReceipt, 20)
+        priorPass.position = Position("Left Back", mockObjects.source(), "1")
+        priorPass.location = Location2D(45.2, 95.4)
+
+        event.relatedEvents.add(ballReceipt)
+        event.relatedEvents.add(priorPass)
+
+        event.position = Position("Centre Back", mockObjects.source(), "1")
 
         return event
     }
@@ -201,6 +201,7 @@ internal class PassServiceTest {
     private fun getPreviousEventAsPass(): Event {
         val event = mockEventObjects.passEvent()
         event.location = Location2D(2.3, 45.8)
+        event.position = Position("Centre Back", mockObjects.source(), "1")
 
         return event
     }
@@ -209,6 +210,7 @@ internal class PassServiceTest {
         val event = mockEventObjects.ballReceipt(12)
 
         event.player = mockObjects.player()
+        event.position = Position("Centre Back", mockObjects.source(), "1")
 
         return event
     }
