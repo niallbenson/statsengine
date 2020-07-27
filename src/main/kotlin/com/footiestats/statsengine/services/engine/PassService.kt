@@ -3,19 +3,15 @@ package com.footiestats.statsengine.services.engine
 import com.footiestats.statsengine.dtos.engine.events.pass.PassEventOverviewDTO
 import com.footiestats.statsengine.dtos.engine.events.pass.PassEventOverviewItemDTO
 import com.footiestats.statsengine.dtos.engine.mappers.PassEventOverviewItemMapper
-import com.footiestats.statsengine.entities.engine.Match
-import com.footiestats.statsengine.entities.engine.Player
 import com.footiestats.statsengine.entities.engine.enums.EventTypeEnum
 import com.footiestats.statsengine.entities.engine.events.Event
 import com.footiestats.statsengine.entities.engine.events.metadata.TacticalLineupPlayer
 import com.footiestats.statsengine.repos.engine.EventRepository
 import com.footiestats.statsengine.repos.engine.LineupPlayerRepository
-import com.footiestats.statsengine.repos.engine.SubstitutionRepository
 import com.footiestats.statsengine.services.engine.eventanalysis.PassAnalysisService
 import com.footiestats.statsengine.services.engine.exceptions.EntityIdMustBeGreaterThanZero
 import com.footiestats.statsengine.services.engine.exceptions.EntityNotFound
 import com.footiestats.statsengine.services.engine.exceptions.ExpectedRelatedEventNotFound
-import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
@@ -24,7 +20,6 @@ class PassService(
         private val eventRepository: EventRepository,
         private val passEventOverviewItemMapper: PassEventOverviewItemMapper,
         private val passAnalysisService: PassAnalysisService,
-        private val substitutionRepository: SubstitutionRepository,
         private val lineupPlayerRepository: LineupPlayerRepository
 ) {
 
@@ -57,51 +52,35 @@ class PassService(
     }
 
     private fun getPreviousEventDto(passEvent: Event): PassEventOverviewItemDTO {
-        val event = eventRepository.findByMatch_IdAndEventIndex(
-                passEvent.match.id!!, passEvent.eventIndex - 1)
+        val previousEvent = eventRepository.findByMatch_IdAndEventIndex(
+                passEvent.match.id!!, passEvent.eventIndex - 1
+        )
 
-        return getOverviewItemDTOForAnyEventType(event)
-    }
-
-    private fun getLineupPlayer(event: Event): TacticalLineupPlayer {
-        val lineupPlayerResults = getLineupPlayerResults(event, event.player!!)
-
-        return if (lineupPlayerResults.size > 0) {
-            lineupPlayerResults[0]
+        return if (previousEvent.type.id != EventTypeEnum.BALL_RECEIPT.id) {
+            getOverviewItemDTOForAnyEventType(previousEvent)
         } else {
-            getLineupPlayerForReplacedPlayer(event)
+            val previousPreviousEvent = passEvent.relatedEvents.find {
+                it.eventIndex < previousEvent.eventIndex && it.type.id == EventTypeEnum.PASS.id
+            } ?: throw ExpectedRelatedEventNotFound("No prior Pass found for Ball Receipt on event ${previousEvent.id}")
+
+            getOverviewItemDTOForAnyEventType(previousPreviousEvent)
         }
     }
 
-    private fun getLineupPlayerForReplacedPlayer(event: Event): TacticalLineupPlayer {
+    private fun getLineupPlayer(event: Event): TacticalLineupPlayer {
         val eventPlayer = event.player
                 ?: throw EntityNotFound("Expected event ${event.id} to have a player")
 
-        val replacedPlayer = getSubstituteReplacedPlayer(event.match, eventPlayer)
-
-        val replacedPlayerLineupResults = getLineupPlayerResults(event, replacedPlayer)
-
-        if (replacedPlayerLineupResults.isEmpty())
-            throw EntityNotFound("No tactical lineup player found for event ${event.id}")
-
         val lineupPlayer = lineupPlayerRepository.findByPlayerAndMatchLineup_Match(eventPlayer, event.match)
 
-        val tacticalLineupForReplaced = replacedPlayerLineupResults[0]
+        val position = event.position
+                ?: throw EntityNotFound("Expected Event ${event.id} to have a position")
 
-        return tacticalLineupForReplaced.copy(player = eventPlayer, jerseyNumber = lineupPlayer.jerseyNumber)
-    }
-
-    private fun getLineupPlayerResults(event: Event, player: Player) =
-            eventRepository.getTacticalLineupPlayerAtEventIndex(
-                    event.match.id ?: -1, player.id ?: -1, event.eventIndex,
-                    EventTypeEnum.STARTING_XI.id, EventTypeEnum.TACTICAL_SHIFT.id,
-                    PageRequest.of(0, 1))
-
-    private fun getSubstituteReplacedPlayer(match: Match, replacement: Player): Player {
-        val substitution = substitutionRepository.findByEvent_MatchAndReplacement(match, replacement)
-
-        return substitution.event?.player
-                ?: throw EntityNotFound("Replaced player for ${replacement.id} not found in match ${match.id}")
+        return TacticalLineupPlayer(
+                player = eventPlayer,
+                jerseyNumber = lineupPlayer.jerseyNumber,
+                position = position
+        )
     }
 
     private fun getNextEventDto(passEvent: Event, target: Event?): PassEventOverviewItemDTO {
