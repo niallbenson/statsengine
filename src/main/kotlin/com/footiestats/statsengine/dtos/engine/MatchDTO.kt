@@ -12,4 +12,7 @@ data class MatchDTO(
         val status: String,
         val homeScore: Int?,
         val awayScore: Int?,
-        val competitionStage: String)
+        val competitionStage: String,
+        val competitionId: Long,
+        val competitionName: String,
+        val seasonName: String)

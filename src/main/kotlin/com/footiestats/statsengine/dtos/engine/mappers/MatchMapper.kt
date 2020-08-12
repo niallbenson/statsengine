@@ -18,6 +18,9 @@ class MatchMapper {
                 match.matchStatus,
                 match.homeScore,
                 match.awayScore,
-                match.competitionStage.name)
+                match.competitionStage.name,
+                match.competitionSeason.competition.id ?: -1,
+                match.competitionSeason.competition.name,
+                match.competitionSeason.season.name)
     }
 }
