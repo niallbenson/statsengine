@@ -14,6 +14,7 @@ interface EventRepository : PagingAndSortingRepository<Event, Long> {
     fun findBySourceExternalId(id: String): Event?
     fun findAllByMatch(match: Match): Set<Event>
     fun countAllByMatch(match: Match): Long
+    fun findAllByMatch_Id(matchId: Long): Set<Event>
     fun findAllByPlayer_IdAndMatch_Id(playerId: Long, matchId: Long): Set<Event>
     fun findAllByMatch_IdAndType_Id(matchId: Long, eventTypeId: Long): Set<Event>
     fun findAllByMatch_IdAndType_IdAndEventTeam_Id(matchId: Long, eventTypeId: Long, teamId: Long): Set<Event>

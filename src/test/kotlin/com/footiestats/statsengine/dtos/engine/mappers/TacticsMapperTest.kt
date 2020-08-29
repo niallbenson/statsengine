@@ -1,9 +1,11 @@
 package com.footiestats.statsengine.dtos.engine.mappers
 
 import com.footiestats.statsengine.dtos.engine.mocks.EngineMockEventObjects
+import com.footiestats.statsengine.services.engine.eventanalysis.EventAnalysisService
 import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
+import io.mockk.impl.annotations.RelaxedMockK
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -22,8 +24,11 @@ internal class TacticsMapperTest {
     @MockK
     private var teamMapper = TeamMapper()
 
+    @RelaxedMockK
+    private lateinit var eventAnalysisService: EventAnalysisService
+
     @MockK
-    private var eventMapper = EventMapper(playerMapper, teamMapper)
+    private var eventMapper = EventMapper(playerMapper, teamMapper, eventAnalysisService)
 
     @InjectMockKs
     private var mapper = TacticsMapper(tacticalLineupPlayerMapper, eventMapper)

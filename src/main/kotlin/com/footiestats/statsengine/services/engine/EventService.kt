@@ -1,10 +1,12 @@
 package com.footiestats.statsengine.services.engine
 
 import com.footiestats.statsengine.dtos.engine.EventDTO
+import com.footiestats.statsengine.dtos.engine.EventDetailListItemDTO
 import com.footiestats.statsengine.dtos.engine.mappers.EventMapper
 import com.footiestats.statsengine.entities.engine.enums.EventTypeEnum
 import com.footiestats.statsengine.entities.engine.enums.OutcomeEnum
 import com.footiestats.statsengine.repos.engine.EventRepository
+import com.footiestats.statsengine.repos.engine.LineupPlayerRepository
 import com.footiestats.statsengine.repos.engine.MatchRepository
 import com.footiestats.statsengine.services.engine.exceptions.EntityIdMustBeGreaterThanZero
 import com.footiestats.statsengine.services.engine.exceptions.EntityNotFound
@@ -15,7 +17,8 @@ import org.springframework.stereotype.Service
 class EventService(
         private val eventRepository: EventRepository,
         private val matchRepository: MatchRepository,
-        private val eventMapper: EventMapper
+        private val eventMapper: EventMapper,
+        private val lineupPlayerRepository: LineupPlayerRepository
 ) {
 
     fun getPlayerMatchEvents(playerId: Long, matchId: Long): Array<EventDTO> {
@@ -56,6 +59,18 @@ class EventService(
                 .sortedBy { it.eventIndex }
                 .map { eventMapper.toDto(it) }
                 .toTypedArray()
+    }
+
+    fun getMatchEventDetailListItemDtos(matchId: Long): Array<EventDetailListItemDTO> {
+        if (matchId < 1) throw EntityIdMustBeGreaterThanZero("matchId $matchId is invalid")
+
+        val events = eventRepository.findAllByMatch_Id(matchId)
+        val lineupPlayers = lineupPlayerRepository.findAllByMatchLineup_Match_Id(matchId)
+                .map { it.player.id to it }.toMap()
+
+        return events.map {
+            eventMapper.toListItemDetailDto(it, lineupPlayers)
+        }.toTypedArray()
     }
 
 }

@@ -17,7 +17,11 @@ class EventController(private val eventService: EventService) {
             eventService.getMatchEventsByType(matchId, eventTypeId)
 
     @GetMapping("/match/{matchId}/team/{teamId}/goals")
-    fun getMatchGoals(@PathVariable matchId: Long, @PathVariable teamId: Long) =
+    fun getMatchTeamGoals(@PathVariable matchId: Long, @PathVariable teamId: Long) =
             eventService.getMatchTeamGoals(matchId, teamId)
+
+    @GetMapping("/match/{matchId}/all")
+    fun getMatchEventsAll(@PathVariable matchId: Long) =
+            eventService.getMatchEventDetailListItemDtos(matchId)
 
 }

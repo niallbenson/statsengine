@@ -87,4 +87,5 @@ interface PlayerRepository : PagingAndSortingRepository<Player, Long> {
 
 interface LineupPlayerRepository : PagingAndSortingRepository<LineupPlayer, Long> {
     fun findByPlayerAndMatchLineup_Match(player: Player, match: Match): LineupPlayer
+    fun findAllByMatchLineup_Match_Id(matchId: Long): Set<LineupPlayer>
 }
