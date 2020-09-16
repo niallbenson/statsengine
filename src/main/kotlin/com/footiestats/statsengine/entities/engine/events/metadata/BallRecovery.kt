@@ -5,7 +5,7 @@ import javax.persistence.GeneratedValue
 import javax.persistence.Id
 
 @Entity
-class BallRecovery(
+data class BallRecovery(
         @Id @GeneratedValue var id: Long? = null
 ) {
     var recoveryFailure: Boolean? = null

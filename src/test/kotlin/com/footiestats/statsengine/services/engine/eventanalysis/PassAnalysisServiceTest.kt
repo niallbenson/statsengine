@@ -56,7 +56,7 @@ internal class PassAnalysisServiceTest {
         val shotEvent = mockEventObjects.shotEventGoalOutcome()
 
         assertThrows<UnexpectedEventType> {
-            service.passOutcome(shotEvent)
+            service.outcome(shotEvent)
         }
     }
 
@@ -65,7 +65,7 @@ internal class PassAnalysisServiceTest {
         val incompleteOutcome = mockEventObjects.outcome(OutcomeEnum.INCOMPLETE.id, "Incomplete")
         val passEvent = mockEventObjects.passEvent(1, incompleteOutcome, null)
 
-        val outcome = service.passOutcome(passEvent)
+        val outcome = service.outcome(passEvent)
 
         assert(outcome.isNotEmpty())
     }

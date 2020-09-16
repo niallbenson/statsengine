@@ -7,7 +7,7 @@ import javax.persistence.Id
 import javax.persistence.ManyToOne
 
 @Entity
-class DuelType(
+data class DuelType(
         var name: String,
         @ManyToOne var source: Source,
         var sourceExternalId: String,

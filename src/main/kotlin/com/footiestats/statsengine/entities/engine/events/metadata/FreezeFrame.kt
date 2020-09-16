@@ -5,7 +5,7 @@ import com.footiestats.statsengine.entities.engine.events.refdata.Position
 import javax.persistence.*
 
 @Entity
-class FreezeFrame(
+data class FreezeFrame(
         @ManyToOne(cascade = [CascadeType.ALL]) val location: Location2D,
         @ManyToOne val player: Player,
         @ManyToOne val position: Position,

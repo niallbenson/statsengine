@@ -3,7 +3,7 @@ package com.footiestats.statsengine.entities.engine
 import javax.persistence.*
 
 @Entity
-class Country(
+data class Country(
         var name: String,
         var sourceExternalId: String?,
         @ManyToOne var source: Source,

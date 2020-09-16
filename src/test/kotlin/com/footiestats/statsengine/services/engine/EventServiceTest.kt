@@ -9,6 +9,7 @@ import com.footiestats.statsengine.entities.engine.enums.EventTypeEnum
 import com.footiestats.statsengine.entities.engine.enums.Gender
 import com.footiestats.statsengine.entities.engine.enums.OutcomeEnum
 import com.footiestats.statsengine.repos.engine.EventRepository
+import com.footiestats.statsengine.repos.engine.LineupPlayerRepository
 import com.footiestats.statsengine.repos.engine.MatchRepository
 import com.footiestats.statsengine.services.engine.exceptions.EntityIdMustBeGreaterThanZero
 import io.mockk.MockKAnnotations
@@ -36,6 +37,9 @@ internal class EventServiceTest {
 
     @RelaxedMockK
     private lateinit var matchRepository: MatchRepository
+
+    @RelaxedMockK
+    private lateinit var lineupPlayerRepository: LineupPlayerRepository
 
     @InjectMockKs
     private lateinit var service: EventService

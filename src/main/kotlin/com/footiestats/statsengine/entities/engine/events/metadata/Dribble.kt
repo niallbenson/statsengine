@@ -7,7 +7,7 @@ import javax.persistence.Id
 import javax.persistence.ManyToOne
 
 @Entity
-class Dribble(
+data class Dribble(
         @ManyToOne var outcome: Outcome,
         var overrun: Boolean,
         @Id @GeneratedValue var id: Long? = null

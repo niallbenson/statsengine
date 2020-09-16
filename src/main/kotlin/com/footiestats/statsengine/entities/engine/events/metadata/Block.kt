@@ -5,7 +5,7 @@ import javax.persistence.GeneratedValue
 import javax.persistence.Id
 
 @Entity
-class Block(
+data class Block(
         @Id @GeneratedValue var id: Long? = null
 ) {
     var deflection: Boolean? = null

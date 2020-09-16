@@ -1,5 +1,6 @@
 package com.footiestats.statsengine
 
+import com.footiestats.statsengine.entities.engine.Player
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatterBuilder
 import java.time.temporal.ChronoField
@@ -31,3 +32,5 @@ fun String.toSlug() = toLowerCase()
         .split(" ")
         .joinToString("-")
         .replace("-+".toRegex(), "-")
+
+fun Player.getDisplayName() = if (this.nickName !== null) this.nickName else this.name

@@ -5,7 +5,7 @@ import javax.persistence.GeneratedValue
 import javax.persistence.Id
 
 @Entity
-class Miscontrol(
+data class Miscontrol(
         @Id @GeneratedValue var id: Long? = null
 ) {
     var aerialWon: Boolean? = null

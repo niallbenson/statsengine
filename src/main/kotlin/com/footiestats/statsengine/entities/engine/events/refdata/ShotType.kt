@@ -7,7 +7,7 @@ import javax.persistence.Id
 import javax.persistence.ManyToOne
 
 @Entity
-class ShotType(
+data class ShotType(
         var name: String,
         @ManyToOne var source: Source,
         var sourceExternalId: String,

@@ -9,7 +9,7 @@ import com.footiestats.statsengine.entities.engine.events.refdata.Technique
 import javax.persistence.*
 
 @Entity
-class Pass(
+data class Pass(
         var length: Double,
         var angle: Double,
         @ManyToOne var passHeight: PassHeight,

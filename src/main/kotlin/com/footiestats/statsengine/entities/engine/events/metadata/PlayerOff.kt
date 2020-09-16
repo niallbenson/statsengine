@@ -5,7 +5,7 @@ import javax.persistence.GeneratedValue
 import javax.persistence.Id
 
 @Entity
-class PlayerOff(
+data class PlayerOff(
         @Id @GeneratedValue var id: Long? = null
 ) {
     var permanent: Boolean? = null

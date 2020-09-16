@@ -1,42 +1,24 @@
 package com.footiestats.statsengine.services.engine.eventanalysis
 
-import com.footiestats.statsengine.entities.engine.enums.EventTypeEnum
 import com.footiestats.statsengine.entities.engine.events.Event
 import com.footiestats.statsengine.entities.engine.events.metadata.Location2D
-import com.footiestats.statsengine.services.engine.exceptions.EventHasUnexpectedNullValue
 import com.footiestats.statsengine.services.engine.exceptions.UnexpectedEventType
-import org.springframework.stereotype.Service
 import kotlin.math.sqrt
 
-@Service
-class EventAnalysisService(
-        private val shotAnalysisService: ShotAnalysisService,
-        private val passAnalysisService: PassAnalysisService
-) {
+abstract class EventAnalysisService {
 
-    fun isEventSuccessful(event: Event): Boolean {
-        return when (event.type.id) {
-            EventTypeEnum.SHOT.id -> return shotAnalysisService.isShotOnTarget(event)
-            EventTypeEnum.PASS.id -> return passAnalysisService.isPassAccurate(event)
-            else -> false
-        }
+    abstract val eventTypeName: String
+    abstract val eventTypeId: Long
+
+    protected fun validateEventType(event: Event) {
+        if (event.type.id != eventTypeId)
+            throw UnexpectedEventType("Expected $eventTypeName event, got ${event.type.name}")
     }
 
-    fun getOutcome(event: Event): String {
-        return when (event.type.id) {
-            EventTypeEnum.SHOT.id -> return shotAnalysisService.shotOutcome(event)
-            EventTypeEnum.PASS.id -> return passAnalysisService.passOutcome(event)
-            else -> ""
-        }
-    }
-
-    fun isKeyEvent(event: Event): Boolean {
-        return when (event.type.id) {
-            EventTypeEnum.SHOT.id -> return isShotKeyEvent(event)
-            EventTypeEnum.PASS.id -> return isPassKeyEvent(event)
-            else -> false
-        }
-    }
+    abstract fun eventDetail(event: Event): String?
+    abstract fun isSuccessful(event: Event): Boolean?
+    abstract fun outcome(event: Event): String
+    abstract fun isKeyEvent(event: Event): Boolean
 
     fun getDistance(event: Event): Double? {
         val startLocation = event.location
@@ -51,39 +33,14 @@ class EventAnalysisService(
         return sqrt(xDist * xDist + yDist * yDist)
     }
 
-    private fun isShotKeyEvent(event: Event): Boolean {
-        validateEventType(event, EventTypeEnum.SHOT)
+    fun getDistance(event: Event, decimals: Int): Double? {
+        val distance = getDistance(event)
 
-        return shotAnalysisService.isShotOnTarget(event)
+        return if (distance != null)
+            "%.${decimals}f".format(distance).toDouble()
+        else null
     }
 
-    private fun isPassKeyEvent(event: Event): Boolean {
-        validateEventType(event, EventTypeEnum.PASS)
+    protected abstract fun getEndLocation(event: Event): Location2D?
 
-        return passAnalysisService.isKeyPass(event)
-                || passAnalysisService.isAssist(event)
-    }
-
-    private fun getEndLocation(event: Event): Location2D? {
-        return when (event.type.id) {
-            EventTypeEnum.SHOT.id -> getShotEndLocationAs2D(event)
-            EventTypeEnum.PASS.id -> event.pass?.endLocation
-                    ?: throw EventHasUnexpectedNullValue("Event with Pass type should have non-null Pass")
-            EventTypeEnum.CARRY.id -> event.carry?.endLocation
-                    ?: throw EventHasUnexpectedNullValue("Event with Carry type should have non-null Carry")
-            else -> null
-        }
-    }
-
-    private fun getShotEndLocationAs2D(event: Event): Location2D {
-        val endLocation = event.shot?.endLocation
-                ?: throw EventHasUnexpectedNullValue("Event with Shot type should have non-nul Shot")
-
-        return Location2D(endLocation.x, endLocation.y)
-    }
-
-    private fun validateEventType(event: Event, expectedType: EventTypeEnum) {
-        if (event.type.id != expectedType.id)
-            throw UnexpectedEventType("Expected ${expectedType.name}, got ${event.type.name}")
-    }
 }

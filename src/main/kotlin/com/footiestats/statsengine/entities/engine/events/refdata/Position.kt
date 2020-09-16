@@ -7,7 +7,7 @@ import javax.persistence.Id
 import javax.persistence.ManyToOne
 
 @Entity
-class Position(
+data class Position(
         var name: String,
         @ManyToOne var source: Source,
         var sourceExternalId: String,

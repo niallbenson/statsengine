@@ -7,7 +7,7 @@ import javax.persistence.Id
 import javax.persistence.ManyToOne
 
 @Entity
-class BadBehaviour(
+data class BadBehaviour(
         @ManyToOne var card: Card,
         @Id @GeneratedValue var id: Long? = null
 )

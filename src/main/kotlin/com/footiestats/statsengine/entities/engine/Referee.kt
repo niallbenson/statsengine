@@ -6,7 +6,7 @@ import javax.persistence.Id
 import javax.persistence.ManyToOne
 
 @Entity
-class Referee(
+data class Referee(
         var name: String,
         var sourceExternalId: String,
         @ManyToOne var country: Country? = null,

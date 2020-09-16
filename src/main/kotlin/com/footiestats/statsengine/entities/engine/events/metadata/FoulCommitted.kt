@@ -8,7 +8,7 @@ import javax.persistence.Id
 import javax.persistence.ManyToOne
 
 @Entity
-class FoulCommitted(
+data class FoulCommitted(
         @Id @GeneratedValue var id: Long? = null
 ) {
     @ManyToOne var foulCommittedType: FoulCommittedType? = null

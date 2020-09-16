@@ -5,16 +5,15 @@ import com.footiestats.statsengine.dtos.engine.EventDetailListItemDTO
 import com.footiestats.statsengine.dtos.engine.mappers.exceptions.ExpectedEntityNotFound
 import com.footiestats.statsengine.entities.engine.LineupPlayer
 import com.footiestats.statsengine.entities.engine.Player
-import com.footiestats.statsengine.entities.engine.enums.EventTypeEnum
 import com.footiestats.statsengine.entities.engine.events.Event
-import com.footiestats.statsengine.services.engine.eventanalysis.EventAnalysisService
+import com.footiestats.statsengine.services.engine.eventanalysis.UberEventAnalysisService
 import org.springframework.stereotype.Service
 
 @Service
 class EventMapper(
         private val playerMapper: PlayerMapper,
         private val teamMapper: TeamMapper,
-        private val eventAnalysisService: EventAnalysisService
+        private val uberEventAnalysisService: UberEventAnalysisService
 ) {
 
     fun toDto(event: Event): EventDTO {
@@ -44,6 +43,7 @@ class EventMapper(
 
         return EventDetailListItemDTO(
                 event.id ?: -1,
+                event.eventIndex,
                 event.playPattern.name,
                 teamMapper.toDto(event.possessionTeam),
                 teamMapper.toDto(event.eventTeam),
@@ -51,8 +51,10 @@ class EventMapper(
                 getJerseyNumber(event.player, lineupPlayers),
                 event.position?.name,
                 event.type.name,
-                eventAnalysisService.getOutcome(event),
-                eventAnalysisService.getDistance(event),
+                uberEventAnalysisService.getEventDetail(event),
+                uberEventAnalysisService.getOutcome(event),
+                uberEventAnalysisService.isEventSuccessful(event),
+                uberEventAnalysisService.getDistance(event),
                 event.period,
                 event.minute,
                 event.second)

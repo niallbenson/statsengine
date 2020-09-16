@@ -4,7 +4,7 @@ import com.footiestats.statsengine.entities.engine.enums.Gender
 import javax.persistence.*
 
 @Entity
-class Team(
+data class Team(
         var name: String,
         var gender: Gender,
         var teamGroup: String?,

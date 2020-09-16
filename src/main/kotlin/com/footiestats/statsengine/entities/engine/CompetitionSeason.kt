@@ -3,7 +3,7 @@ package com.footiestats.statsengine.entities.engine
 import javax.persistence.*
 
 @Entity
-class CompetitionSeason(
+data class CompetitionSeason(
         @ManyToOne var competition: Competition,
         @ManyToOne var season: Season,
         @Id @GeneratedValue var id: Long? = null) {

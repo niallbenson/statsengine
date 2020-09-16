@@ -2,6 +2,7 @@ package com.footiestats.statsengine.dtos.engine;
 
 data class EventDetailListItemDTO(
         val id: Long,
+        val index: Int,
         val playPattern: String,
         val possessionTeam: TeamDTO,
         val eventTeam: TeamDTO,
@@ -9,7 +10,9 @@ data class EventDetailListItemDTO(
         val jerseyNumber: Int?,
         val playerPosition: String?,
         val eventType: String,
+        val eventDetail: String?,
         val outcome: String,
+        val successful: Boolean?,
         val distance: Double?,
         val period: Int,
         val minute: Int,

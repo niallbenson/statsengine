@@ -7,7 +7,7 @@ import javax.persistence.Id
 import javax.persistence.ManyToOne
 
 @Entity
-class Clearance(
+data class Clearance(
         @Id @GeneratedValue var id: Long? = null
 ) {
     @ManyToOne var bodyPart: BodyPart? = null

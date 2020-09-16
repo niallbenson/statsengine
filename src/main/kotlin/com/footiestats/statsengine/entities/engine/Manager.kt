@@ -7,7 +7,7 @@ import javax.persistence.Id
 import javax.persistence.ManyToOne
 
 @Entity
-class Manager(
+data class Manager(
         var name: String,
         var nickname: String?,
         var dateOfBirth: LocalDate?,

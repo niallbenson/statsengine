@@ -8,7 +8,7 @@ import com.footiestats.statsengine.entities.engine.events.refdata.Technique
 import javax.persistence.*
 
 @Entity
-class Shot(
+data class Shot(
         var statsBombXg: Double,
         @OneToOne(cascade = [CascadeType.ALL]) var endLocation: Location3D,
         @ManyToOne var technique: Technique,

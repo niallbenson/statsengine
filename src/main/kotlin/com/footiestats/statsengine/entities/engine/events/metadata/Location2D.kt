@@ -5,7 +5,7 @@ import javax.persistence.GeneratedValue
 import javax.persistence.Id
 
 @Entity
-class Location2D(
+data class Location2D(
         var x: Double,
         var y: Double,
         @Id @GeneratedValue var id: Long? = null

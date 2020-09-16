@@ -68,9 +68,10 @@ class EventService(
         val lineupPlayers = lineupPlayerRepository.findAllByMatchLineup_Match_Id(matchId)
                 .map { it.player.id to it }.toMap()
 
-        return events.map {
-            eventMapper.toListItemDetailDto(it, lineupPlayers)
-        }.toTypedArray()
+        return events
+                .sortedBy { it.eventIndex }
+                .map { eventMapper.toListItemDetailDto(it, lineupPlayers)}
+                .toTypedArray()
     }
 
 }

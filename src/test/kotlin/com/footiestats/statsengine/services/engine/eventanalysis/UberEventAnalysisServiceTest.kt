@@ -8,8 +8,10 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 
+// TODO: tests currently failing due to refactoring of EventAnalysisService classes
+
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-internal class EventAnalysisServiceTest {
+internal class UberEventAnalysisServiceTest {
 
     private val mockEventObjects = EngineMockEventObjects()
 
@@ -20,7 +22,7 @@ internal class EventAnalysisServiceTest {
     private var passAnalysisService = PassAnalysisService()
 
     @InjectMockKs
-    private lateinit var service: EventAnalysisService
+    private lateinit var service: UberEventAnalysisService
 
     @BeforeAll
     fun setup() = MockKAnnotations.init(this)
@@ -31,7 +33,7 @@ internal class EventAnalysisServiceTest {
 
         val successful = service.isEventSuccessful(event)
 
-        assert(successful)
+        assert(successful!!)
     }
 
     @Test
@@ -40,7 +42,7 @@ internal class EventAnalysisServiceTest {
 
         val successful = service.isEventSuccessful(event)
 
-        assert(!successful)
+        assert(!successful!!)
     }
 
     @Test

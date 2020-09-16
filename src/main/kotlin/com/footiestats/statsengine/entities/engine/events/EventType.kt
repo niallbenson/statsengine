@@ -9,7 +9,7 @@ import javax.persistence.ManyToOne
 @Entity
 //@Cacheable
 //@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-class EventType(
+data class EventType(
         var name: String,
         @ManyToOne var source: Source,
         var sourceExternalId: String,

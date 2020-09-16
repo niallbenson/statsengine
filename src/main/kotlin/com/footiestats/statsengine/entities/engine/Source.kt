@@ -7,6 +7,6 @@ import javax.persistence.Id
 @Entity
 //@Cacheable
 //@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-class Source(
+data class Source(
     var name: String,
     @Id @GeneratedValue var id: Long? = null)

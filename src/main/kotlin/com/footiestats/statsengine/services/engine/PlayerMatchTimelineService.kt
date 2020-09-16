@@ -8,7 +8,7 @@ import com.footiestats.statsengine.repos.engine.EventRepository
 import com.footiestats.statsengine.repos.engine.PlayerRepository
 import com.footiestats.statsengine.services.engine.exceptions.EntityIdMustBeGreaterThanZero
 import com.footiestats.statsengine.services.engine.exceptions.EntityNotFound
-import com.footiestats.statsengine.services.engine.eventanalysis.EventAnalysisService
+import com.footiestats.statsengine.services.engine.eventanalysis.UberEventAnalysisService
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
@@ -17,7 +17,7 @@ class PlayerMatchTimelineService(
         private val playerRepository: PlayerRepository,
         private val eventRepository: EventRepository,
         private val playerMapper: PlayerMapper,
-        private val eventAnalysisService: EventAnalysisService
+        private val uberEventAnalysisService: UberEventAnalysisService
 ) {
 
     fun getPlayerMatchTimelineDto(playerId: Long, matchId: Long): PlayerMatchTimelineDTO {
@@ -39,7 +39,7 @@ class PlayerMatchTimelineService(
         val player = getPlayer(playerId)
 
         val events = getEvents(playerId, matchId)
-                .filter { eventAnalysisService.isKeyEvent(it) }
+                .filter { uberEventAnalysisService.isKeyEvent(it) }
                 .toTypedArray()
 
         return PlayerMatchTimelineDTO(
@@ -66,9 +66,9 @@ class PlayerMatchTimelineService(
             event.minute,
             event.second,
             event.type.name,
-            eventAnalysisService.isEventSuccessful(event),
-            eventAnalysisService.getOutcome(event),
-            eventAnalysisService.isKeyEvent(event)
+            uberEventAnalysisService.isEventSuccessful(event) ?: false,
+            uberEventAnalysisService.getOutcome(event),
+            uberEventAnalysisService.isKeyEvent(event)
     )
 
 }

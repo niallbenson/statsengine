@@ -4,7 +4,7 @@ import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
-class Match(
+data class Match(
         var matchDate: LocalDateTime,
         var homeScore: Int?,
         var awayScore: Int?,

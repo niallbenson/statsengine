@@ -6,7 +6,7 @@ import com.footiestats.statsengine.dtos.engine.mocks.EngineMockObjects
 import com.footiestats.statsengine.repos.engine.EventRepository
 import com.footiestats.statsengine.repos.engine.PlayerRepository
 import com.footiestats.statsengine.services.engine.exceptions.EntityIdMustBeGreaterThanZero
-import com.footiestats.statsengine.services.engine.eventanalysis.EventAnalysisService
+import com.footiestats.statsengine.services.engine.eventanalysis.UberEventAnalysisService
 import com.footiestats.statsengine.services.engine.eventanalysis.PassAnalysisService
 import io.mockk.MockKAnnotations
 import io.mockk.every
@@ -37,7 +37,7 @@ internal class PlayerMatchTimelineServiceTest {
     private lateinit var passAnalysisService: PassAnalysisService
 
     @RelaxedMockK
-    private lateinit var eventAnalysisService: EventAnalysisService
+    private lateinit var uberEventAnalysisService: UberEventAnalysisService
 
     @RelaxedMockK
     lateinit var shotService: ShotService
@@ -85,25 +85,23 @@ internal class PlayerMatchTimelineServiceTest {
     }
 
     @Test
-    fun `getPlayerMatchTimelineDto expect timeline with 5 events`() {
+    fun `getPlayerMatchTimelineDto expect timeline with 3 events`() {
         val playerId = 1L
         val matchId = 1L
 
         every { playerRepository.findByIdOrNull(playerId) } returns
                 mockObjects.player()
 
-        val pass1 = mockEventObjects.passEvent()
+        val pass = mockEventObjects.passEvent()
         val ballReceipt = mockEventObjects.ballReceipt(1)
-        val goal1 = mockEventObjects.shotEventGoalOutcome()
-        val pass2 = mockEventObjects.passEvent()
-        val goal2 = mockEventObjects.shotEventGoalOutcome()
+        val goal = mockEventObjects.shotEventGoalOutcome()
 
         every { eventRepository.findAllByPlayer_IdAndMatch_Id(playerId, matchId) } returns
-                setOf(pass1, ballReceipt, goal1, pass2, goal2)
+                setOf(pass, ballReceipt, goal)
 
         val result = service.getPlayerMatchTimelineDto(playerId, matchId)
 
-        assert(result.items.size == 5)
+        assert(result.items.size == 3)
     }
 
 }

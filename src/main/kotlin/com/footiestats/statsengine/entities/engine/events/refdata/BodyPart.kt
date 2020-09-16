@@ -7,7 +7,7 @@ import javax.persistence.Id
 import javax.persistence.ManyToOne
 
 @Entity
-class BodyPart(
+data class BodyPart(
         var name: String,
         @ManyToOne var source: Source,
         var sourceExternalId: String,

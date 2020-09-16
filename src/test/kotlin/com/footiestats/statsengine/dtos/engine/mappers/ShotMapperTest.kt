@@ -2,7 +2,7 @@ package com.footiestats.statsengine.dtos.engine.mappers
 
 import com.footiestats.statsengine.dtos.engine.mappers.exceptions.EventHasUnexpectedNullValue
 import com.footiestats.statsengine.dtos.engine.mocks.EngineMockEventObjects
-import com.footiestats.statsengine.services.engine.eventanalysis.EventAnalysisService
+import com.footiestats.statsengine.services.engine.eventanalysis.UberEventAnalysisService
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK
@@ -20,7 +20,7 @@ internal class ShotMapperTest {
     private var teamMapper = TeamMapper()
 
     @RelaxedMockK
-    private lateinit var eventAnalysisService: EventAnalysisService
+    private lateinit var eventAnalysisService: UberEventAnalysisService
 
     @MockK
     private var eventMapper = EventMapper(playerMapper, teamMapper, eventAnalysisService)

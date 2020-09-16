@@ -4,7 +4,7 @@ import com.footiestats.statsengine.entities.engine.events.refdata.*
 import javax.persistence.*
 
 @Entity
-class GoalKeeper(
+data class GoalKeeper(
         @ManyToOne var goalkeeperType: GoalkeeperType,
         @Id @GeneratedValue var id: Long? = null
 ) {

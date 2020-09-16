@@ -7,7 +7,7 @@ import javax.persistence.Id
 import javax.persistence.ManyToOne
 
 @Entity
-class Interception(
+data class Interception(
         @ManyToOne var outcome: Outcome,
         @Id @GeneratedValue var id: Long? = null
 )

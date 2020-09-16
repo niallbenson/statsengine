@@ -4,7 +4,7 @@ import com.footiestats.statsengine.entities.engine.events.Event
 import javax.persistence.*
 
 @Entity
-class Tactics(
+data class Tactics(
         var formation: Int,
         @Id @GeneratedValue var id: Long? = null) {
 

@@ -11,7 +11,7 @@ import java.time.LocalTime
 import javax.persistence.*
 
 @Entity
-class Event(
+data class Event(
         @ManyToOne var match: Match,
         var eventIndex: Int,
         var period: Int,

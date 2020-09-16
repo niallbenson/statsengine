@@ -7,7 +7,7 @@ import javax.persistence.Id
 import javax.persistence.ManyToOne
 
 @Entity
-class PassType(
+data class PassType(
         var name: String,
         @ManyToOne var source: Source,
         var sourceExternalId: String,

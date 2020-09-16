@@ -7,7 +7,7 @@ import javax.persistence.Id
 import javax.persistence.ManyToOne
 
 @Entity
-class Card(
+data class Card(
         var name: String,
         @ManyToOne var source: Source,
         var sourceExternalId: String,

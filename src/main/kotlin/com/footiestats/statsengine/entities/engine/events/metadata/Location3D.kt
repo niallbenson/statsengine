@@ -5,7 +5,7 @@ import javax.persistence.GeneratedValue
 import javax.persistence.Id
 
 @Entity
-class Location3D(
+data class Location3D(
         var x: Double,
         var y: Double,
         var z: Double,

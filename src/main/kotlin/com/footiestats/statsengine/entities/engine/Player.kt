@@ -6,7 +6,7 @@ import javax.persistence.Id
 import javax.persistence.ManyToOne
 
 @Entity
-class Player(
+data class Player(
         var name: String,
         var nickName: String?,
         var sourceExternalId: String,

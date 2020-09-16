@@ -6,7 +6,7 @@ import javax.persistence.Id
 import javax.persistence.ManyToOne
 
 @Entity
-class MatchMetadata(
+data class MatchMetadata(
         var dataVersion: String?,
         var shotFidelityVersion: String?,
         var xyFidelityVersion: String?,

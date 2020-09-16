@@ -5,7 +5,7 @@ import javax.persistence.GeneratedValue
 import javax.persistence.Id
 
 @Entity
-class FoulWon(
+data class FoulWon(
         @Id @GeneratedValue var id: Long? = null
 ) {
     var defensive: Boolean? = null

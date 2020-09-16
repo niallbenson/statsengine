@@ -6,7 +6,7 @@ import javax.persistence.Id
 import javax.persistence.ManyToOne
 
 @Entity
-class CompetitionStage(
+data class CompetitionStage(
         var name: String,
         var sourceExternalId: String,
         @ManyToOne var source: Source,

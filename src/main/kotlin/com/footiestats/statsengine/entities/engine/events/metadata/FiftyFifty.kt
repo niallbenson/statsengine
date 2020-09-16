@@ -7,7 +7,7 @@ import javax.persistence.Id
 import javax.persistence.ManyToOne
 
 @Entity
-class FiftyFifty(
+data class FiftyFifty(
         @ManyToOne var outcome: Outcome,
         @Id @GeneratedValue var id: Long? = null
 )

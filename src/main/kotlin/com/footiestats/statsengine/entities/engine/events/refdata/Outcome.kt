@@ -7,7 +7,7 @@ import javax.persistence.Id
 import javax.persistence.ManyToOne
 
 @Entity
-class Outcome(
+data class Outcome(
         var name: String,
         @ManyToOne var source: Source,
         var sourceExternalId: String,

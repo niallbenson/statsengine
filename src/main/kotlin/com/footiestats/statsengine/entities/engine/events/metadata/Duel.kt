@@ -8,7 +8,7 @@ import javax.persistence.Id
 import javax.persistence.ManyToOne
 
 @Entity
-class Duel(
+data class Duel(
         @ManyToOne var duelType: DuelType,
         @Id @GeneratedValue var id: Long? = null
 ) {

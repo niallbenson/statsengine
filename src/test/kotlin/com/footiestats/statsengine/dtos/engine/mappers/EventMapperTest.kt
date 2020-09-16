@@ -2,7 +2,7 @@ package com.footiestats.statsengine.dtos.engine.mappers
 
 import com.footiestats.statsengine.dtos.engine.mocks.EngineMockEventObjects
 import com.footiestats.statsengine.dtos.engine.mocks.EngineMockObjects
-import com.footiestats.statsengine.services.engine.eventanalysis.EventAnalysisService
+import com.footiestats.statsengine.services.engine.eventanalysis.UberEventAnalysisService
 import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
@@ -24,7 +24,7 @@ internal class EventMapperTest {
     private var teamMapper = TeamMapper()
 
     @RelaxedMockK
-    private lateinit var eventAnalysisService: EventAnalysisService
+    private lateinit var eventAnalysisService: UberEventAnalysisService
 
     @InjectMockKs
     private var mapper = EventMapper(playerMapper, teamMapper, eventAnalysisService)

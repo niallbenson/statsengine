@@ -6,7 +6,7 @@ import com.footiestats.statsengine.entities.engine.events.refdata.Outcome
 import javax.persistence.*
 
 @Entity
-class Substitution(
+data class Substitution(
         @ManyToOne var replacement: Player,
         @Id @GeneratedValue var id: Long? = null
 ) {

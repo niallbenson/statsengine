@@ -3,7 +3,7 @@ package com.footiestats.statsengine.entities.engine
 import javax.persistence.*
 
 @Entity
-class MatchLineup(
+data class MatchLineup(
         @ManyToOne var match: Match,
         @ManyToOne var team: Team,
         @Id @GeneratedValue var id: Long? = null
