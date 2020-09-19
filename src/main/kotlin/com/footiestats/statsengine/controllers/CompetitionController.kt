@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/competition")
-@CrossOrigin("http://localhost:4200")
+@CrossOrigin("http://localhost:4200", "http://localhost:4201")
 class CompetitionController(private val competitionService: CompetitionService) {
 
     @GetMapping("")

@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/event")
-@CrossOrigin("http://localhost:4200")
+@CrossOrigin("http://localhost:4200", "http://localhost:4201")
 class EventController(private val eventService: EventService) {
 
     @GetMapping("/player/{playerId}/match/{matchId}")
@@ -23,5 +23,9 @@ class EventController(private val eventService: EventService) {
     @GetMapping("/match/{matchId}/all")
     fun getMatchEventsAll(@PathVariable matchId: Long) =
             eventService.getMatchEventDetailListItemDtos(matchId)
+
+    @GetMapping("/match/{matchId}/all/player/{playerId}")
+    fun getPlayerMatchEventsAll(@PathVariable matchId: Long, @PathVariable playerId: Long) =
+            eventService.getPlayerMatchEventDetailListItemDtos(matchId, playerId)
 
 }

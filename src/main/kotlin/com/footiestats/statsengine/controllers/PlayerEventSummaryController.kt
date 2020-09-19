@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/player-event-summary")
-@CrossOrigin("http://localhost:4200")
+@CrossOrigin("http://localhost:4200", "http://localhost:4201")
 class PlayerEventSummaryController(
         private val attackingEventSummaryService: AttackingEventSummaryService
 ) {

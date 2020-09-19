@@ -74,4 +74,18 @@ class EventService(
                 .toTypedArray()
     }
 
+    fun getPlayerMatchEventDetailListItemDtos(matchId: Long, playerId: Long): Array<EventDetailListItemDTO> {
+        if (matchId < 1) throw EntityIdMustBeGreaterThanZero("matchId $matchId is invalid")
+        if (playerId < 1) throw EntityIdMustBeGreaterThanZero("playerId $playerId is invalid")
+
+        val events = eventRepository.findAllByPlayer_IdAndMatch_Id(playerId, matchId)
+        val lineupPlayers = lineupPlayerRepository.findAllByMatchLineup_Match_Id(matchId) // TODO: should only return the one lineup player here
+                .map { it.player.id to it }.toMap()
+
+        return events
+                .sortedBy { it.eventIndex }
+                .map { eventMapper.toListItemDetailDto(it, lineupPlayers)}
+                .toTypedArray()
+    }
+
 }

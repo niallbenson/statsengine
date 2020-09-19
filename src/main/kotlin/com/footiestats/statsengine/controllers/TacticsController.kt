@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/tactics")
-@CrossOrigin("http://localhost:4200")
+@CrossOrigin("http://localhost:4200", "http://localhost:4201")
 class TacticsController(private val tacticsService: TacticsService) {
 
     @GetMapping("/match/{matchId}/team/{teamId}")
