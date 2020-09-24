@@ -1,13 +1,17 @@
 package com.footiestats.statsengine.controllers
 
-import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import com.footiestats.statsengine.services.engine.HeatmapService
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/heatmap")
 @CrossOrigin("http://localhost:4200", "http://localhost:4201")
-class HeatmapController {
+class HeatmapController(private val heatmapService: HeatmapService) {
 
+    @GetMapping("/match/{matchId}/player/{playerId}/grid/{gridSize}")
+    fun getMatchPlayerHeatmap(@PathVariable matchId: Long,
+                              @PathVariable playerId: Long,
+                              @PathVariable gridSize: Int) =
+        heatmapService.getMatchPlayerHeatmap(matchId, playerId, gridSize)
 
 }
