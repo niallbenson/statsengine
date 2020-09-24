@@ -1,10 +1,10 @@
 package com.footiestats.statsengine.services.engine
 
-import com.footiestats.statsengine.dtos.engine.HeatmapDTO
+import com.footiestats.statsengine.dtos.engine.HeatmapGridCellDTO
+import com.footiestats.statsengine.entities.engine.events.Event
 import com.footiestats.statsengine.repos.engine.EventRepository
 import mu.KotlinLogging
 import org.springframework.stereotype.Service
-import kotlin.math.absoluteValue
 
 private val log = KotlinLogging.logger {}
 
@@ -14,7 +14,9 @@ const val PITCH_HEIGHT = 80
 @Service
 class HeatmapService(private val eventRepository: EventRepository) {
 
-    fun getMatchPlayerHeatmap(matchId: Long, playerId: Long, gridSize: Int) {
+    fun getMatchPlayerHeatmap(matchId: Long, playerId: Long, gridSize: Int): List<HeatmapGridCellDTO> {
+        log.info { "Generating Match Player Heatmap for $matchId $playerId with grid size $gridSize" }
+
         val events = eventRepository.findAllByPlayer_IdAndMatch_Id(playerId, matchId)
 
         val rowsCount = PITCH_HEIGHT / gridSize
@@ -23,19 +25,27 @@ class HeatmapService(private val eventRepository: EventRepository) {
         val rows = Array(rowsCount) { i -> i * gridSize }
         val cols = Array(colsCount) { i -> i * gridSize }
 
-        rows.map { r -> }
+        val cells = ArrayList<HeatmapGridCellDTO>()
 
-        rows.forEach { r ->
-            cols.forEach { c ->
-                val gridEvents = events.filter { it.location != null && it.location.x >= c.absoluteValue && it.location < r + gridSize }
+        rows.forEach { y ->
+            cols.forEach { x ->
+                val gridEvents = events.filter { e -> isEventInGrid(e, x, y, gridSize) }
 
-                log.info { "$r x $c" }
-
-                log.info {  }
-
+                if (gridEvents.isNotEmpty()) {
+                    cells.add(
+                            HeatmapGridCellDTO(x, y, gridEvents.count(), gridEvents.map { it.id ?: -1 }.toTypedArray())
+                    )
+                }
             }
         }
+
+        return cells
     }
 
-    private fun
+    private fun isEventInGrid(event: Event, gridX: Int, gridY: Int, gridSize: Int): Boolean {
+        val location = event.location ?: return false
+
+        return location.x >= gridX && location.x < gridX + gridSize
+                && location.y >= gridY && location.y < gridY + gridSize
+    }
 }

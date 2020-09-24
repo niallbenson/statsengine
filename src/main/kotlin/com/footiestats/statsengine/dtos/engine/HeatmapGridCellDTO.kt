@@ -1,6 +1,6 @@
 package com.footiestats.statsengine.dtos.engine
 
-data class HeatmapDTO(
+data class HeatmapGridCellDTO(
         val x: Int,
         val y: Int,
         val value: Int,
@@ -10,7 +10,7 @@ data class HeatmapDTO(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as HeatmapDTO
+        other as HeatmapGridCellDTO
 
         if (x != other.x) return false
         if (y != other.y) return false
