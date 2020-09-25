@@ -29,7 +29,7 @@ class HeatmapService(private val eventRepository: EventRepository) {
 
         rows.forEach { y ->
             cols.forEach { x ->
-                val gridEvents = events.filter { e -> isEventInGrid(e, x, y, gridSize) }
+                val gridEvents = events.filter { e -> isEventInGridCell(e, x, y, gridSize) }
 
                 if (gridEvents.isNotEmpty()) {
                     cells.add(
@@ -42,7 +42,7 @@ class HeatmapService(private val eventRepository: EventRepository) {
         return cells
     }
 
-    private fun isEventInGrid(event: Event, gridX: Int, gridY: Int, gridSize: Int): Boolean {
+    private fun isEventInGridCell(event: Event, gridX: Int, gridY: Int, gridSize: Int): Boolean {
         val location = event.location ?: return false
 
         return location.x >= gridX && location.x < gridX + gridSize
