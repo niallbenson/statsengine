@@ -31,20 +31,6 @@ interface EventRepository : PagingAndSortingRepository<Event, Long> {
             statingXiTypeId: Long, tacticalShiftId: Long,
             pageable: Pageable
     ): ArrayList<TacticalLineupPlayer>
-
-//    @Query("from Event e " +
-//            "join fetch e.shot s " +
-//            "join fetch s.outcome o " +
-//            "where e.match.id = ?1 " +
-//            "e.type.id = com.footiestats.statsengine.entities.engine.enums.EventTypeEnum.SHOT.id " +
-//            "and o.id = com.footiestats.statsengine.entities.engine.enums.OutcomeEnum.GOAL.id " +
-//            "and e.eventTeam.id = ?2 " +
-//            "union " +
-//            "from Event e" +
-//            "where e.match.id = ?1 " +
-//            "e.type.id = com.footiestats.statsengine.entities.engine.enums.EventTypeEnum.OWN_GOAL_AGAINST.id " +
-//            "and e.eventTeam.id != ?2")
-//    fun getMatchTeamGoals(matchId: Long, teamId: Long): ArrayList<Event>
 }
 
 interface EventTypeRepository : PagingAndSortingRepository<EventType, Long> {
@@ -123,7 +109,12 @@ interface SubstitutionRepository : PagingAndSortingRepository<Substitution, Long
     fun findByEvent_MatchAndReplacement(match: Match, replacement: Player): Substitution
 }
 
-interface TacticalLineupPlayerRepository : PagingAndSortingRepository<TacticalLineupPlayer, Long>
+interface TacticalLineupPlayerRepository : PagingAndSortingRepository<TacticalLineupPlayer, Long> {
+    @Query("from Tactics t " +
+            "join t.lineup l " +
+            "where l.player.id = ?1 and t.event.match.id = ?2")
+    fun getFirstInstanceOfPlayerMatchTacticalLineup(playerId: Long, matchId: Long): TacticalLineupPlayer
+}
 
 interface TacticsRepository : PagingAndSortingRepository<Tactics, Long> {
     fun findAllByEvent_Match_IdAndEvent_EventTeam_Id(matchId: Long, teamId: Long): ArrayList<Tactics>

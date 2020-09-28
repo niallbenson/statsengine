@@ -3,6 +3,7 @@ package com.footiestats.statsengine.services.engine
 import com.footiestats.statsengine.dtos.engine.HeatmapGridCellDTO
 import com.footiestats.statsengine.entities.engine.events.Event
 import com.footiestats.statsengine.repos.engine.EventRepository
+import com.footiestats.statsengine.services.engine.exceptions.InvalidPitchGridSize
 import mu.KotlinLogging
 import org.springframework.stereotype.Service
 
@@ -15,9 +16,11 @@ const val PITCH_HEIGHT = 80
 class HeatmapService(private val eventRepository: EventRepository) {
 
     fun getMatchPlayerHeatmap(matchId: Long, playerId: Long, gridSize: Int): List<HeatmapGridCellDTO> {
-        log.info { "Generating Match Player Heatmap for $matchId $playerId with grid size $gridSize" }
+        validateGridSize(gridSize)
 
         val events = eventRepository.findAllByPlayer_IdAndMatch_Id(playerId, matchId)
+
+        log.info { "Generating Match Player Heatmap for $matchId $playerId with grid size $gridSize with ${events.size} events" }
 
         val rowsCount = PITCH_HEIGHT / gridSize
         val colsCount = PITCH_WIDTH / gridSize
@@ -39,7 +42,18 @@ class HeatmapService(private val eventRepository: EventRepository) {
             }
         }
 
+        val unmatchedEvents = events.filter { e ->
+            cells.none { c -> c.eventIds.contains( e.id ) }
+        }.map { e -> e.id }.toTypedArray()
+
+        log.info { "${unmatchedEvents.size} events not in Heatmap: ${unmatchedEvents.joinToString { it.toString() }}" }
+
         return cells
+    }
+
+    private fun validateGridSize(gridSize: Int) {
+        if (gridSize > PITCH_HEIGHT / 2 || gridSize > PITCH_WIDTH)
+            throw InvalidPitchGridSize("Grid size cannot be great than 50% of length or width")
     }
 
     private fun isEventInGridCell(event: Event, gridX: Int, gridY: Int, gridSize: Int): Boolean {

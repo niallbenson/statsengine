@@ -4,7 +4,7 @@ data class HeatmapGridCellDTO(
         val x: Int,
         val y: Int,
         val value: Int,
-        val eventId: Array<Long>
+        val eventIds: Array<Long>
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -15,7 +15,7 @@ data class HeatmapGridCellDTO(
         if (x != other.x) return false
         if (y != other.y) return false
         if (value != other.value) return false
-        if (!eventId.contentEquals(other.eventId)) return false
+        if (!eventIds.contentEquals(other.eventIds)) return false
 
         return true
     }
@@ -24,7 +24,7 @@ data class HeatmapGridCellDTO(
         var result = x
         result = 31 * result + y
         result = 31 * result + value
-        result = 31 * result + eventId.contentHashCode()
+        result = 31 * result + eventIds.contentHashCode()
         return result
     }
 }
