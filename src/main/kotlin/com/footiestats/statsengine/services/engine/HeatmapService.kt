@@ -22,6 +22,8 @@ class HeatmapService(private val eventRepository: EventRepository) {
 
         log.info { "Generating Match Player Heatmap for $matchId $playerId with grid size $gridSize with ${events.size} events" }
 
+        val isAwayTeam = isAwayTeam(events)
+
         val rowsCount = PITCH_HEIGHT / gridSize
         val colsCount = PITCH_WIDTH / gridSize
 
@@ -35,8 +37,10 @@ class HeatmapService(private val eventRepository: EventRepository) {
                 val gridEvents = events.filter { e -> isEventInGridCell(e, x, y, gridSize) }
 
                 if (gridEvents.isNotEmpty()) {
+                    val eventIds = gridEvents.map { it.id ?: -1 }.toTypedArray()
+
                     cells.add(
-                            HeatmapGridCellDTO(x, y, gridEvents.count(), gridEvents.map { it.id ?: -1 }.toTypedArray())
+                            HeatmapGridCellDTO(x, y, gridEvents.count(), eventIds)
                     )
                 }
             }
@@ -51,9 +55,17 @@ class HeatmapService(private val eventRepository: EventRepository) {
         return cells
     }
 
+    private fun isAwayTeam(events: Set<Event>): Boolean {
+        val event = events.iterator().next()
+        val playerTeam = event.eventTeam
+        val match = event.match
+
+        return playerTeam.id == match.awayTeam.id
+    }
+
     private fun validateGridSize(gridSize: Int) {
         if (gridSize > PITCH_HEIGHT / 2 || gridSize > PITCH_WIDTH)
-            throw InvalidPitchGridSize("Grid size cannot be great than 50% of length or width")
+            throw InvalidPitchGridSize("Grid size cannot be greater than 50% of length or width")
     }
 
     private fun isEventInGridCell(event: Event, gridX: Int, gridY: Int, gridSize: Int): Boolean {
