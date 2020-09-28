@@ -110,10 +110,12 @@ interface SubstitutionRepository : PagingAndSortingRepository<Substitution, Long
 }
 
 interface TacticalLineupPlayerRepository : PagingAndSortingRepository<TacticalLineupPlayer, Long> {
-    @Query("from Tactics t " +
+    @Query("select l " +
+            "from Tactics t " +
             "join t.lineup l " +
-            "where l.player.id = ?1 and t.event.match.id = ?2")
-    fun getFirstInstanceOfPlayerMatchTacticalLineup(playerId: Long, matchId: Long): TacticalLineupPlayer
+            "where l.player.id = ?1 and t.event.match.id = ?2 " +
+            "order by t.event.eventIndex")
+    fun getPlayerMatchTacticalLineups(playerId: Long, matchId: Long, pageable: Pageable): ArrayList<TacticalLineupPlayer>
 }
 
 interface TacticsRepository : PagingAndSortingRepository<Tactics, Long> {
