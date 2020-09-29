@@ -32,15 +32,18 @@ class HeatmapService(private val eventRepository: EventRepository) {
 
         val cells = ArrayList<HeatmapGridCellDTO>()
 
-        rows.forEach { y ->
-            cols.forEach { x ->
-                val gridEvents = events.filter { e -> isEventInGridCell(e, x, y, gridSize) }
+        for (y in rows.indices) {
+            for (x in cols.indices) {
+                val yValue = if (isAwayTeam) rows[rows.size - 1 - y] else rows[y]
+                val xValue = if (isAwayTeam) cols[cols.size - 1 - x] else cols[x]
+
+                val gridEvents = events.filter { e -> isEventInGridCell(e, xValue, yValue, gridSize) }
 
                 if (gridEvents.isNotEmpty()) {
                     val eventIds = gridEvents.map { it.id ?: -1 }.toTypedArray()
 
                     cells.add(
-                            HeatmapGridCellDTO(x, y, gridEvents.count(), eventIds)
+                            HeatmapGridCellDTO(cols[x], rows[y], gridEvents.count(), eventIds)
                     )
                 }
             }
